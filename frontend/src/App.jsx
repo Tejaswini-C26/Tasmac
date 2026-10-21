@@ -479,9 +479,9 @@ useEffect(() => {
                     {item.label}
                   </span>
 
-                  {/* Sleek Tooltip with name in orange when sidebar is collapsed */}
+                  {/* Sleek Theme-based Tooltip for sidebar icon */}
                   {!isSidebarExpanded && (
-                    <div className="absolute left-full ml-3 px-2.5 py-1 rounded-md bg-zinc-900 dark:bg-black border border-orange-500/40 text-orange-500 dark:text-orange-400 font-mono text-xs font-bold shadow-2xl whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-150 z-50 flex items-center gap-1.5">
+                    <div className="absolute left-full ml-2.5 px-3 py-1.5 rounded-lg bg-white dark:bg-[#101010] border border-orange-500/30 dark:border-orange-500/40 text-orange-600 dark:text-orange-400 font-mono text-xs font-bold shadow-lg dark:shadow-[0_8px_30px_rgba(0,0,0,0.8)] whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-150 z-50 flex items-center gap-2">
                       <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
                       <span>{item.label}</span>
                     </div>
