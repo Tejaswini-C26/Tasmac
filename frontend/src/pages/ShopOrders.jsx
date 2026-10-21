@@ -226,7 +226,7 @@ export function ShopOrders({ selectedShop, onSelectShop, shops = [], onOpenMap }
 
           <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2">
 
-            <span className="text-orange-600 dark:text-orange-500 font-bold">Orders & Transit</span> Dispatches
+            Replenishment Orders & Dispatches
 
           </h1>
 

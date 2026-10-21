@@ -215,7 +215,7 @@ export function AddBottle({ onBottleAdded }) {
     <div className="space-y-8 max-w-7xl mx-auto pb-12">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+        <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2">
           Add New Bottle to Wholesale Catalog
         </h1>
       </div>
@@ -273,7 +273,7 @@ export function AddBottle({ onBottleAdded }) {
 
             {/* Basic Info */}
             <div className="space-y-4">
-              <h2 className="text-sm font-bold uppercase tracking-wider text-orange-400 font-mono flex items-center gap-2">
+              <h2 className="text-sm font-bold uppercase tracking-wider text-zinc-900 dark:text-white font-mono flex items-center gap-2">
                 <Wine className="w-4 h-4" />
                 1. General Bottle Information
               </h2>
@@ -369,7 +369,7 @@ export function AddBottle({ onBottleAdded }) {
 
             {/* Bottle Image Selection */}
             <div className="space-y-3 pt-4 border-t border-zinc-200 dark:border-white/10">
-              <h2 className="text-sm font-bold uppercase tracking-wider text-orange-400 font-mono flex items-center gap-2">
+              <h2 className="text-sm font-bold uppercase tracking-wider text-zinc-900 dark:text-white font-mono flex items-center gap-2">
                 <ImageIcon className="w-4 h-4" />
                 2. Bottle Image &amp; Artwork
               </h2>
@@ -425,7 +425,7 @@ export function AddBottle({ onBottleAdded }) {
             {/* Pack Rates & Statutory Pricing */}
             <div className="space-y-3 pt-4 border-t border-zinc-200 dark:border-white/10">
               <div className="flex items-center justify-between">
-                <h2 className="text-sm font-bold uppercase tracking-wider text-orange-400 font-mono flex items-center gap-2">
+                <h2 className="text-sm font-bold uppercase tracking-wider text-zinc-900 dark:text-white font-mono flex items-center gap-2">
                   <IndianRupee className="w-4 h-4" />
                   3. Pack Sizes &amp; Statutory Pricing
                 </h2>
@@ -509,7 +509,7 @@ export function AddBottle({ onBottleAdded }) {
 
             {/* Initial Depot Allocation */}
             <div className="space-y-3 pt-4 border-t border-zinc-200 dark:border-white/10">
-              <h2 className="text-sm font-bold uppercase tracking-wider text-orange-400 font-mono flex items-center gap-2">
+              <h2 className="text-sm font-bold uppercase tracking-wider text-zinc-900 dark:text-white font-mono flex items-center gap-2">
                 <Building2 className="w-4 h-4" />
                 4. Depot Inventory Allocation
               </h2>

@@ -130,7 +130,7 @@ export function DepotStock() {
 
           <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2">
 
-            <span className="text-orange-600 dark:text-orange-500 font-bold">Wholesale Depots</span> & Statewide Inventory
+            Wholesale Depots & Statewide Inventory
 
           </h1>
 
@@ -250,7 +250,7 @@ export function DepotStock() {
 
               <div>
 
-                <h2 className="text-base font-bold text-white flex items-center gap-2">
+                <h2 className="text-base font-bold text-zinc-900 dark:text-white flex items-center gap-2">
 
                   {depotInventory.name} Wholesale Inventory
 
