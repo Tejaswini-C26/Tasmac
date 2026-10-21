@@ -431,7 +431,7 @@ useEffect(() => {
       {/* 1. Left Vertical Icon Sidebar (Activity Bar) - Hidden on Login page and Print */}
       {currentTab !== 'login' && (
         <aside
-          className={`shrink-0 h-full bg-[#ffffff] dark:bg-[#000000] border-r border-black/10 dark:border-white/[0.08] flex flex-col transition-[width] duration-300 ease-in-out z-30 select-none overflow-hidden print:hidden ${
+          className={`shrink-0 h-full bg-[#ffffff] dark:bg-[#000000] border-r border-black/10 dark:border-white/[0.08] flex flex-col transition-[width] duration-300 ease-in-out z-30 select-none print:hidden ${
             isSidebarExpanded ? 'w-56' : 'w-12'
           }`}
         >
@@ -448,7 +448,7 @@ useEffect(() => {
           </div>
 
           {/* Navigation Items (Icons always constant, text reveals on expand) */}
-          <nav className="flex-1 overflow-y-auto py-3 px-1 space-y-1 font-mono overflow-x-hidden">
+          <nav className="flex-1 py-3 px-1 space-y-1 font-mono">
             {activePages.map((item) => {
               const Icon = item.icon;
               const isActive = currentTab === item.id;
@@ -459,7 +459,6 @@ useEffect(() => {
                     setCurrentTab(item.id);
                     window.location.hash = `#${item.id}`;
                   }}
-                  title={!isSidebarExpanded ? item.label : undefined}
                   className={`w-full h-10 rounded-lg flex items-center transition-colors duration-150 cursor-pointer font-mono text-xs uppercase font-bold tracking-wider relative group ${
                     isActive
                       ? 'bg-orange-500/15 text-orange-600 dark:text-orange-400 border border-orange-500/40 shadow-sm'
@@ -475,10 +474,18 @@ useEffect(() => {
                   <span
                     className={`whitespace-nowrap overflow-hidden transition-opacity duration-200 ${
                       isSidebarExpanded ? 'opacity-100 pr-2.5' : 'opacity-0 max-w-0 pointer-events-none'
-                    }`}
+                    } ${isActive ? 'text-orange-600 dark:text-orange-400 font-bold' : ''}`}
                   >
                     {item.label}
                   </span>
+
+                  {/* Sleek Tooltip with name in orange when sidebar is collapsed */}
+                  {!isSidebarExpanded && (
+                    <div className="absolute left-full ml-3 px-2.5 py-1 rounded-md bg-zinc-900 dark:bg-black border border-orange-500/40 text-orange-500 dark:text-orange-400 font-mono text-xs font-bold shadow-2xl whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-150 z-50 flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
+                      <span>{item.label}</span>
+                    </div>
+                  )}
                 </button>
               );
             })}

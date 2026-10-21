@@ -112,9 +112,9 @@ export function ShopInventory({ selectedShop, onSelectShop, shops = [], onOpenMa
 
           </div>
 
-          <h1 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2">
 
-            Shop Shelf Inventory & Stock Telemetry
+            <span className="text-orange-600 dark:text-orange-500 font-bold">Store Stockroom</span> & Shelf Inventory
 
           </h1>
 

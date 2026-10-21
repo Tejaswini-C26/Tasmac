@@ -216,7 +216,7 @@ export function RetailCatalog({ onAddToCart, cart, onNavigateToAddBottle }) {
 
           <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2">
 
-            Wholesale Product Catalog & Indent
+            <span className="text-orange-600 dark:text-orange-500 font-bold">Wholesale Product Catalog</span> & Indent
 
           </h1>
 
