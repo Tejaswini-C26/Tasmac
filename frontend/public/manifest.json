@@ -1,0 +1,21 @@
+{
+  "name": "TASMAC B2B Wholesale Supply Platform",
+  "short_name": "TASMAC Supply",
+  "description": "Tamil Nadu State Marketing Corporation B2B Wholesale Supply & Indent Telemetry Grid",
+  "start_url": "/#landing",
+  "id": "/?tasmac_pwa=1",
+  "display": "standalone",
+  "background_color": "#090a0d",
+  "theme_color": "#ea580c",
+  "orientation": "any",
+  "categories": ["business", "government", "productivity"],
+  "icons": [
+    {
+      "src": "/tasmac-icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
+

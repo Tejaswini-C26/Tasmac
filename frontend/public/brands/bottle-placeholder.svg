@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 240" fill="none">
+  <defs>
+    <linearGradient id="bottleGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f97316" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#ea580c" stop-opacity="0.05"/>
+    </linearGradient>
+    <linearGradient id="glassStroke" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f97316" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#ea580c" stop-opacity="0.2"/>
+    </linearGradient>
+  </defs>
+  <!-- Bottle Cap -->
+  <rect x="52" y="10" width="16" height="12" rx="2" fill="#f97316" />
+  <!-- Bottle Neck -->
+  <path d="M54 22 L54 65 L40 100 L40 215 C40 223 46 230 55 230 L65 230 C74 230 80 223 80 215 L80 100 L66 65 L66 22 Z" fill="url(#bottleGrad)" stroke="url(#glassStroke)" stroke-width="2" />
+  <!-- Bottle Label -->
+  <rect x="44" y="115" width="32" height="60" rx="3" fill="#18181b" stroke="#f97316" stroke-width="1.5" stroke-opacity="0.4" />
+  <!-- Label Icon / Ribbon -->
+  <circle cx="60" cy="135" r="7" fill="#f97316" fill-opacity="0.3" stroke="#f97316" stroke-width="1" />
+  <line x1="49" y1="152" x2="71" y2="152" stroke="#f97316" stroke-width="1.5" stroke-linecap="round" />
+  <line x1="52" y1="160" x2="68" y2="160" stroke="#71717a" stroke-width="1" stroke-linecap="round" />
+</svg>
+
