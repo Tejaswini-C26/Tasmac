@@ -187,7 +187,7 @@ export function AddBottle({ onBottleAdded }) {
         initial_depot_stock: parseInt(initialStock, 10) || 1000
       };
 
-      const res = await fetch('http://127.0.0.1:8000/api/brands', {
+      const res = await fetch('/api/brands', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
