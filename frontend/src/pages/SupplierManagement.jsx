@@ -9,7 +9,6 @@ import {
   Plus, 
   CheckCircle2, 
   AlertTriangle, 
-  Search, 
   Building2, 
   ShieldCheck, 
   Calendar, 
@@ -435,7 +434,7 @@ export function SupplierManagement({ externalSearchQuery = '' }) {
       {/* TAB 1: Inward Consignments */}
       {activeTab === 'consignments' && (
         <div className="space-y-4">
-          {/* Filters & Search */}
+          {/* Filters */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div className="inline-flex items-center p-1 rounded-xl bg-zinc-100 dark:bg-[#0c0d12] border border-zinc-200 dark:border-white/10 gap-1 overflow-x-auto max-w-full">
               {[
@@ -459,17 +458,6 @@ export function SupplierManagement({ externalSearchQuery = '' }) {
                   </button>
                 );
               })}
-            </div>
-
-            <div className="relative w-full sm:w-64">
-              <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" />
-              <input
-                type="text"
-                placeholder="Search consignments..."
-                value={searchQuery || externalSearchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-8 pr-3 py-1.5 bg-zinc-50 dark:bg-[#000000] border border-zinc-200 dark:border-white/10 rounded-lg text-xs text-zinc-900 dark:text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-orange-500"
-              />
             </div>
           </div>
 
