@@ -335,56 +335,44 @@ export function SupplierManagement() {
 
   return (
     <div className="space-y-6">
-      {/* Page Actions */}
-      <div className="flex justify-end items-center pb-2">
-        {/* Action Button */}
-        <button
-          onClick={() => setIsDispatchModalOpen(true)}
-          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-mono text-xs uppercase font-bold tracking-wider shadow-lg shadow-orange-950/20 transition-all cursor-pointer"
-        >
-          <Plus className="w-4 h-4" />
-          Dispatch Inward Consignment
-        </button>
-      </div>
-
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Card 1: Suppliers */}
         <div className="forge-card rounded-md p-5 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all">
-          <span className="text-xs font-mono font-medium tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
+          <span className="text-xs font-mono font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
             Licensed Suppliers
           </span>
-          <div className="text-3xl sm:text-4xl font-mono font-normal text-zinc-900 dark:text-white mt-2">
+          <div className="text-3xl sm:text-4xl font-mono font-bold text-zinc-900 dark:text-white mt-2">
             {suppliers.length}
           </div>
         </div>
 
         {/* Card 2: Inward Cases */}
         <div className="forge-card rounded-md p-5 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all">
-          <span className="text-xs font-mono font-medium tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
+          <span className="text-xs font-mono font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
             Total Inward Cases
           </span>
-          <div className="text-3xl sm:text-4xl font-mono font-normal text-zinc-900 dark:text-white mt-2">
+          <div className="text-3xl sm:text-4xl font-mono font-bold text-zinc-900 dark:text-white mt-2">
             {analytics?.total_inward_cases?.toLocaleString() || '1,600'}
           </div>
         </div>
 
         {/* Card 3: OTIF */}
         <div className="forge-card rounded-md p-5 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all">
-          <span className="text-xs font-mono font-medium tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
+          <span className="text-xs font-mono font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
             Fulfillment (OTIF)
           </span>
-          <div className="text-3xl sm:text-4xl font-mono font-normal text-emerald-600 dark:text-emerald-400 mt-2">
+          <div className="text-3xl sm:text-4xl font-mono font-bold text-emerald-600 dark:text-emerald-400 mt-2">
             {analytics?.otif_percentage || 97.2}%
           </div>
         </div>
 
         {/* Card 4: Active Trucks */}
         <div className="forge-card rounded-md p-5 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all">
-          <span className="text-xs font-mono font-medium tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
+          <span className="text-xs font-mono font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
             Active Supply Trucks
           </span>
-          <div className="text-3xl sm:text-4xl font-mono font-normal text-zinc-900 dark:text-white mt-2 flex items-center gap-2.5">
+          <div className="text-3xl sm:text-4xl font-mono font-bold text-zinc-900 dark:text-white mt-2 flex items-center gap-2.5">
             {activeTrucksCount}
             {activeTrucksCount > 0 && (
               <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse inline-block" />
@@ -393,15 +381,15 @@ export function SupplierManagement() {
         </div>
       </div>
 
-      {/* Tabs Navigation */}
+      {/* Tabs Navigation & Action Button */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="inline-flex items-center p-1 rounded-xl bg-zinc-100 dark:bg-[#0c0d12] border border-zinc-200 dark:border-white/10 gap-1 overflow-x-auto max-w-full">
           <button
             onClick={() => setActiveTab('consignments')}
-            className={`px-4 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-2 cursor-pointer whitespace-nowrap ${
+            className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-2 cursor-pointer whitespace-nowrap ${
               activeTab === 'consignments'
-                ? 'bg-orange-500 text-white shadow-sm font-semibold'
-                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
+                ? 'bg-orange-500 text-white shadow-sm font-bold'
+                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white font-bold'
             }`}
           >
             <Truck className="w-4 h-4" />
@@ -410,10 +398,10 @@ export function SupplierManagement() {
 
           <button
             onClick={() => setActiveTab('directory')}
-            className={`px-4 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-2 cursor-pointer whitespace-nowrap ${
+            className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-2 cursor-pointer whitespace-nowrap ${
               activeTab === 'directory'
-                ? 'bg-orange-500 text-white shadow-sm font-semibold'
-                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
+                ? 'bg-orange-500 text-white shadow-sm font-bold'
+                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white font-bold'
             }`}
           >
             <Factory className="w-4 h-4" />
@@ -422,16 +410,25 @@ export function SupplierManagement() {
 
           <button
             onClick={() => setActiveTab('scorecard')}
-            className={`px-4 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-2 cursor-pointer whitespace-nowrap ${
+            className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-2 cursor-pointer whitespace-nowrap ${
               activeTab === 'scorecard'
-                ? 'bg-orange-500 text-white shadow-sm font-semibold'
-                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
+                ? 'bg-orange-500 text-white shadow-sm font-bold'
+                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white font-bold'
             }`}
           >
             <BadgePercent className="w-4 h-4" />
             Supplier Scorecard
           </button>
         </div>
+
+        {/* Action Button: Dispatch Inward Consignment */}
+        <button
+          onClick={() => setIsDispatchModalOpen(true)}
+          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-mono text-xs uppercase font-bold tracking-wider shadow-lg shadow-orange-950/20 transition-all cursor-pointer shrink-0"
+        >
+          <Plus className="w-4 h-4" />
+          Dispatch Inward Consignment
+        </button>
       </div>
 
       {/* TAB 1: Inward Consignments */}
@@ -451,10 +448,10 @@ export function SupplierManagement() {
                   <button
                     key={tab.key}
                     onClick={() => setStatusFilter(tab.key)}
-                    className={`px-4 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer whitespace-nowrap ${
+                    className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
                       active
-                        ? 'bg-orange-500 text-white shadow-sm font-semibold'
-                        : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
+                        ? 'bg-orange-500 text-white shadow-sm font-bold'
+                        : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white font-bold'
                     }`}
                   >
                     {tab.label}

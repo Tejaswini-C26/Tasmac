@@ -92,31 +92,6 @@ export function ShopInventory({ selectedShop, onSelectShop, shops = [], onOpenMa
 
   return (
     <div className="space-y-6">
-      {/* Store Selector & Actions */}
-      <div className="flex justify-end items-center gap-2 pb-2">
-
-        {/* Search & Select Retail Store */}
-        <div className="flex items-center gap-2">
-          {availableShops && availableShops.length > 0 && (
-            <ShopSearchSelector 
-              selectedShop={selectedShop || availableShops[0]} 
-              onSelectShop={onSelectShop} 
-              shops={availableShops} 
-              onOpenMap={onOpenMap}
-            />
-          )}
-
-          <button
-            onClick={() => loadInventory(selectedShop)}
-            disabled={loading}
-            title="Refresh Inventory"
-            className="p-2 rounded-lg border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] text-zinc-700 dark:text-zinc-300 hover:text-orange-600 dark:hover:text-orange-400 hover:border-orange-500/40 transition disabled:opacity-50 cursor-pointer"
-          >
-            <RotateCcw className={`w-4 h-4 ${loading ? 'animate-spin text-orange-500' : ''}`} />
-          </button>
-        </div>
-      </div>
-
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="forge-card rounded-md p-5 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all">
@@ -155,6 +130,30 @@ export function ShopInventory({ selectedShop, onSelectShop, shops = [], onOpenMa
           <div className="text-3xl sm:text-4xl font-mono font-bold text-zinc-900 dark:text-white mt-2">
             ₹{Math.round(estimatedShelfValue).toLocaleString()}
           </div>
+        </div>
+      </div>
+
+      {/* Store Selector & Actions */}
+      <div className="flex justify-end items-center gap-2 pb-1">
+        {/* Search & Select Retail Store */}
+        <div className="flex items-center gap-2">
+          {availableShops && availableShops.length > 0 && (
+            <ShopSearchSelector 
+              selectedShop={selectedShop || availableShops[0]} 
+              onSelectShop={onSelectShop} 
+              shops={availableShops} 
+              onOpenMap={onOpenMap}
+            />
+          )}
+
+          <button
+            onClick={() => loadInventory(selectedShop)}
+            disabled={loading}
+            title="Refresh Inventory"
+            className="p-2 rounded-lg border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] text-zinc-700 dark:text-zinc-300 hover:text-orange-600 dark:hover:text-orange-400 hover:border-orange-500/40 transition disabled:opacity-50 cursor-pointer"
+          >
+            <RotateCcw className={`w-4 h-4 ${loading ? 'animate-spin text-orange-500' : ''}`} />
+          </button>
         </div>
       </div>
 

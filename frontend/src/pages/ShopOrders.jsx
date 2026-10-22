@@ -260,13 +260,13 @@ export function ShopOrders({ selectedShop, onSelectShop, shops = [], onOpenMap }
 
               onClick={() => setStatusFilter(tab.key)}
 
-              className={`px-4 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer ${
+              className={`px-4 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer ${
 
                 active
 
-                  ? 'bg-orange-500 text-white shadow-sm font-semibold'
+                  ? 'bg-orange-500 text-white shadow-sm font-bold'
 
-                  : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
+                  : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white font-bold'
 
               }`}
 
