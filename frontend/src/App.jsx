@@ -18,7 +18,6 @@ import {
   Sun,
   Moon,
   PanelLeft,
-  LayoutDashboard,
   LayoutGrid,
   Factory,
   ChevronRight,
@@ -36,7 +35,12 @@ import {
   Compass,
   Download,
   Landmark,
-  CreditCard
+  CreditCard,
+  Search,
+  Maximize2,
+  Minimize2,
+  Bell,
+  X
 } from 'lucide-react';
 
 import { LoginPage } from './pages/LoginPage';
@@ -46,7 +50,6 @@ import { DepotStock } from './pages/DepotStock';
 import { ShopInventory } from './pages/ShopInventory';
 import { AddBottle } from './pages/AddBottle';
 import { SupplierManagement } from './pages/SupplierManagement';
-import { Dashboard } from './pages/Dashboard';
 import { PublicLandingPage } from './pages/PublicLandingPage';
 import { OrderDrawer } from './components/OrderDrawer';
 import { ShopSearchSelector } from './components/ShopSearchSelector';
@@ -55,7 +58,6 @@ import { UserProfileDropdown } from './components/UserProfileDropdown';
 import { fetchShops, fetchDepots, fetchMetrics, fetchCurrentUser } from './services/api';
 
 const ALL_PAGE_IDS = [
-  'dashboard',
   'suppliers',
   'depots',
   'inventory',
@@ -161,6 +163,43 @@ export function App() {
   const [isShopSelectOpen, setIsShopSelectOpen] = useState(false);
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
   const [isMapModalOpen, setIsMapModalOpen] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isHeaderSearchOpen, setIsHeaderSearchOpen] = useState(false);
+  const [headerSearchQuery, setHeaderSearchQuery] = useState('');
+  const [showHeaderAlerts, setShowHeaderAlerts] = useState(false);
+
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(() => {});
+      setIsFullscreen(true);
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen().catch(() => {});
+      }
+      setIsFullscreen(false);
+    }
+  };
+
+  const getPageHeading = () => {
+    switch (currentTab) {
+      case 'suppliers':
+        return 'Supplier Management';
+      case 'depots':
+        return 'Wholesale Depots';
+      case 'inventory':
+        return 'Store Stockroom';
+      case 'catalog':
+        return 'Wholesale Catalog';
+      case 'orders':
+        return 'Orders & Transit';
+      case 'add-bottle':
+        return 'Add New Bottle';
+      case 'login':
+        return 'Portal Access';
+      default:
+        return 'TASMAC Supply Chain';
+    }
+  };
 
   // Progressive Web App Install prompt capture
   useEffect(() => {
@@ -216,9 +255,6 @@ export function App() {
           setPortalMode('retail');
           localStorage.setItem('tasmac_portal_mode', 'retail');
         }
-      } else if (rawHash === 'dashboard') {
-        setViewMode('portal');
-        setCurrentTab('dashboard');
       } else if (rawHash === 'suppliers' || rawHash === 'depots') {
         setViewMode('portal');
         setPortalMode('manufacturing');
@@ -322,12 +358,10 @@ useEffect(() => {
   const getRolePages = () => {
     return portalMode === 'manufacturing'
       ? [
-          { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, mode: 'manufacturing' },
           { id: 'suppliers', label: 'Supplier Inward', icon: Factory, mode: 'manufacturing' },
           { id: 'depots', label: 'Wholesale Depots', icon: Warehouse, mode: 'manufacturing' },
         ]
       : [
-          { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, mode: 'retail' },
           { id: 'inventory', label: 'Store Stockroom', icon: Store, mode: 'retail' },
           { id: 'catalog', label: 'Wholesale Catalog', icon: LayoutGrid, mode: 'retail' },
           { id: 'orders', label: 'Orders & Transit', icon: Truck, mode: 'retail' },
@@ -556,57 +590,147 @@ useEffect(() => {
 
       {/* 2. Main Viewport Area */}
       <div className="flex-1 flex flex-col min-w-0 h-full overflow-hidden print:h-auto print:overflow-visible print:w-full">
-        {/* Top Header - Hidden in Print */}
-        <header className="shrink-0 z-20 bg-transparent print:hidden">
-          <div className={`w-full px-4 sm:px-6 lg:px-8 ${currentTab === 'login' ? 'h-11' : 'h-14'} flex items-center justify-between gap-4 font-mono`}>
-            {/* Left Area (Spacer) */}
-            <div />
+        {/* Top Header - Matching Reference Screenshot */}
+        <header className="shrink-0 z-20 bg-white dark:bg-[#000000] border-b border-zinc-200 dark:border-white/10 print:hidden transition-colors">
+          <div className={`w-full px-4 sm:px-6 lg:px-8 ${currentTab === 'login' ? 'h-11' : 'h-14'} flex items-center justify-between gap-4 font-sans`}>
+            {/* Left: Heading matching screenshot */}
+            <div className="flex items-center gap-3 min-w-0">
+              {currentTab !== 'login' ? (
+                <h1 className="text-lg sm:text-xl font-bold tracking-tight text-zinc-900 dark:text-white truncate">
+                  {getPageHeading()}
+                </h1>
+              ) : (
+                <div />
+              )}
+            </div>
 
-            {/* Right: Actions */}
-            <div className="flex items-center justify-end gap-5 sm:gap-6 font-mono">
-              {/* Theme Toggle with Animated Icon (Icon only) */}
+            {/* Right: Actions suite matching screenshot */}
+            <div className="flex items-center justify-end gap-1.5 sm:gap-2.5">
+              {/* 1. Search Trigger / Input */}
+              {currentTab !== 'login' && (
+                <div className="relative">
+                  {isHeaderSearchOpen ? (
+                    <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-zinc-100 dark:bg-white/5 border border-zinc-200 dark:border-white/10 text-xs">
+                      <Search className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
+                      <input
+                        type="text"
+                        autoFocus
+                        placeholder="Search..."
+                        value={headerSearchQuery}
+                        onChange={(e) => setHeaderSearchQuery(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Escape') {
+                            setIsHeaderSearchOpen(false);
+                            setHeaderSearchQuery('');
+                          }
+                        }}
+                        className="bg-transparent border-0 outline-none text-xs text-zinc-900 dark:text-white placeholder-zinc-400 w-24 sm:w-36 focus:w-44 transition-all"
+                      />
+                      <button
+                        onClick={() => {
+                          setIsHeaderSearchOpen(false);
+                          setHeaderSearchQuery('');
+                        }}
+                        className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => setIsHeaderSearchOpen(true)}
+                      title="Search"
+                      className="p-2 text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-white/5 rounded-xl transition cursor-pointer"
+                    >
+                      <Search className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
+              )}
+
+              {/* 2. Fullscreen / Maximize Toggle */}
+              {currentTab !== 'login' && (
+                <button
+                  onClick={toggleFullscreen}
+                  title={isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}
+                  className="p-2 text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-white/5 rounded-xl transition cursor-pointer"
+                >
+                  {isFullscreen ? (
+                    <Minimize2 className="w-4 h-4" />
+                  ) : (
+                    <Maximize2 className="w-4 h-4" />
+                  )}
+                </button>
+              )}
+
+              {/* 3. Notification Bell with Orange Dot & Popover */}
+              {currentTab !== 'login' && (
+                <div className="relative">
+                  <button
+                    onClick={() => setShowHeaderAlerts(!showHeaderAlerts)}
+                    title="Active Alerts & Notifications"
+                    className="p-2 text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-white/5 rounded-xl transition cursor-pointer relative"
+                  >
+                    <Bell className="w-4 h-4" />
+                    <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-orange-500 ring-2 ring-white dark:ring-black" />
+                  </button>
+
+                  {/* Alerts Popover Dropdown */}
+                  {showHeaderAlerts && (
+                    <div className="absolute right-0 mt-2 w-72 sm:w-80 p-3 bg-white dark:bg-[#121212] border border-zinc-200 dark:border-white/10 rounded-2xl shadow-xl z-50 animate-slideDown font-sans">
+                      <div className="flex items-center justify-between pb-2 border-b border-zinc-100 dark:border-white/5 mb-2">
+                        <span className="text-xs font-bold text-zinc-900 dark:text-white">Active Operational Alerts</span>
+                        <span className="text-[10px] text-orange-500 font-bold uppercase font-mono px-1.5 py-0.5 rounded bg-orange-500/10">3 New</span>
+                      </div>
+                      <div className="space-y-2 text-xs">
+                        <div className="p-2 rounded-lg bg-zinc-50 dark:bg-white/5 border border-zinc-100 dark:border-white/5">
+                          <p className="font-semibold text-zinc-800 dark:text-zinc-200 text-[11px]">Consignment GRN Verified</p>
+                          <p className="text-[10px] text-zinc-500">Salem Depot accepted 500 cases of Eight PM with zero breakages.</p>
+                        </div>
+                        <div className="p-2 rounded-lg bg-zinc-50 dark:bg-white/5 border border-zinc-100 dark:border-white/5">
+                          <p className="font-semibold text-zinc-800 dark:text-zinc-200 text-[11px]">Inward Transit Dispatched</p>
+                          <p className="text-[10px] text-zinc-500">Mohan Breweries truck TN-37-CT-4421 en route to Coimbatore Wholesale Depot.</p>
+                        </div>
+                        <div className="p-2 rounded-lg bg-zinc-50 dark:bg-white/5 border border-zinc-100 dark:border-white/5">
+                          <p className="font-semibold text-zinc-800 dark:text-zinc-200 text-[11px]">Retail Reorder Threshold</p>
+                          <p className="text-[10px] text-zinc-500">Shop #104 Anna Nagar stock reorder threshold reached.</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* 4. Dark / Light Mode Toggle Button (Moon / Sun) */}
               <button
                 onClick={toggleTheme}
                 title={`Switch to ${theme === 'dark' ? 'White' : 'Dark'} Mode`}
-                className="relative p-1 bg-transparent hover:bg-transparent border-0 shadow-none flex items-center justify-center shrink-0 cursor-pointer group hover:scale-110 transition-transform focus:outline-none"
+                className="p-2 text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-white/5 rounded-xl transition cursor-pointer"
               >
-                <div className="relative w-3.5 h-3.5 flex items-center justify-center pointer-events-none">
-                  {/* Sun Icon */}
-                  <Sun 
-                    className={`w-3.5 h-3.5 text-amber-500 transition-all duration-700 ease-in-out absolute ${
-                      theme === 'light'
-                        ? 'rotate-0 scale-100 opacity-100 drop-shadow-[0_0_6px_rgba(245,158,11,0.5)]'
-                        : 'rotate-90 scale-0 opacity-0'
-                    }`} 
-                  />
-                  {/* Moon Icon */}
-                  <Moon 
-                    className={`w-3.5 h-3.5 text-zinc-700 dark:text-zinc-300 group-hover:text-black dark:group-hover:text-white transition-all duration-700 ease-in-out absolute ${
-                      theme === 'dark'
-                        ? 'rotate-0 scale-100 opacity-100 drop-shadow-[0_0_6px_rgba(255,255,255,0.3)]'
-                        : '-rotate-90 scale-0 opacity-0'
-                    }`} 
-                  />
-                </div>
+                {theme === 'dark' ? (
+                  <Sun className="w-4 h-4 text-amber-500" />
+                ) : (
+                  <Moon className="w-4 h-4 text-zinc-700" />
+                )}
               </button>
 
-              {/* Replenishment Indent Cart Action Link (Only in Retail Shops Portal and not on login page) */}
+              {/* 5. Replenishment Indent Cart (Only in Retail Shops Portal and not on login page) */}
               {portalMode === 'retail' && currentTab !== 'login' && (
                 <button
                   onClick={() => setIsDrawerOpen(true)}
-                  className="font-mono text-sm uppercase font-bold tracking-wider text-zinc-700 dark:text-zinc-300 hover:text-black dark:hover:text-white transition flex items-center gap-2 shrink-0 cursor-pointer group"
+                  className="font-mono text-xs uppercase font-bold tracking-wider text-zinc-700 dark:text-zinc-300 hover:text-black dark:hover:text-white transition flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-orange-500/10 hover:bg-orange-500/20 text-orange-600 dark:text-orange-400 border border-orange-500/20 shrink-0 cursor-pointer group"
                 >
-                  <ShoppingCart className="w-4 h-4 text-orange-500 group-hover:scale-110 transition-transform" />
-                  <span className="hidden sm:inline">Indent Cart</span>
+                  <ShoppingCart className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />
+                  <span className="hidden sm:inline">Cart</span>
                   {totalCartCases > 0 && (
-                    <span className="px-1.5 py-0.5 rounded-full bg-orange-600 text-white font-mono font-bold text-[10px] min-w-[18px] h-[18px] flex items-center justify-center shadow-sm">
+                    <span className="px-1.5 py-0.2 rounded-full bg-orange-600 text-white font-mono font-bold text-[10px] min-w-[16px] h-[16px] flex items-center justify-center shadow-sm">
                       {totalCartCases}
                     </span>
                   )}
                 </button>
               )}
 
-              {/* User Profile Avatar Dropdown with Active Role Switcher */}
+              {/* 6. User Profile Avatar Dropdown with Active Role Switcher */}
               <UserProfileDropdown 
                 currentUser={currentUser}
                 portalMode={portalMode}
@@ -634,18 +758,6 @@ useEffect(() => {
                 }}
                 portalMode={portalMode}
                 onSwitchPortal={(mode) => handleSelectPortal(mode)}
-              />
-            )}
-            {currentTab === 'dashboard' && (
-              <Dashboard
-                portalMode={portalMode}
-                onNavigate={(stage) => {
-                  setCurrentTab(stage);
-                  window.location.hash = `#${stage}`;
-                }}
-                currentUser={currentUser}
-                theme={theme}
-                onToggleTheme={toggleTheme}
               />
             )}
             {currentTab === 'catalog' && (
