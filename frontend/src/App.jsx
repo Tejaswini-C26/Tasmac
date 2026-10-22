@@ -34,7 +34,8 @@ import {
   MapPin,
   Compass,
   Download,
-  Landmark
+  Landmark,
+  CreditCard
 } from 'lucide-react';
 
 import { LoginPage } from './pages/LoginPage';
@@ -49,6 +50,7 @@ import { HQSuperAdmin } from './pages/HQSuperAdmin';
 import { RegionalManager } from './pages/RegionalManager';
 import { DriverConsole } from './pages/DriverConsole';
 import { ComplianceAudit } from './pages/ComplianceAudit';
+import { FinanceLedger } from './pages/FinanceLedger';
 import { OrderDrawer } from './components/OrderDrawer';
 import { ShopSearchSelector } from './components/ShopSearchSelector';
 import { ShopMapModal } from './components/ShopMapModal';
@@ -64,6 +66,7 @@ const ALL_PAGE_IDS = [
   'orders',
   'driver-console',
   'compliance',
+  'finance',
   'add-bottle',
   'login'
 ];
@@ -219,7 +222,7 @@ export function App() {
           setPortalMode('retail');
           localStorage.setItem('tasmac_portal_mode', 'retail');
         }
-      } else if (rawHash === 'super-admin' || rawHash === 'regional' || rawHash === 'compliance') {
+      } else if (rawHash === 'super-admin' || rawHash === 'regional' || rawHash === 'compliance' || rawHash === 'finance') {
         setViewMode('portal');
         setCurrentTab(rawHash);
       } else if (rawHash === 'driver-console') {
@@ -323,6 +326,7 @@ useEffect(() => {
         { id: 'catalog', label: 'Catalog', icon: LayoutGrid },
         { id: 'orders', label: 'Orders', icon: Truck },
         { id: 'compliance', label: 'Compliance', icon: ShieldCheck },
+        { id: 'finance', label: 'Treasury & Ledger', icon: CreditCard },
       ];
     }
     if (role.includes('REGIONAL')) {
@@ -345,6 +349,7 @@ useEffect(() => {
       return [
         { id: 'suppliers', label: 'Supplier Inward', icon: Factory },
         { id: 'catalog', label: 'Brand Catalog', icon: LayoutGrid },
+        { id: 'finance', label: 'Disbursements', icon: CreditCard },
       ];
     }
     if (role.includes('DRIVER')) {
@@ -365,6 +370,7 @@ useEffect(() => {
       { id: 'inventory', label: 'Store Stockroom', icon: Store },
       { id: 'catalog', label: 'Wholesale Catalog', icon: LayoutGrid },
       { id: 'orders', label: 'Store Indents', icon: Truck },
+      { id: 'finance', label: 'Ledger & Empties', icon: CreditCard },
     ];
   };
 
@@ -719,6 +725,9 @@ useEffect(() => {
             )}
             {currentTab === 'compliance' && (
               <ComplianceAudit />
+            )}
+            {currentTab === 'finance' && (
+              <FinanceLedger />
             )}
             {currentTab === 'add-bottle' && (
               <AddBottle onBottleAdded={() => {

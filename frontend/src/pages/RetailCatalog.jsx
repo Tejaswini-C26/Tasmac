@@ -53,6 +53,7 @@ export function RetailCatalog({ onAddToCart, cart, onNavigateToAddBottle }) {
   const [inspectingBrand, setInspectingBrand] = useState(null);
 
   const [selectedSizes, setSelectedSizes] = useState({});
+  const [showAIPredictions, setShowAIPredictions] = useState(false);
 
 
 
@@ -228,6 +229,20 @@ export function RetailCatalog({ onAddToCart, cart, onNavigateToAddBottle }) {
 
         <div className="flex items-center gap-3 self-start md:self-auto">
 
+          {/* AI Smart Reorder Button */}
+          <button
+            onClick={() => setShowAIPredictions(!showAIPredictions)}
+            className={`px-3 py-2 rounded-xl text-xs font-mono font-bold uppercase tracking-wider transition flex items-center gap-1.5 cursor-pointer shadow-sm ${
+              showAIPredictions
+                ? 'bg-orange-600 text-white'
+                : 'bg-zinc-100 dark:bg-[#101010] border border-zinc-200 dark:border-white/10 text-orange-600 dark:text-orange-400 hover:border-orange-500'
+            }`}
+            title="Toggle AI Demand Forecasting & Smart Auto-Reorder"
+          >
+            <Sparkles className="w-4 h-4 text-orange-500" />
+            <span>AI Reorder</span>
+          </button>
+
           {/* Add Bottle Button */}
 
           <button
@@ -303,6 +318,56 @@ export function RetailCatalog({ onAddToCart, cart, onNavigateToAddBottle }) {
       </div>
 
 
+
+      {/* AI Demand Forecasting Banner */}
+      {showAIPredictions && (
+        <div className="p-4 rounded-xl border border-orange-500/30 bg-orange-500/5 space-y-3 animate-in fade-in-50">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-orange-500" />
+              <span className="font-bold text-xs uppercase font-mono text-zinc-900 dark:text-white">
+                AI Demand Forecasting & Predictive Restock Suggestions
+              </span>
+              <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-orange-500/20 text-orange-600 dark:text-orange-400 font-bold">
+                Statewide Run-Rate
+              </span>
+            </div>
+            <span className="text-[11px] font-mono text-zinc-500">
+              Upcoming weekend festival quota spike (+26% avg)
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {brands.slice(0, 3).map((b, idx) => {
+              const surgePct = [34, 28, 19][idx];
+              const suggestedCases = [20, 15, 12][idx];
+              const packRate = getBrandPackRates(b)[0];
+              return (
+                <div key={`ai-${b.id}`} className="p-3 rounded-lg border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] flex items-center justify-between gap-2 shadow-sm">
+                  <div className="min-w-0">
+                    <div className="text-xs font-bold text-zinc-900 dark:text-white truncate">{b.name}</div>
+                    <div className="text-[11px] font-mono text-emerald-600 dark:text-emerald-400 font-semibold">
+                      +{surgePct}% Forecasted Run-Rate
+                    </div>
+                    <div className="text-[10px] text-zinc-500 font-mono mt-0.5">
+                      Suggested: {suggestedCases} cases
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => {
+                      if (onAddToCart) onAddToCart(b, packRate, suggestedCases);
+                    }}
+                    className="px-2.5 py-1.5 rounded-lg bg-orange-600 hover:bg-orange-500 text-white font-mono text-[11px] font-bold transition flex items-center gap-1 shrink-0 cursor-pointer shadow-sm"
+                  >
+                    <Plus className="w-3 h-3" />
+                    <span>+{suggestedCases}cs</span>
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {/* Filter and Search Bar (Pinned at top of catalog) */}
 

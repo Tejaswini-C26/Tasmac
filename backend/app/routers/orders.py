@@ -167,6 +167,24 @@ def create_order(payload: schemas.OrderCreate, db: Session = Depends(get_db)):
     tax_duty = round(subtotal * 0.05, 2)
     total_payable = round(subtotal + tax_duty, 2)
 
+    # Phase 2: Pre-checkout Approval Gate Validations
+    if getattr(shop, "license_status", "ACTIVE") in ["EXPIRED", "BLOCKED"]:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Order rejected: Retail Vend #{shop.shop_code} license is {shop.license_status}. Indenting suspended by Prohibition & Excise."
+        )
+
+    credit_limit = getattr(shop, "credit_limit", 800000.0) or 800000.0
+    current_credit = getattr(shop, "current_credit_used", 0.0) or 0.0
+    is_credit_exceeded = (current_credit + total_payable) > credit_limit
+
+    monthly_quota = getattr(shop, "monthly_quota_cases", 750) or 750
+    cases_used = getattr(shop, "cases_ordered_this_month", 0) or 0
+    is_quota_exceeded = (cases_used + total_cases) > monthly_quota
+
+    # Orders exceeding limits require Regional Manager sign-off
+    initial_status = "PENDING_APPROVAL" if (is_credit_exceeded or is_quota_exceeded) else "CONFIRMED"
+
     order_rand = random.randint(1000, 9999)
     order_no = f"IND-2026-{order_rand}"
     tp_no = f"TP/{depot.region[:3].upper()}/2026/{random.randint(10000, 99999)}"
@@ -181,13 +199,17 @@ def create_order(payload: schemas.OrderCreate, db: Session = Depends(get_db)):
         subtotal_amount=round(subtotal, 2),
         tax_duty_amount=tax_duty,
         total_payable=total_payable,
-        status="CONFIRMED",
+        status=initial_status,
         transit_pass_no=tp_no,
         vehicle_no=vehicle_no,
         created_at=datetime.utcnow(),
         expected_delivery=datetime.utcnow() + timedelta(hours=random.choice([12, 18, 24]))
     )
     db.add(new_order)
+
+    # Update shop usage telemetry
+    shop.cases_ordered_this_month = cases_used + total_cases
+    shop.current_credit_used = round(current_credit + total_payable, 2)
     db.flush()
 
     response_items = []
@@ -247,7 +269,7 @@ def update_order_status(
     payload: schemas.OrderStatusUpdate,
     db: Session = Depends(get_db)
 ):
-    valid_statuses = ["CONFIRMED", "DISPATCHED", "IN_TRANSIT", "DELIVERED"]
+    valid_statuses = ["PENDING", "PENDING_APPROVAL", "APPROVED", "CONFIRMED", "PACKED", "DISPATCHED", "IN_TRANSIT", "DELIVERED", "CANCELLED"]
     new_status = payload.status.upper().strip()
     if new_status not in valid_statuses:
         raise HTTPException(

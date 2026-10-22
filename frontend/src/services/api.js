@@ -173,5 +173,43 @@ export async function fetchCurrentUser() {
   return res.json();
 }
 
+// Finance, B2B Ledgers & Returnable Bottles
+export async function fetchFinanceSummary() {
+  const res = await fetch(`${API_BASE}/finance/summary`);
+  if (!res.ok) throw new Error('Failed to fetch finance summary');
+  return res.json();
+}
+
+export async function fetchFinancialLedgers(partyType = null, partyId = null) {
+  const query = new URLSearchParams();
+  if (partyType && partyType !== 'ALL') query.set('party_type', partyType);
+  if (partyId) query.set('party_id', partyId);
+  const res = await fetch(`${API_BASE}/finance/ledgers?${query.toString()}`);
+  if (!res.ok) throw new Error('Failed to fetch financial ledgers');
+  return res.json();
+}
+
+export async function fetchBottleReturns(shopId = null) {
+  const query = new URLSearchParams();
+  if (shopId) query.set('shop_id', shopId);
+  const res = await fetch(`${API_BASE}/finance/returns?${query.toString()}`);
+  if (!res.ok) throw new Error('Failed to fetch bottle returns');
+  return res.json();
+}
+
+export async function createBottleReturn(payload) {
+  const res = await fetch(`${API_BASE}/finance/returns`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || 'Failed to submit bottle return');
+  }
+  return res.json();
+}
+
+
 
 

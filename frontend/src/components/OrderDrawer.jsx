@@ -297,6 +297,68 @@ export function OrderDrawer({
                   </div>
                 )}
 
+                {/* Phase 2 Approval Gate: License, Credit & Quota Telemetry */}
+                {selectedShop && (
+                  <div className="p-3 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#0c0d12] space-y-2.5">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="font-mono text-zinc-500 uppercase tracking-wider text-[10px]">
+                        Statutory Approval Gate
+                      </span>
+                      <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold ${
+                        (selectedShop.license_status || 'ACTIVE') === 'ACTIVE'
+                          ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20'
+                          : 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20'
+                      }`}>
+                        License: {selectedShop.license_status || 'ACTIVE'}
+                      </span>
+                    </div>
+
+                    {/* Credit Limit Usage */}
+                    <div>
+                      <div className="flex justify-between text-[11px] font-mono mb-1">
+                        <span className="text-zinc-500">Credit Ceiling</span>
+                        <span className="font-bold text-zinc-900 dark:text-white">
+                          ₹{Math.round((selectedShop.current_credit_used || 150000) + totalPayable).toLocaleString()} / ₹{(selectedShop.credit_limit || 800000).toLocaleString()}
+                        </span>
+                      </div>
+                      <div className="w-full bg-zinc-200 dark:bg-white/10 h-1.5 rounded-full overflow-hidden">
+                        <div 
+                          className={`h-full rounded-full transition-all ${
+                            ((selectedShop.current_credit_used || 150000) + totalPayable) > (selectedShop.credit_limit || 800000)
+                              ? 'bg-rose-500'
+                              : 'bg-orange-500'
+                          }`}
+                          style={{
+                            width: `${Math.min(100, Math.round((((selectedShop.current_credit_used || 150000) + totalPayable) / (selectedShop.credit_limit || 800000)) * 100))}%`
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Monthly Quota Cases */}
+                    <div>
+                      <div className="flex justify-between text-[11px] font-mono mb-1">
+                        <span className="text-zinc-500">Monthly Quota</span>
+                        <span className="font-bold text-zinc-900 dark:text-white">
+                          {(selectedShop.cases_ordered_this_month || 280) + totalCases} / {selectedShop.monthly_quota_cases || 750} cs
+                        </span>
+                      </div>
+                      <div className="w-full bg-zinc-200 dark:bg-white/10 h-1.5 rounded-full overflow-hidden">
+                        <div 
+                          className={`h-full rounded-full transition-all ${
+                            ((selectedShop.cases_ordered_this_month || 280) + totalCases) > (selectedShop.monthly_quota_cases || 750)
+                              ? 'bg-rose-500'
+                              : 'bg-emerald-500'
+                          }`}
+                          style={{
+                            width: `${Math.min(100, Math.round((((selectedShop.cases_ordered_this_month || 280) + totalCases) / (selectedShop.monthly_quota_cases || 750)) * 100))}%`
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 {/* Depot Selector with Premium Orange Dropdown */}
                 <div 
                   ref={depotDropdownRef}
@@ -502,20 +564,42 @@ export function OrderDrawer({
                 </div>
               </div>
 
-              <button
-                onClick={handleSubmitOrder}
-                disabled={submitting}
-                className="w-full py-3 px-4 rounded-xl bg-orange-600 hover:bg-orange-500 active:bg-orange-700 disabled:opacity-50 text-white font-medium text-xs flex items-center justify-center gap-2 shadow-lg shadow-orange-950/40 transition cursor-pointer"
-              >
-                {submitting ? (
-                  <span>Generating Transit Pass & Placing Indent...</span>
-                ) : (
-                  <>
-                    <span>Submit Replenishment Indent</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </>
-                )}
-              </button>
+              {(() => {
+                const isLicenseExpired = selectedShop?.license_status === 'EXPIRED';
+                const isOverCredit = ((selectedShop?.current_credit_used || 150000) + totalPayable) > (selectedShop?.credit_limit || 800000);
+                const isOverQuota = ((selectedShop?.cases_ordered_this_month || 280) + totalCases) > (selectedShop?.monthly_quota_cases || 750);
+                const requiresApproval = isOverCredit || isOverQuota;
+
+                return (
+                  <button
+                    onClick={handleSubmitOrder}
+                    disabled={submitting || isLicenseExpired}
+                    className={`w-full py-3 px-4 rounded-xl font-medium text-xs flex items-center justify-center gap-2 shadow-lg transition cursor-pointer ${
+                      isLicenseExpired
+                        ? 'bg-zinc-700 text-zinc-400 cursor-not-allowed opacity-60'
+                        : requiresApproval
+                          ? 'bg-amber-600 hover:bg-amber-500 text-white shadow-amber-950/40'
+                          : 'bg-orange-600 hover:bg-orange-500 active:bg-orange-700 text-white shadow-orange-950/40'
+                    }`}
+                  >
+                    {submitting ? (
+                      <span>Validating Approval Gate & Placing Indent...</span>
+                    ) : isLicenseExpired ? (
+                      <span>Ordering Suspended: License Expired</span>
+                    ) : requiresApproval ? (
+                      <>
+                        <span>Submit for Regional Manager Sign-Off</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </>
+                    ) : (
+                      <>
+                        <span>Submit Replenishment Indent</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </>
+                    )}
+                  </button>
+                );
+              })()}
             </div>
           )}
         </div>
