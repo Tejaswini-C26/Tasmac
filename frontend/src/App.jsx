@@ -46,11 +46,6 @@ import { ShopInventory } from './pages/ShopInventory';
 import { AddBottle } from './pages/AddBottle';
 import { SupplierManagement } from './pages/SupplierManagement';
 import { PublicLandingPage } from './pages/PublicLandingPage';
-import { HQSuperAdmin } from './pages/HQSuperAdmin';
-import { RegionalManager } from './pages/RegionalManager';
-import { DriverConsole } from './pages/DriverConsole';
-import { ComplianceAudit } from './pages/ComplianceAudit';
-import { FinanceLedger } from './pages/FinanceLedger';
 import { OrderDrawer } from './components/OrderDrawer';
 import { ShopSearchSelector } from './components/ShopSearchSelector';
 import { ShopMapModal } from './components/ShopMapModal';
@@ -58,16 +53,11 @@ import { UserProfileDropdown } from './components/UserProfileDropdown';
 import { fetchShops, fetchDepots, fetchMetrics, fetchCurrentUser } from './services/api';
 
 const ALL_PAGE_IDS = [
-  'super-admin',
-  'regional',
   'suppliers',
   'depots',
   'inventory',
   'catalog',
   'orders',
-  'driver-console',
-  'compliance',
-  'finance',
   'add-bottle',
   'login'
 ];
@@ -223,12 +213,6 @@ export function App() {
           setPortalMode('retail');
           localStorage.setItem('tasmac_portal_mode', 'retail');
         }
-      } else if (rawHash === 'super-admin' || rawHash === 'regional' || rawHash === 'compliance' || rawHash === 'finance') {
-        setViewMode('portal');
-        setCurrentTab(rawHash);
-      } else if (rawHash === 'driver-console') {
-        setViewMode('portal');
-        setCurrentTab('driver-console');
       } else if (rawHash === 'suppliers' || rawHash === 'depots') {
         setViewMode('portal');
         setPortalMode('manufacturing');
@@ -328,76 +312,16 @@ useEffect(() => {
   };
 
   const getRolePages = () => {
-    if (!currentUser) {
-      return portalMode === 'manufacturing'
-        ? [
-            { id: 'suppliers', label: 'Supplier Inward', icon: Factory },
-            { id: 'depots', label: 'Wholesale Depots', icon: Warehouse },
-          ]
-        : [
-            { id: 'inventory', label: 'Store Stockroom', icon: Store },
-            { id: 'catalog', label: 'Wholesale Catalog', icon: LayoutGrid },
-            { id: 'orders', label: 'Orders & Transit', icon: Truck },
-          ];
-    }
-
-    const role = (currentUser.role || '').toUpperCase();
-    if (role.includes('SUPER_ADMIN') || role.includes('DIRECTOR')) {
-      return [
-        { id: 'super-admin', label: 'HQ Command', icon: Landmark },
-        { id: 'regional', label: 'Territories', icon: MapPin },
-        { id: 'suppliers', label: 'Suppliers', icon: Factory },
-        { id: 'depots', label: 'Depots', icon: Warehouse },
-        { id: 'inventory', label: 'Retail Vends', icon: Store },
-        { id: 'catalog', label: 'Catalog', icon: LayoutGrid },
-        { id: 'orders', label: 'Orders', icon: Truck },
-        { id: 'compliance', label: 'Compliance', icon: ShieldCheck },
-        { id: 'finance', label: 'Treasury & Ledger', icon: CreditCard },
-      ];
-    }
-    if (role.includes('REGIONAL')) {
-      return [
-        { id: 'regional', label: 'Zonal Command', icon: MapPin },
-        { id: 'depots', label: 'Depots', icon: Warehouse },
-        { id: 'inventory', label: 'Retail Vends', icon: Store },
-        { id: 'orders', label: 'Orders', icon: Truck },
-        { id: 'compliance', label: 'Compliance', icon: ShieldCheck },
-      ];
-    }
-    if (role.includes('WAREHOUSE') || role.includes('DEPOT')) {
-      return [
-        { id: 'depots', label: 'Depot Stock', icon: Warehouse },
-        { id: 'suppliers', label: 'Inward Consignments', icon: Factory },
-        { id: 'orders', label: 'Dispatches', icon: Truck },
-      ];
-    }
-    if (role.includes('SUPPLIER') || role.includes('DISTILLERY') || role.includes('BREWERY')) {
-      return [
-        { id: 'suppliers', label: 'Supplier Inward', icon: Factory },
-        { id: 'catalog', label: 'Brand Catalog', icon: LayoutGrid },
-        { id: 'finance', label: 'Disbursements', icon: CreditCard },
-      ];
-    }
-    if (role.includes('DRIVER')) {
-      return [
-        { id: 'driver-console', label: 'Route Manifest & POD', icon: Truck },
-        { id: 'orders', label: 'Order History', icon: Package },
-      ];
-    }
-    if (role.includes('AUDITOR') || role.includes('COMPLIANCE') || role.includes('EXCISE')) {
-      return [
-        { id: 'compliance', label: 'Excise & Audit', icon: ShieldCheck },
-        { id: 'orders', label: 'Transit Pass Audit', icon: Truck },
-        { id: 'catalog', label: 'Gazette Prices', icon: LayoutGrid },
-      ];
-    }
-    // Default Retail Shop Owner
-    return [
-      { id: 'inventory', label: 'Store Stockroom', icon: Store },
-      { id: 'catalog', label: 'Wholesale Catalog', icon: LayoutGrid },
-      { id: 'orders', label: 'Store Indents', icon: Truck },
-      { id: 'finance', label: 'Ledger & Empties', icon: CreditCard },
-    ];
+    return portalMode === 'manufacturing'
+      ? [
+          { id: 'suppliers', label: 'Supplier Inward', icon: Factory },
+          { id: 'depots', label: 'Wholesale Depots', icon: Warehouse },
+        ]
+      : [
+          { id: 'inventory', label: 'Store Stockroom', icon: Store },
+          { id: 'catalog', label: 'Wholesale Catalog', icon: LayoutGrid },
+          { id: 'orders', label: 'Orders & Transit', icon: Truck },
+        ];
   };
 
   const activePages = getRolePages();
@@ -727,21 +651,6 @@ useEffect(() => {
             )}
             {currentTab === 'suppliers' && (
               <SupplierManagement />
-            )}
-            {currentTab === 'super-admin' && (
-              <HQSuperAdmin />
-            )}
-            {currentTab === 'regional' && (
-              <RegionalManager />
-            )}
-            {currentTab === 'driver-console' && (
-              <DriverConsole />
-            )}
-            {currentTab === 'compliance' && (
-              <ComplianceAudit />
-            )}
-            {currentTab === 'finance' && (
-              <FinanceLedger />
             )}
             {currentTab === 'add-bottle' && (
               <AddBottle onBottleAdded={() => {

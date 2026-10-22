@@ -53,117 +53,60 @@ def format_user_response(user: User) -> UserResponse:
 
 def seed_default_users(db: Session):
     default_users = [
-        # 1. Super Admin (HQ)
-        {
-            "username": "super_admin",
-            "email": "superadmin@tasmac.tn.gov",
-            "full_name": "Thiru K. Shanmugam, IAS",
-            "password": "tasmac123",
-            "role": "SUPER_ADMIN",
-            "organization": "TASMAC Managing Directorate (CMDA Tower, Egmore)",
-            "code": "HQ-ADMIN-001",
-            "default_stage": "super-admin",
-            "allowed_stages": "super-admin,regional,suppliers,depots,inventory,catalog,orders,driver-console,compliance",
-            "assigned_region": "All",
-            "phone": "+91 44 2852 1101"
-        },
-        # 2. Regional Manager
-        {
-            "username": "regional_manager",
-            "email": "regional@tasmac.tn.gov",
-            "full_name": "S. Sundaramurthy",
-            "password": "tasmac123",
-            "role": "REGIONAL_MANAGER",
-            "organization": "TASMAC Northern & Chennai Zonal Office",
-            "code": "RGM-CHN-201",
-            "default_stage": "regional",
-            "allowed_stages": "regional,depots,inventory,catalog,orders,compliance",
-            "assigned_region": "Chennai",
-            "phone": "+91 94440 22001"
-        },
-        # 3. Warehouse Manager
-        {
-            "username": "warehouse_manager",
-            "email": "warehouse@tasmac.tn.gov",
-            "full_name": "M. Rajendran",
-            "password": "tasmac123",
-            "role": "WAREHOUSE_MANAGER",
-            "organization": "Ambattur Central Wholesale Depot #DEP-CHN",
-            "code": "DEPOT-AMB-101",
-            "default_stage": "depots",
-            "allowed_stages": "depots,suppliers,orders",
-            "assigned_region": "Chennai",
-            "phone": "+91 98401 23456"
-        },
-        # 4. Supplier / Brand Owner
+        # 1. Manufacturing Supplier
         {
             "username": "supplier_owner",
             "email": "supplier@tasmac.tn.gov",
-            "full_name": "V. S. Raghavan",
+            "full_name": "Manufacturing Supplier",
             "password": "tasmac123",
-            "role": "SUPPLIER_OWNER",
+            "role": "MANUFACTURING_SUPPLIER",
             "organization": "United Breweries & Mohan Distilleries Consortium",
             "code": "SUP-1001",
             "default_stage": "suppliers",
-            "allowed_stages": "suppliers,catalog,finance",
+            "allowed_stages": "suppliers,depots",
             "assigned_region": "Statewide",
             "phone": "+91 98400 12345"
         },
-        # 5. Retail Shop Owner
+        # 2. Retail Shops Supplier
         {
             "username": "shop_owner",
             "email": "shop@tasmac.tn.gov",
-            "full_name": "K. Murugan",
+            "full_name": "Retail Shops Supplier",
             "password": "tasmac123",
-            "role": "RETAIL_SHOP_OWNER",
+            "role": "RETAIL_SUPPLIER",
             "organization": "TASMAC Retail Vend #1042 (T. Nagar Central)",
             "code": "SHOP-1042",
             "default_stage": "inventory",
-            "allowed_stages": "inventory,catalog,orders,finance",
+            "allowed_stages": "inventory,catalog,orders",
             "assigned_region": "Chennai",
             "phone": "+91 98401 10420"
         },
-        # 6. Delivery Driver
+        # Aliases for flexibility
         {
-            "username": "delivery_driver",
-            "email": "driver@tasmac.tn.gov",
-            "full_name": "K. Selvakumar",
+            "username": "manufacturing",
+            "email": "manufacturing@tasmac.tn.gov",
+            "full_name": "Manufacturing Supplier",
             "password": "tasmac123",
-            "role": "DELIVERY_DRIVER",
-            "organization": "State Beverage Logistics Fleet #TN-04-E-8812",
-            "code": "DRV-TN-8812",
-            "default_stage": "driver-console",
-            "allowed_stages": "driver-console,orders",
+            "role": "MANUFACTURING_SUPPLIER",
+            "organization": "Distilleries & Breweries Consortium",
+            "code": "SUP-1001",
+            "default_stage": "suppliers",
+            "allowed_stages": "suppliers,depots",
+            "assigned_region": "Statewide",
+            "phone": "+91 98400 12345"
+        },
+        {
+            "username": "retail",
+            "email": "retail@tasmac.tn.gov",
+            "full_name": "Retail Shops Supplier",
+            "password": "tasmac123",
+            "role": "RETAIL_SUPPLIER",
+            "organization": "TASMAC Retail Vends Network",
+            "code": "SHOP-1042",
+            "default_stage": "inventory",
+            "allowed_stages": "inventory,catalog,orders",
             "assigned_region": "Chennai",
-            "phone": "+91 97910 88776"
-        },
-        # 7. Auditor / Compliance Officer
-        {
-            "username": "auditor_officer",
-            "email": "auditor@tasmac.tn.gov",
-            "full_name": "S. Jayaraman, IPS",
-            "password": "tasmac123",
-            "role": "AUDITOR",
-            "organization": "TN Prohibition & Excise Enforcement Directorate",
-            "code": "EXCISE-TN-892",
-            "default_stage": "compliance",
-            "allowed_stages": "compliance,orders,catalog,analytics",
-            "assigned_region": "All",
-            "phone": "+91 44 2855 4321"
-        },
-        # Legacy Aliases
-        {
-            "username": "admin",
-            "email": "admin@tasmac.tn.gov",
-            "full_name": "Director of State Logistics (Admin)",
-            "password": "tasmac123",
-            "role": "SUPER_ADMIN",
-            "organization": "TASMAC Head Office (CMDA Tower)",
-            "code": "HQ-ADMIN-001",
-            "default_stage": "super-admin",
-            "allowed_stages": "super-admin,regional,suppliers,depots,inventory,catalog,orders,driver-console,compliance",
-            "assigned_region": "All",
-            "phone": "+91 44 2852 1101"
+            "phone": "+91 98401 10420"
         }
     ]
 

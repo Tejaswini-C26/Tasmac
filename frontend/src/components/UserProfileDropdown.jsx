@@ -21,88 +21,28 @@ import {
 
 export const APP_ROLES = [
   {
-    roleKey: 'SUPER_ADMIN',
-    label: 'Super Admin (HQ)',
-    email: 'superadmin@tasmac.tn.gov',
-    full_name: 'Thiru K. Shanmugam, IAS',
-    organization: 'TASMAC Managing Directorate (CMDA)',
-    code: 'HQ-ADMIN-001',
-    default_stage: 'super-admin',
-    portalMode: 'manufacturing',
-    icon: Landmark,
-    initials: 'KS'
-  },
-  {
-    roleKey: 'REGIONAL_MANAGER',
-    label: 'Regional Manager',
-    email: 'regional@tasmac.tn.gov',
-    full_name: 'S. Sundaramurthy',
-    organization: 'Northern & Chennai Zonal Office',
-    code: 'RGM-CHN-201',
-    default_stage: 'regional',
-    portalMode: 'manufacturing',
-    icon: MapPin,
-    initials: 'SS'
-  },
-  {
-    roleKey: 'WAREHOUSE_MANAGER',
-    label: 'Warehouse Manager',
-    email: 'warehouse@tasmac.tn.gov',
-    full_name: 'M. Rajendran',
-    organization: 'Ambattur Central Wholesale Depot',
-    code: 'DEPOT-AMB-101',
-    default_stage: 'depots',
-    portalMode: 'manufacturing',
-    icon: Warehouse,
-    initials: 'MR'
-  },
-  {
-    roleKey: 'SUPPLIER_OWNER',
-    label: 'Supplier / Brand Owner',
+    roleKey: 'MANUFACTURING',
+    label: 'Manufacturing View',
     email: 'supplier@tasmac.tn.gov',
-    full_name: 'V. S. Raghavan',
-    organization: 'United Breweries & Mohan Distilleries',
+    full_name: 'Manufacturing Supplier',
+    organization: 'United Breweries & Mohan Distilleries Consortium',
     code: 'SUP-1001',
     default_stage: 'suppliers',
     portalMode: 'manufacturing',
     icon: Factory,
-    initials: 'VR'
+    initials: 'MF'
   },
   {
-    roleKey: 'RETAIL_SHOP_OWNER',
-    label: 'Retail Shop Owner',
+    roleKey: 'RETAIL',
+    label: 'Retail View',
     email: 'shop@tasmac.tn.gov',
-    full_name: 'K. Murugan',
-    organization: 'TASMAC Retail Vend #1042 (T. Nagar)',
+    full_name: 'Retail Shops Supplier',
+    organization: 'TASMAC Retail Vend #1042 (T. Nagar Central)',
     code: 'SHOP-1042',
     default_stage: 'inventory',
     portalMode: 'retail',
     icon: Store,
-    initials: 'KM'
-  },
-  {
-    roleKey: 'DELIVERY_DRIVER',
-    label: 'Delivery Driver',
-    email: 'driver@tasmac.tn.gov',
-    full_name: 'K. Selvakumar',
-    organization: 'State Beverage Fleet #TN-04-E-8812',
-    code: 'DRV-TN-8812',
-    default_stage: 'driver-console',
-    portalMode: 'retail',
-    icon: Truck,
-    initials: 'KS'
-  },
-  {
-    roleKey: 'AUDITOR',
-    label: 'Auditor / Compliance Officer',
-    email: 'auditor@tasmac.tn.gov',
-    full_name: 'S. Jayaraman, IPS',
-    organization: 'Prohibition & Excise Enforcement',
-    code: 'EXCISE-TN-892',
-    default_stage: 'compliance',
-    portalMode: 'manufacturing',
-    icon: ShieldCheck,
-    initials: 'SJ'
+    initials: 'RT'
   }
 ];
 
@@ -190,9 +130,9 @@ export function UserProfileDropdown({
 
           <div className="border-t border-zinc-200 dark:border-white/10 my-1" />
 
-          {/* Active Role Section Header */}
+          {/* Active View Section Header */}
           <div className="text-[11px] font-semibold text-zinc-500 dark:text-zinc-400 px-2.5 pt-1.5 pb-1">
-            Active role
+            Active view
           </div>
 
           {/* List of Web App Roles */}
