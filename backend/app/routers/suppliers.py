@@ -256,14 +256,14 @@ def receive_consignment_grn(
     # Update supplier payout balance & record Financial Ledger liability
     supplier = db.query(models.Supplier).filter(models.Supplier.id == consignment.supplier_id).first()
     if supplier:
-        supplier.payout_balance = float(getattr(supplier, "payout_balance", 0.0) or 0.0) + float(consignment.total_consignment_value)
+        supplier.payout_balance = float(getattr(supplier, "payout_balance", 0.0) or 0.0) + float(consignment.total_value or 0.0)
         ledger_entry = models.FinancialLedger(
             entry_no=f"LED-SUP-{consignment.grn_no.replace('/', '-')}",
             party_type="SUPPLIER",
             party_id=supplier.id,
             party_name=supplier.name,
             transaction_type="SUPPLIER_PAYOUT",
-            amount=float(consignment.total_consignment_value),
+            amount=float(consignment.total_value or 0.0),
             balance_after=float(supplier.payout_balance),
             reference_id=consignment.grn_no,
             payment_mode="RTGS_PENDING",
