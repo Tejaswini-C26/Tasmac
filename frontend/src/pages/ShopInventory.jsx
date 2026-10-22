@@ -10,9 +10,7 @@ import {
   RotateCcw,
   Store,
   ArrowRight,
-  X,
-  Warehouse,
-  IndianRupee
+  X
 } from 'lucide-react';
 import { fetchShopInventory, fetchShops } from '../services/api';
 import { ShopSearchSelector } from '../components/ShopSearchSelector';
@@ -100,112 +98,44 @@ export function ShopInventory({ selectedShop, onSelectShop, shops = [], onOpenMa
       {/* KPI Cards (Pinned Top) */}
       <div className="shrink-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         {/* Card 1: Backroom Cases */}
-        <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all flex items-start justify-between">
-          <div>
-            <span className="text-[11px] font-mono font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
-              Backroom Cases
-            </span>
-            <div className="text-2xl sm:text-3xl font-mono font-bold text-zinc-900 dark:text-white mt-1">
-              {totalCasesOnHand.toLocaleString()}
-            </div>
-            <span className="text-[10px] font-mono text-zinc-500 dark:text-zinc-400 mt-1 block">
-              ~{(totalCasesOnHand * 12).toLocaleString()} buffer bottles
-            </span>
-          </div>
-
-          <div className="flex flex-col items-end gap-1.5 shrink-0 pl-2">
-            <div className="p-2 rounded-xl bg-orange-500/10 text-orange-500 border border-orange-500/20">
-              <Warehouse className="w-5 h-5" />
-            </div>
-            <span className="inline-flex items-center gap-1 text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-              Optimal Stock
-            </span>
+        <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all">
+          <span className="text-[11px] font-mono font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
+            Backroom Cases
+          </span>
+          <div className="text-2xl sm:text-3xl font-mono font-bold text-zinc-900 dark:text-white mt-1">
+            {totalCasesOnHand.toLocaleString()}
           </div>
         </div>
 
         {/* Card 2: Bottles on Shelf */}
-        <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all flex items-start justify-between">
-          <div>
-            <span className="text-[11px] font-mono font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
-              Bottles on Shelf
-            </span>
-            <div className="text-2xl sm:text-3xl font-mono font-bold text-zinc-900 dark:text-white mt-1">
-              {totalBottlesOnShelf.toLocaleString()}
-            </div>
-            <span className="text-[10px] font-mono text-zinc-500 dark:text-zinc-400 mt-1 block">
-              ~{Math.round(totalBottlesOnShelf / Math.max(1, inventory.length))} avg / SKU
-            </span>
-          </div>
-
-          <div className="flex flex-col items-end gap-1.5 shrink-0 pl-2">
-            <div className="p-2 rounded-xl bg-blue-500/10 text-blue-500 border border-blue-500/20">
-              <Store className="w-5 h-5" />
-            </div>
-            <span className="inline-flex items-center gap-1 text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
-              Ready for Sale
-            </span>
+        <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all">
+          <span className="text-[11px] font-mono font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
+            Bottles on Shelf
+          </span>
+          <div className="text-2xl sm:text-3xl font-mono font-bold text-zinc-900 dark:text-white mt-1">
+            {totalBottlesOnShelf.toLocaleString()}
           </div>
         </div>
 
         {/* Card 3: Low Stock SKUs */}
-        <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all flex items-start justify-between">
-          <div>
-            <span className="text-[11px] font-mono font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
-              Low Stock SKUs
-            </span>
-            <div className={`text-2xl sm:text-3xl font-mono font-bold mt-1 ${
-              lowStockCount > 0 ? 'text-rose-600 dark:text-rose-400' : 'text-zinc-900 dark:text-white'
-            }`}>
-              {lowStockCount.toLocaleString()}
-            </div>
-            <span className="text-[10px] font-mono text-zinc-500 dark:text-zinc-400 mt-1 block">
-              {lowStockCount > 0 ? `${lowStockCount} below reorder threshold` : 'All items optimal'}
-            </span>
-          </div>
-
-          <div className="flex flex-col items-end gap-1.5 shrink-0 pl-2">
-            <div className={`p-2 rounded-xl border ${
-              lowStockCount > 0 
-                ? 'bg-rose-500/10 text-rose-500 border-rose-500/20 animate-pulse' 
-                : 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'
-            }`}>
-              {lowStockCount > 0 ? <AlertTriangle className="w-5 h-5" /> : <CheckCircle2 className="w-5 h-5" />}
-            </div>
-            <span className={`inline-flex items-center gap-1 text-[10px] font-mono font-bold px-2 py-0.5 rounded-full ${
-              lowStockCount > 0 
-                ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20' 
-                : 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20'
-            }`}>
-              <span className={`w-1.5 h-1.5 rounded-full ${lowStockCount > 0 ? 'bg-rose-500 animate-pulse' : 'bg-emerald-500'}`} />
-              {lowStockCount > 0 ? 'Indent Required' : 'Optimal Level'}
-            </span>
+        <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all">
+          <span className="text-[11px] font-mono font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
+            Low Stock SKUs
+          </span>
+          <div className={`text-2xl sm:text-3xl font-mono font-bold mt-1 ${
+            lowStockCount > 0 ? 'text-rose-600 dark:text-rose-400' : 'text-zinc-900 dark:text-white'
+          }`}>
+            {lowStockCount.toLocaleString()}
           </div>
         </div>
 
         {/* Card 4: Est. Shelf Stock Value */}
-        <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all flex items-start justify-between">
-          <div>
-            <span className="text-[11px] font-mono font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
-              Est. Shelf Stock Value
-            </span>
-            <div className="text-2xl sm:text-3xl font-mono font-bold text-zinc-900 dark:text-white mt-1">
-              ₹{Math.round(estimatedShelfValue).toLocaleString()}
-            </div>
-            <span className="text-[10px] font-mono text-zinc-500 dark:text-zinc-400 mt-1 block">
-              Statutory Gazette MRP
-            </span>
-          </div>
-
-          <div className="flex flex-col items-end gap-1.5 shrink-0 pl-2">
-            <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
-              <IndianRupee className="w-5 h-5" />
-            </div>
-            <span className="inline-flex items-center gap-1 text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-              <TrendingUp className="w-3 h-3" />
-              Retail Valuation
-            </span>
+        <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all">
+          <span className="text-[11px] font-mono font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
+            Est. Shelf Stock Value
+          </span>
+          <div className="text-2xl sm:text-3xl font-mono font-bold text-zinc-900 dark:text-white mt-1">
+            ₹{Math.round(estimatedShelfValue).toLocaleString()}
           </div>
         </div>
       </div>
