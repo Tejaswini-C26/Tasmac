@@ -346,55 +346,71 @@ export function SupplierManagement({ externalSearchQuery = '' }) {
       {/* KPI Cards (Pinned Top) */}
       <div className="shrink-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         {/* Card 1: Suppliers */}
-        <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all">
-          <span className="text-[11px] font-mono font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
-            Licensed Suppliers
-          </span>
-          <div className="text-2xl sm:text-3xl font-mono font-bold text-zinc-900 dark:text-white mt-1">
-            {suppliers.length}
+        <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all flex items-end justify-between gap-3">
+          <div>
+            <span className="text-[11px] font-mono font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
+              Licensed Suppliers
+            </span>
+            <div className="text-2xl sm:text-3xl font-mono font-bold text-zinc-900 dark:text-white mt-1">
+              {suppliers.length}
+            </div>
           </div>
-          <span className="text-[10px] font-mono text-zinc-500 dark:text-zinc-400 mt-1 block">
-            State authorized distilleries
-          </span>
+          <div className="text-right pb-1 shrink-0">
+            <span className="text-[11px] font-mono text-zinc-500 dark:text-zinc-400 block">
+              Authorized distilleries
+            </span>
+          </div>
         </div>
 
         {/* Card 2: Inward Cases */}
-        <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all">
-          <span className="text-[11px] font-mono font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
-            Total Inward Cases
-          </span>
-          <div className="text-2xl sm:text-3xl font-mono font-bold text-zinc-900 dark:text-white mt-1">
-            {analytics?.total_inward_cases?.toLocaleString() || '1,600'}
+        <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all flex items-end justify-between gap-3">
+          <div>
+            <span className="text-[11px] font-mono font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
+              Total Inward Cases
+            </span>
+            <div className="text-2xl sm:text-3xl font-mono font-bold text-zinc-900 dark:text-white mt-1">
+              {analytics?.total_inward_cases?.toLocaleString() || '1,600'}
+            </div>
           </div>
-          <span className="text-[10px] font-mono text-zinc-500 dark:text-zinc-400 mt-1 block">
-            Depot routed shipments
-          </span>
+          <div className="text-right pb-1 shrink-0">
+            <span className="text-[11px] font-mono text-zinc-500 dark:text-zinc-400 block">
+              Depot routed shipments
+            </span>
+          </div>
         </div>
 
         {/* Card 3: OTIF */}
-        <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all">
-          <span className="text-[11px] font-mono font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
-            Fulfillment (OTIF)
-          </span>
-          <div className="text-2xl sm:text-3xl font-mono font-bold text-emerald-600 dark:text-emerald-400 mt-1">
-            {analytics?.otif_percentage || 97.2}%
+        <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all flex items-end justify-between gap-3">
+          <div>
+            <span className="text-[11px] font-mono font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
+              Fulfillment (OTIF)
+            </span>
+            <div className="text-2xl sm:text-3xl font-mono font-bold text-emerald-600 dark:text-emerald-400 mt-1">
+              {analytics?.otif_percentage || 97.2}%
+            </div>
           </div>
-          <span className="text-[10px] font-mono text-zinc-500 dark:text-zinc-400 mt-1 block">
-            On-time In-full target &gt; 95%
-          </span>
+          <div className="text-right pb-1 shrink-0">
+            <span className="text-[11px] font-mono text-zinc-500 dark:text-zinc-400 block">
+              Target &gt; 95%
+            </span>
+          </div>
         </div>
 
         {/* Card 4: Active Trucks */}
-        <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all">
-          <span className="text-[11px] font-mono font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
-            Active Supply Trucks
-          </span>
-          <div className="text-2xl sm:text-3xl font-mono font-bold text-zinc-900 dark:text-white mt-1">
-            {activeTrucksCount}
+        <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all flex items-end justify-between gap-3">
+          <div>
+            <span className="text-[11px] font-mono font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
+              Active Supply Trucks
+            </span>
+            <div className="text-2xl sm:text-3xl font-mono font-bold text-zinc-900 dark:text-white mt-1">
+              {activeTrucksCount}
+            </div>
           </div>
-          <span className="text-[10px] font-mono text-zinc-500 dark:text-zinc-400 mt-1 block">
-            GPS logistics tracked
-          </span>
+          <div className="text-right pb-1 shrink-0">
+            <span className="text-[11px] font-mono text-zinc-500 dark:text-zinc-400 block">
+              GPS tracked
+            </span>
+          </div>
         </div>
       </div>
 

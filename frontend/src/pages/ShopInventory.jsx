@@ -96,57 +96,75 @@ export function ShopInventory({ selectedShop, onSelectShop, shops = [], onOpenMa
       {/* KPI Cards (Pinned Top) */}
       <div className="shrink-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         {/* Card 1: Backroom Cases */}
-        <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all">
-          <span className="text-[11px] font-mono font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
-            Backroom Cases
-          </span>
-          <div className="text-2xl sm:text-3xl font-mono font-bold text-zinc-900 dark:text-white mt-1">
-            {totalCasesOnHand.toLocaleString()}
+        <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all flex items-end justify-between gap-3">
+          <div>
+            <span className="text-[11px] font-mono font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
+              Backroom Cases
+            </span>
+            <div className="text-2xl sm:text-3xl font-mono font-bold text-zinc-900 dark:text-white mt-1">
+              {totalCasesOnHand.toLocaleString()}
+            </div>
           </div>
-          <span className="text-[10px] font-mono text-zinc-500 dark:text-zinc-400 mt-1 block">
-            ~{(totalCasesOnHand * 12).toLocaleString()} buffer bottles
-          </span>
+          <div className="text-right pb-1 shrink-0">
+            <span className="text-[11px] font-mono text-zinc-500 dark:text-zinc-400 block">
+              ~{(totalCasesOnHand * 12).toLocaleString()} buffer bottles
+            </span>
+          </div>
         </div>
 
         {/* Card 2: Bottles on Shelf */}
-        <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all">
-          <span className="text-[11px] font-mono font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
-            Bottles on Shelf
-          </span>
-          <div className="text-2xl sm:text-3xl font-mono font-bold text-zinc-900 dark:text-white mt-1">
-            {totalBottlesOnShelf.toLocaleString()}
+        <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all flex items-end justify-between gap-3">
+          <div>
+            <span className="text-[11px] font-mono font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
+              Bottles on Shelf
+            </span>
+            <div className="text-2xl sm:text-3xl font-mono font-bold text-zinc-900 dark:text-white mt-1">
+              {totalBottlesOnShelf.toLocaleString()}
+            </div>
           </div>
-          <span className="text-[10px] font-mono text-zinc-500 dark:text-zinc-400 mt-1 block">
-            ~{Math.round(totalBottlesOnShelf / Math.max(1, inventory.length))} avg / SKU
-          </span>
+          <div className="text-right pb-1 shrink-0">
+            <span className="text-[11px] font-mono text-zinc-500 dark:text-zinc-400 block">
+              ~{Math.round(totalBottlesOnShelf / Math.max(1, inventory.length))} avg / SKU
+            </span>
+          </div>
         </div>
 
         {/* Card 3: Low Stock SKUs */}
-        <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all">
-          <span className="text-[11px] font-mono font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
-            Low Stock SKUs
-          </span>
-          <div className={`text-2xl sm:text-3xl font-mono font-bold mt-1 ${
-            lowStockCount > 0 ? 'text-rose-600 dark:text-rose-400' : 'text-zinc-900 dark:text-white'
-          }`}>
-            {lowStockCount.toLocaleString()}
+        <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all flex items-end justify-between gap-3">
+          <div>
+            <span className="text-[11px] font-mono font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
+              Low Stock SKUs
+            </span>
+            <div className={`text-2xl sm:text-3xl font-mono font-bold mt-1 ${
+              lowStockCount > 0 ? 'text-rose-600 dark:text-rose-400' : 'text-zinc-900 dark:text-white'
+            }`}>
+              {lowStockCount.toLocaleString()}
+            </div>
           </div>
-          <span className="text-[10px] font-mono text-zinc-500 dark:text-zinc-400 mt-1 block">
-            {lowStockCount > 0 ? `${lowStockCount} below reorder threshold` : 'All items optimal'}
-          </span>
+          <div className="text-right pb-1 shrink-0">
+            <span className={`text-[11px] font-mono block ${
+              lowStockCount > 0 ? 'text-rose-600 dark:text-rose-400 font-medium' : 'text-zinc-500 dark:text-zinc-400'
+            }`}>
+              {lowStockCount > 0 ? `${lowStockCount} below threshold` : 'All items optimal'}
+            </span>
+          </div>
         </div>
 
         {/* Card 4: Est. Shelf Stock Value */}
-        <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all">
-          <span className="text-[11px] font-mono font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
-            Est. Shelf Stock Value
-          </span>
-          <div className="text-2xl sm:text-3xl font-mono font-bold text-zinc-900 dark:text-white mt-1">
-            ₹{Math.round(estimatedShelfValue).toLocaleString()}
+        <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all flex items-end justify-between gap-3">
+          <div>
+            <span className="text-[11px] font-mono font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
+              Est. Shelf Stock Value
+            </span>
+            <div className="text-2xl sm:text-3xl font-mono font-bold text-zinc-900 dark:text-white mt-1">
+              ₹{Math.round(estimatedShelfValue).toLocaleString()}
+            </div>
           </div>
-          <span className="text-[10px] font-mono text-zinc-500 dark:text-zinc-400 mt-1 block">
-            Statutory Gazette MRP
-          </span>
+          <div className="text-right pb-1 shrink-0">
+            <span className="text-[11px] font-mono text-zinc-500 dark:text-zinc-400 block">
+              Statutory Gazette MRP
+            </span>
+          </div>
         </div>
       </div>
 
