@@ -18,6 +18,14 @@ class Supplier(Base):
     district = Column(String(100), default="Chennai")
     state = Column(String(50), default="Tamil Nadu")
     status = Column(String(50), default="ACTIVE")
+    kyc_status = Column(String(30), default="APPROVED") # PENDING, APPROVED, REJECTED
+    pan_number = Column(String(20), default="AAACT1234F")
+    bank_account_no = Column(String(40), default="04120100004589")
+    bank_ifsc = Column(String(20), default="SBIN0001234")
+    bank_name = Column(String(100), default="State Bank of India")
+    contract_terms = Column(Text, default="Net 30-Day Indent Framework, Annual 50K Case Quota")
+    payout_balance = Column(Float, default=485000.0)
+    rating = Column(Float, default=4.8)
     created_at = Column(DateTime, default=datetime.utcnow)
 
     brands = relationship("Brand", back_populates="supplier")
@@ -29,13 +37,18 @@ class Brand(Base):
     brand_code = Column(String(50), unique=True, index=True, nullable=False)
     supplier_id = Column(Integer, ForeignKey("suppliers.id"), nullable=False)
     name = Column(String(200), nullable=False)
-    category = Column(String(50), nullable=False) # BEER, IMFL, IMPORTED, WINE
-    sub_category = Column(String(50), nullable=False) # PALE_LAGER, STRONG_BEER, WHISKY, SINGLE_MALT, BRANDY, RUM, VODKA, GIN, CIDER, RED_WINE
+    category = Column(String(50), nullable=False) # BEER, IMFL, IMPORTED, WINE, VODKA, RUM, WHISKY
+    sub_category = Column(String(50), nullable=False)
     pack_size = Column(String(50), nullable=False) # 650ml, 500ml, 330ml, 750ml, 375ml, 180ml
     bottles_per_case = Column(Integer, default=12)
     strength_percentage = Column(Float, default=42.8)
     image_url = Column(String(500), nullable=True)
     flavor_notes = Column(Text, nullable=True)
+    barcode = Column(String(50), default="8901234000000")
+    batch_no = Column(String(50), default="TN-BATCH-2026-01")
+    expiry_period_months = Column(Integer, default=24)
+    is_counterfeit_protected = Column(Boolean, default=True)
+    regional_pricing_json = Column(Text, nullable=True)
     status = Column(String(50), default="APPROVED")
     created_at = Column(DateTime, default=datetime.utcnow)
 
@@ -100,6 +113,17 @@ class RetailShop(Base):
     manager_name = Column(String(100), nullable=False)
     phone = Column(String(25), nullable=False)
     assigned_depot_id = Column(Integer, ForeignKey("depots.id"), nullable=True)
+    license_number = Column(String(100), default="TN-EXC-RET-2026/0101")
+    license_expiry_date = Column(DateTime, nullable=True)
+    license_status = Column(String(30), default="ACTIVE") # ACTIVE, EXPIRING_SOON, EXPIRED, BLOCKED
+    credit_limit = Column(Float, default=800000.0)
+    current_credit_used = Column(Float, default=150000.0)
+    monthly_quota_cases = Column(Integer, default=750)
+    cases_ordered_this_month = Column(Integer, default=280)
+    lat = Column(Float, default=13.0827)
+    lng = Column(Float, default=80.2707)
+    category = Column(String(50), default="STANDARD")
+    kyc_status = Column(String(30), default="VERIFIED")
     created_at = Column(DateTime, default=datetime.utcnow)
 
     orders = relationship("ShopOrder", back_populates="shop")
@@ -155,9 +179,44 @@ class ShopOrder(Base):
     subtotal_amount = Column(Float, nullable=False)
     tax_duty_amount = Column(Float, nullable=False)
     total_payable = Column(Float, nullable=False)
-    status = Column(String(50), default="CONFIRMED") # CONFIRMED, DISPATCHED, IN_TRANSIT, DELIVERED
+    status = Column(String(50), default="PENDING") # PENDING, APPROVED, PACKED, DISPATCHED, DELIVERED, CANCELLED
+    
+    # Compliance & Invoicing
+    invoice_no = Column(String(50), nullable=True)
+    excise_duty_amount = Column(Float, default=0.0)
+    vat_gst_amount = Column(Float, default=0.0)
+    discount_amount = Column(Float, default=0.0)
+    
+    # Workflow Progression
+    approved_by = Column(String(100), nullable=True)
+    approved_at = Column(DateTime, nullable=True)
+    packed_at = Column(DateTime, nullable=True)
+    dispatched_at = Column(DateTime, nullable=True)
+    delivered_at = Column(DateTime, nullable=True)
+    
+    # Logistics & Dispatch
     transit_pass_no = Column(String(100), nullable=True)
     vehicle_no = Column(String(50), nullable=True)
+    driver_id = Column(Integer, nullable=True)
+    driver_name = Column(String(100), default="K. Selvakumar")
+    driver_phone = Column(String(25), default="+91 97910 88776")
+    route_name = Column(String(100), default="Chennai Central Express Route #03")
+    delivery_eta = Column(String(50), default="2 Hours (On Schedule)")
+    
+    # Proof of Delivery (POD)
+    pod_otp = Column(String(10), default="4892")
+    pod_signature = Column(Text, nullable=True)
+    pod_photo_url = Column(Text, nullable=True)
+    damaged_bottles = Column(Integer, default=0)
+    shortage_cases = Column(Integer, default=0)
+    
+    # Payment & Empty Bottles
+    payment_status = Column(String(30), default="ON_CREDIT") # UNPAID, PAID, ON_CREDIT
+    payment_method = Column(String(50), default="TASMAC_CREDIT")
+    returnable_crates_collected = Column(Integer, default=0)
+    returnable_bottles_collected = Column(Integer, default=0)
+    deposit_refund_amount = Column(Float, default=0.0)
+
     created_at = Column(DateTime, default=datetime.utcnow)
     expected_delivery = Column(DateTime, nullable=True)
 
@@ -201,12 +260,82 @@ class User(Base):
     email = Column(String(150), unique=True, index=True, nullable=False)
     full_name = Column(String(200), nullable=False)
     hashed_password = Column(String(255), nullable=False)
-    role = Column(String(50), nullable=False)  # DISTILLERY, DEPOT, SHOP, CATALOG, EXCISE, ADMIN
+    role = Column(String(50), nullable=False)
+    # Roles: SUPER_ADMIN, REGIONAL_MANAGER, WAREHOUSE_MANAGER, SUPPLIER_OWNER, RETAIL_SHOP_OWNER, DELIVERY_DRIVER, AUDITOR
     organization = Column(String(200), nullable=False)
     code = Column(String(50), nullable=False)
     default_stage = Column(String(50), default="suppliers")
     allowed_stages = Column(String(200), default="suppliers")
+    assigned_region = Column(String(50), default="All")
+    assigned_depot_id = Column(Integer, nullable=True)
+    assigned_shop_id = Column(Integer, nullable=True)
+    phone = Column(String(25), default="+91 98400 11000")
+    avatar_url = Column(String(500), nullable=True)
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
+class BottleReturn(Base):
+    __tablename__ = "bottle_returns"
 
+    id = Column(Integer, primary_key=True, index=True)
+    return_no = Column(String(50), unique=True, index=True, nullable=False)
+    shop_id = Column(Integer, ForeignKey("retail_shops.id"), nullable=False)
+    depot_id = Column(Integer, ForeignKey("depots.id"), nullable=False)
+    driver_name = Column(String(100), nullable=True)
+    bottles_returned = Column(Integer, default=0)
+    crates_returned = Column(Integer, default=0)
+    bottle_deposit_rate = Column(Float, default=10.0) # Rs 10 per bottle
+    crate_deposit_rate = Column(Float, default=50.0)  # Rs 50 per crate
+    total_refund_amount = Column(Float, default=0.0)
+    refund_status = Column(String(50), default="CREDITED_TO_LEDGER")
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    shop = relationship("RetailShop")
+    depot = relationship("Depot")
+
+class FinancialLedger(Base):
+    __tablename__ = "financial_ledgers"
+
+    id = Column(Integer, primary_key=True, index=True)
+    entry_no = Column(String(50), unique=True, index=True, nullable=False)
+    party_type = Column(String(50), nullable=False) # RETAIL_SHOP or SUPPLIER
+    party_id = Column(Integer, nullable=False)
+    party_name = Column(String(200), nullable=False)
+    transaction_type = Column(String(50), nullable=False) # INVOICE_CHARGE, PAYMENT_RECEIVED, SUPPLIER_PAYOUT, BOTTLE_REFUND, DAMAGE_CREDIT
+    amount = Column(Float, nullable=False)
+    balance_after = Column(Float, nullable=False)
+    reference_id = Column(String(100), nullable=True)
+    payment_mode = Column(String(50), default="ONLINE_TREASURY")
+    notes = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+class BatchRecall(Base):
+    __tablename__ = "batch_recalls"
+
+    id = Column(Integer, primary_key=True, index=True)
+    recall_no = Column(String(50), unique=True, index=True, nullable=False)
+    batch_no = Column(String(50), nullable=False)
+    brand_id = Column(Integer, ForeignKey("brands.id"), nullable=True)
+    supplier_id = Column(Integer, ForeignKey("suppliers.id"), nullable=True)
+    reason = Column(Text, nullable=False)
+    severity = Column(String(30), default="CRITICAL") # CRITICAL, HIGH, MODERATE
+    status = Column(String(30), default="ACTIVE_RECALL") # ACTIVE_RECALL, RESOLVED, INVESTIGATING
+    quarantined_cases = Column(Integer, default=0)
+    issued_by = Column(String(100), default="Excise Quality Directorate")
+    created_at = Column(DateTime, default=datetime.utcnow)
+    resolved_at = Column(DateTime, nullable=True)
+
+    brand = relationship("Brand")
+    supplier = relationship("Supplier")
+
+class SystemAlert(Base):
+    __tablename__ = "system_alerts"
+
+    id = Column(Integer, primary_key=True, index=True)
+    alert_type = Column(String(30), default="SMS") # WHATSAPP, SMS, EMAIL, SYSTEM
+    recipient = Column(String(100), nullable=False)
+    recipient_role = Column(String(50), nullable=False)
+    title = Column(String(200), nullable=False)
+    message = Column(Text, nullable=False)
+    status = Column(String(30), default="SENT")
+    created_at = Column(DateTime, default=datetime.utcnow)
