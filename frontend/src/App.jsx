@@ -164,9 +164,67 @@ export function App() {
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
   const [isMapModalOpen, setIsMapModalOpen] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [isHeaderSearchOpen, setIsHeaderSearchOpen] = useState(false);
   const [headerSearchQuery, setHeaderSearchQuery] = useState('');
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [showHeaderAlerts, setShowHeaderAlerts] = useState(false);
+  const searchInputRef = React.useRef(null);
+  const searchContainerRef = React.useRef(null);
+
+  // Close search popover on outside click
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchContainerRef.current && !searchContainerRef.current.contains(event.target)) {
+        setIsSearchFocused(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Keyboard shortcut Ctrl+K / Cmd+K to focus search
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+        setIsSearchFocused(true);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  // Quick navigation / search directory index
+  const quickSearchDirectory = [
+    { category: 'Page', name: 'Supplier Management', desc: 'Distilleries, inward consignments & scorecard', tab: 'suppliers' },
+    { category: 'Page', name: 'Wholesale Depots', desc: 'Depot stock storage capacity & inward reception', tab: 'depots' },
+    { category: 'Page', name: 'Store Stockroom', desc: 'Retail counter inventory & safety reorder levels', tab: 'inventory' },
+    { category: 'Page', name: 'Wholesale Catalog', desc: 'Brand catalog, bottle SKUs & government pricing', tab: 'catalog' },
+    { category: 'Page', name: 'Orders & Transit', desc: 'Retail indents, fulfillment status & GPS tracking', tab: 'orders' },
+    { category: 'Page', name: 'Add New Bottle', desc: 'Register master SKU & distillery classification', tab: 'add-bottle' },
+    { category: 'Distillery', name: 'Mohan Breweries & Distilleries', desc: 'Chennai & Valasaravakkam • Grade A+ Distillery', tab: 'suppliers' },
+    { category: 'Distillery', name: 'SNJ Distilleries Pvt Ltd', desc: 'Madurantakam, Chengalpattu • Premium Spirits', tab: 'suppliers' },
+    { category: 'Distillery', name: 'Empee Distilleries Ltd', desc: 'Mevaloorkuppam, Kancheepuram • Whisky & Rum', tab: 'suppliers' },
+    { category: 'Distillery', name: 'Shiva Distilleries Ltd', desc: 'Coimbatore • IMFL & Grain Spirits', tab: 'suppliers' },
+    { category: 'Distillery', name: 'Kals Distilleries Pvt Ltd', desc: 'Illuppur, Pudukkottai • High Capacity Breweries', tab: 'suppliers' },
+    { category: 'Brand', name: 'Old Monk Rum (XXX)', desc: 'Mohan Breweries • 750ml / 375ml / 180ml', tab: 'catalog' },
+    { category: 'Brand', name: 'Mansion House French Brandy', desc: 'Tilaknagar Industries • 750ml Premium', tab: 'catalog' },
+    { category: 'Brand', name: 'Royal Challenge Premium Whisky', desc: 'United Spirits Ltd • 750ml Gold Reserve', tab: 'catalog' },
+    { category: 'Brand', name: 'Magic Moments Grain Vodka', desc: 'Radico Khaitan • Triple Distilled', tab: 'catalog' },
+    { category: 'Brand', name: 'British Empire Ultra Premium Beer', desc: 'SNJ Breweries • 650ml Lager', tab: 'catalog' },
+    { category: 'Depot', name: 'Chennai Central Wholesale Depot', desc: 'Ambattur Industrial Estate • 45,000 cases', tab: 'depots' },
+    { category: 'Depot', name: 'Coimbatore North Wholesale Depot', desc: 'Gandhipuram Logistics Hub • 32,000 cases', tab: 'depots' },
+    { category: 'Depot', name: 'Madurai South Depot', desc: 'Koodal Nagar Complex • 28,000 cases', tab: 'depots' },
+    { category: 'Depot', name: 'Salem West Depot', desc: 'Suramangalam Industrial Corridor • 22,000 cases', tab: 'depots' },
+  ];
+
+  const searchResults = headerSearchQuery.trim()
+    ? quickSearchDirectory.filter(item => 
+        item.name.toLowerCase().includes(headerSearchQuery.toLowerCase()) ||
+        item.desc.toLowerCase().includes(headerSearchQuery.toLowerCase()) ||
+        item.category.toLowerCase().includes(headerSearchQuery.toLowerCase())
+      ).slice(0, 6)
+    : quickSearchDirectory.filter(item => item.category === 'Page');
 
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
@@ -594,7 +652,7 @@ useEffect(() => {
         <header className="shrink-0 z-10 bg-white dark:bg-[#000000] border-b border-zinc-200 dark:border-white/10 print:hidden transition-colors">
           <div className={`w-full px-4 sm:px-6 lg:px-8 ${currentTab === 'login' ? 'h-11' : 'h-14'} flex items-center justify-between gap-4 font-sans`}>
             {/* Left: Heading matching screenshot */}
-            <div className="flex items-center gap-3 min-w-0">
+            <div className="flex items-center gap-3 min-w-0 shrink-0">
               {currentTab !== 'login' ? (
                 <h1 className="text-lg sm:text-xl font-bold tracking-tight text-zinc-900 dark:text-white truncate">
                   {getPageHeading()}
@@ -604,49 +662,91 @@ useEffect(() => {
               )}
             </div>
 
-            {/* Right: Actions suite matching screenshot */}
-            <div className="flex items-center justify-end gap-1.5 sm:gap-2.5">
-              {/* 1. Search Trigger / Input */}
-              {currentTab !== 'login' && (
-                <div className="relative">
-                  {isHeaderSearchOpen ? (
-                    <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-zinc-100 dark:bg-white/5 border border-zinc-200 dark:border-white/10 text-xs">
-                      <Search className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
-                      <input
-                        type="text"
-                        autoFocus
-                        placeholder="Search..."
-                        value={headerSearchQuery}
-                        onChange={(e) => setHeaderSearchQuery(e.target.value)}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Escape') {
-                            setIsHeaderSearchOpen(false);
-                            setHeaderSearchQuery('');
-                          }
-                        }}
-                        className="bg-transparent border-0 outline-none text-xs text-zinc-900 dark:text-white placeholder-zinc-400 w-24 sm:w-36 focus:w-44 transition-all"
-                      />
-                      <button
-                        onClick={() => {
-                          setIsHeaderSearchOpen(false);
-                          setHeaderSearchQuery('');
-                        }}
-                        className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
-                      >
-                        <X className="w-3 h-3" />
-                      </button>
-                    </div>
-                  ) : (
+            {/* Middle: Prominent Search Bar (Requested by user) */}
+            {currentTab !== 'login' && (
+              <div ref={searchContainerRef} className="flex-1 max-w-xs sm:max-w-sm md:max-w-md mx-2 sm:mx-4 relative">
+                <div className="relative flex items-center">
+                  <Search className="w-4 h-4 text-zinc-400 absolute left-3.5 pointer-events-none" />
+                  <input
+                    ref={searchInputRef}
+                    type="text"
+                    placeholder="Search suppliers, brands, depots, orders..."
+                    value={headerSearchQuery}
+                    onChange={(e) => setHeaderSearchQuery(e.target.value)}
+                    onFocus={() => setIsSearchFocused(true)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Escape') {
+                        setIsSearchFocused(false);
+                        searchInputRef.current?.blur();
+                      } else if (e.key === 'Enter' && searchResults.length > 0) {
+                        setCurrentTab(searchResults[0].tab);
+                        window.location.hash = `#${searchResults[0].tab}`;
+                        setIsSearchFocused(false);
+                        setHeaderSearchQuery('');
+                        searchInputRef.current?.blur();
+                      }
+                    }}
+                    className="w-full h-9 pl-9.5 pr-8 text-xs sm:text-sm bg-zinc-100 dark:bg-white/[0.06] hover:bg-zinc-200/60 dark:hover:bg-white/[0.09] focus:bg-white dark:focus:bg-[#121212] border border-zinc-200 dark:border-white/10 rounded-xl text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500/50 transition-all shadow-sm"
+                  />
+                  {headerSearchQuery ? (
                     <button
-                      onClick={() => setIsHeaderSearchOpen(true)}
-                      title="Search"
-                      className="p-2 text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-white/5 rounded-xl transition cursor-pointer"
+                      onClick={() => {
+                        setHeaderSearchQuery('');
+                        searchInputRef.current?.focus();
+                      }}
+                      className="absolute right-2.5 p-1 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 rounded-md transition cursor-pointer"
+                      title="Clear search"
                     >
-                      <Search className="w-4 h-4" />
+                      <X className="w-3.5 h-3.5" />
                     </button>
+                  ) : (
+                    <span className="hidden sm:flex absolute right-2.5 items-center pointer-events-none">
+                      <kbd className="text-[10px] font-mono font-medium px-1.5 py-0.5 rounded bg-zinc-200/70 dark:bg-white/10 text-zinc-500 dark:text-zinc-400 border border-zinc-300/80 dark:border-white/10">
+                        ⌘K
+                      </kbd>
+                    </span>
                   )}
                 </div>
-              )}
+
+                {/* Dropdown Suggestions */}
+                {isSearchFocused && searchResults.length > 0 && (
+                  <div className="absolute left-0 right-0 top-full mt-1.5 bg-white dark:bg-[#121212] border border-zinc-200 dark:border-white/10 rounded-xl shadow-xl z-50 overflow-hidden font-sans max-h-80 overflow-y-auto animate-slideDown">
+                    <div className="p-1.5 space-y-0.5">
+                      <div className="px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-zinc-400">
+                        {headerSearchQuery.trim() ? 'Matching Results' : 'Quick Navigation'}
+                      </div>
+                      {searchResults.map((item, idx) => (
+                        <button
+                          key={idx}
+                          onMouseDown={() => {
+                            setCurrentTab(item.tab);
+                            window.location.hash = `#${item.tab}`;
+                            setHeaderSearchQuery('');
+                            setIsSearchFocused(false);
+                          }}
+                          className="w-full text-left px-2.5 py-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/5 flex items-center justify-between gap-3 group transition cursor-pointer"
+                        >
+                          <div className="min-w-0">
+                            <p className="text-xs font-semibold text-zinc-900 dark:text-white group-hover:text-orange-500 transition-colors truncate">
+                              {item.name}
+                            </p>
+                            <p className="text-[11px] text-zinc-500 dark:text-zinc-400 truncate">
+                              {item.desc}
+                            </p>
+                          </div>
+                          <span className="shrink-0 text-[10px] font-medium font-mono px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-white/10 text-zinc-500 group-hover:bg-orange-500/10 group-hover:text-orange-500 transition-colors">
+                            {item.category}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Right: Actions suite matching screenshot */}
+            <div className="flex items-center justify-end gap-1.5 sm:gap-2.5 shrink-0">
 
               {/* 2. Fullscreen / Maximize Toggle */}
               {currentTab !== 'login' && (
