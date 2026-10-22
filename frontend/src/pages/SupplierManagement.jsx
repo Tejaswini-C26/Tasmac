@@ -351,7 +351,7 @@ export function SupplierManagement({ externalSearchQuery = '' }) {
             <span className="text-xs font-semibold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
               Licensed Suppliers
             </span>
-            <div className="text-2xl sm:text-3xl font-mono font-bold text-zinc-900 dark:text-white mt-1">
+            <div className="text-2xl sm:text-3xl font-mono font-semibold text-zinc-900 dark:text-white mt-1">
               {suppliers.length}
             </div>
           </div>
@@ -368,7 +368,7 @@ export function SupplierManagement({ externalSearchQuery = '' }) {
             <span className="text-xs font-semibold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
               Total Inward Cases
             </span>
-            <div className="text-2xl sm:text-3xl font-mono font-bold text-zinc-900 dark:text-white mt-1">
+            <div className="text-2xl sm:text-3xl font-mono font-semibold text-zinc-900 dark:text-white mt-1">
               {analytics?.total_inward_cases?.toLocaleString() || '1,600'}
             </div>
           </div>
@@ -385,7 +385,7 @@ export function SupplierManagement({ externalSearchQuery = '' }) {
             <span className="text-xs font-semibold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
               Fulfillment (OTIF)
             </span>
-            <div className="text-2xl sm:text-3xl font-mono font-bold text-emerald-600 dark:text-emerald-400 mt-1">
+            <div className="text-2xl sm:text-3xl font-mono font-semibold text-emerald-600 dark:text-emerald-400 mt-1">
               {analytics?.otif_percentage || 97.2}%
             </div>
           </div>
@@ -402,7 +402,7 @@ export function SupplierManagement({ externalSearchQuery = '' }) {
             <span className="text-xs font-semibold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
               Active Supply Trucks
             </span>
-            <div className="text-2xl sm:text-3xl font-mono font-bold text-zinc-900 dark:text-white mt-1">
+            <div className="text-2xl sm:text-3xl font-mono font-semibold text-zinc-900 dark:text-white mt-1">
               {activeTrucksCount}
             </div>
           </div>

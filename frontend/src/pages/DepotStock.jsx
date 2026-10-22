@@ -125,7 +125,7 @@ export function DepotStock({ externalSearchQuery = '' }) {
               <div className="mt-2.5 pt-2 border-t border-zinc-200 dark:border-white/10 space-y-1">
                 <div className="flex justify-between items-baseline text-xs font-normal">
                   <span className="text-zinc-500 dark:text-zinc-400">Live Stock:</span>
-                  <span className="font-mono font-bold text-zinc-900 dark:text-white">
+                  <span className="font-mono font-semibold text-zinc-900 dark:text-white">
                     {depot.total_stock_cases?.toLocaleString()} cs
                   </span>
                 </div>

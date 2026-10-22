@@ -101,7 +101,7 @@ export function ShopInventory({ selectedShop, onSelectShop, shops = [], onOpenMa
             <span className="text-xs font-semibold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
               Backroom Cases
             </span>
-            <div className="text-2xl sm:text-3xl font-bold text-zinc-900 dark:text-white mt-1 font-mono">
+            <div className="text-2xl sm:text-3xl font-semibold text-zinc-900 dark:text-white mt-1 font-mono">
               {totalCasesOnHand.toLocaleString()}
             </div>
           </div>
@@ -118,7 +118,7 @@ export function ShopInventory({ selectedShop, onSelectShop, shops = [], onOpenMa
             <span className="text-xs font-semibold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
               Bottles on Shelf
             </span>
-            <div className="text-2xl sm:text-3xl font-bold text-zinc-900 dark:text-white mt-1 font-mono">
+            <div className="text-2xl sm:text-3xl font-semibold text-zinc-900 dark:text-white mt-1 font-mono">
               {totalBottlesOnShelf.toLocaleString()}
             </div>
           </div>
@@ -135,7 +135,7 @@ export function ShopInventory({ selectedShop, onSelectShop, shops = [], onOpenMa
             <span className="text-xs font-semibold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
               Low Stock SKUs
             </span>
-            <div className={`text-2xl sm:text-3xl font-bold mt-1 font-mono ${
+            <div className={`text-2xl sm:text-3xl font-semibold mt-1 font-mono ${
               lowStockCount > 0 ? 'text-rose-600 dark:text-rose-400' : 'text-zinc-900 dark:text-white'
             }`}>
               {lowStockCount.toLocaleString()}
@@ -156,7 +156,7 @@ export function ShopInventory({ selectedShop, onSelectShop, shops = [], onOpenMa
             <span className="text-xs font-semibold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
               Est. Shelf Stock Value
             </span>
-            <div className="text-2xl sm:text-3xl font-bold text-zinc-900 dark:text-white mt-1 font-mono">
+            <div className="text-2xl sm:text-3xl font-semibold text-zinc-900 dark:text-white mt-1 font-mono">
               ₹{Math.round(estimatedShelfValue).toLocaleString()}
             </div>
           </div>
