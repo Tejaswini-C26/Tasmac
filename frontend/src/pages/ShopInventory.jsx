@@ -98,15 +98,15 @@ export function ShopInventory({ selectedShop, onSelectShop, shops = [], onOpenMa
         {/* Card 1: Backroom Cases */}
         <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all flex items-end justify-between gap-3">
           <div>
-            <span className="text-[11px] font-mono font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
+            <span className="text-xs font-semibold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
               Backroom Cases
             </span>
-            <div className="text-2xl sm:text-3xl font-mono font-bold text-zinc-900 dark:text-white mt-1">
+            <div className="text-2xl sm:text-3xl font-bold text-zinc-900 dark:text-white mt-1 font-mono">
               {totalCasesOnHand.toLocaleString()}
             </div>
           </div>
           <div className="text-right pb-1 shrink-0">
-            <span className="text-[11px] font-mono text-zinc-500 dark:text-zinc-400 block">
+            <span className="text-xs text-zinc-500 dark:text-zinc-400 block font-normal">
               ~{(totalCasesOnHand * 12).toLocaleString()} buffer bottles
             </span>
           </div>
@@ -115,15 +115,15 @@ export function ShopInventory({ selectedShop, onSelectShop, shops = [], onOpenMa
         {/* Card 2: Bottles on Shelf */}
         <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all flex items-end justify-between gap-3">
           <div>
-            <span className="text-[11px] font-mono font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
+            <span className="text-xs font-semibold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
               Bottles on Shelf
             </span>
-            <div className="text-2xl sm:text-3xl font-mono font-bold text-zinc-900 dark:text-white mt-1">
+            <div className="text-2xl sm:text-3xl font-bold text-zinc-900 dark:text-white mt-1 font-mono">
               {totalBottlesOnShelf.toLocaleString()}
             </div>
           </div>
           <div className="text-right pb-1 shrink-0">
-            <span className="text-[11px] font-mono text-zinc-500 dark:text-zinc-400 block">
+            <span className="text-xs text-zinc-500 dark:text-zinc-400 block font-normal">
               ~{Math.round(totalBottlesOnShelf / Math.max(1, inventory.length))} avg / SKU
             </span>
           </div>
@@ -132,17 +132,17 @@ export function ShopInventory({ selectedShop, onSelectShop, shops = [], onOpenMa
         {/* Card 3: Low Stock SKUs */}
         <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all flex items-end justify-between gap-3">
           <div>
-            <span className="text-[11px] font-mono font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
+            <span className="text-xs font-semibold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
               Low Stock SKUs
             </span>
-            <div className={`text-2xl sm:text-3xl font-mono font-bold mt-1 ${
+            <div className={`text-2xl sm:text-3xl font-bold mt-1 font-mono ${
               lowStockCount > 0 ? 'text-rose-600 dark:text-rose-400' : 'text-zinc-900 dark:text-white'
             }`}>
               {lowStockCount.toLocaleString()}
             </div>
           </div>
           <div className="text-right pb-1 shrink-0">
-            <span className={`text-[11px] font-mono block ${
+            <span className={`text-xs block font-normal ${
               lowStockCount > 0 ? 'text-rose-600 dark:text-rose-400 font-medium' : 'text-zinc-500 dark:text-zinc-400'
             }`}>
               {lowStockCount > 0 ? `${lowStockCount} below threshold` : 'All items optimal'}
@@ -153,15 +153,15 @@ export function ShopInventory({ selectedShop, onSelectShop, shops = [], onOpenMa
         {/* Card 4: Est. Shelf Stock Value */}
         <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all flex items-end justify-between gap-3">
           <div>
-            <span className="text-[11px] font-mono font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
+            <span className="text-xs font-semibold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
               Est. Shelf Stock Value
             </span>
-            <div className="text-2xl sm:text-3xl font-mono font-bold text-zinc-900 dark:text-white mt-1">
+            <div className="text-2xl sm:text-3xl font-bold text-zinc-900 dark:text-white mt-1 font-mono">
               ₹{Math.round(estimatedShelfValue).toLocaleString()}
             </div>
           </div>
           <div className="text-right pb-1 shrink-0">
-            <span className="text-[11px] font-mono text-zinc-500 dark:text-zinc-400 block">
+            <span className="text-xs text-zinc-500 dark:text-zinc-400 block font-normal">
               Statutory Gazette MRP
             </span>
           </div>

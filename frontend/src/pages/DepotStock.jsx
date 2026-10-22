@@ -117,13 +117,13 @@ export function DepotStock({ externalSearchQuery = '' }) {
             >
               <div>
                 <h3 className="text-xs font-semibold text-zinc-900 dark:text-white truncate">{depot.name}</h3>
-                <p className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-0.5 flex items-center gap-1">
+                <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5 flex items-center gap-1 font-normal">
                   <User className="w-3 h-3 text-zinc-400 dark:text-zinc-500" /> {depot.manager_name}
                 </p>
               </div>
 
               <div className="mt-2.5 pt-2 border-t border-zinc-200 dark:border-white/10 space-y-1">
-                <div className="flex justify-between items-baseline text-[11px]">
+                <div className="flex justify-between items-baseline text-xs font-normal">
                   <span className="text-zinc-500 dark:text-zinc-400">Live Stock:</span>
                   <span className="font-mono font-bold text-zinc-900 dark:text-white">
                     {depot.total_stock_cases?.toLocaleString()} cs
@@ -135,7 +135,7 @@ export function DepotStock({ externalSearchQuery = '' }) {
                     style={{ width: `${Math.min(100, usagePct)}%` }}
                   />
                 </div>
-                <div className="flex justify-between text-[10px] text-zinc-500 dark:text-zinc-400">
+                <div className="flex justify-between text-xs text-zinc-500 dark:text-zinc-400 font-normal">
                   <span>Cap: {depot.capacity_cases.toLocaleString()}</span>
                   <span>{usagePct}% full</span>
                 </div>
