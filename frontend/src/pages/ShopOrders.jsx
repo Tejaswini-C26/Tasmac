@@ -206,51 +206,54 @@ export function ShopOrders({ selectedShop, onSelectShop, shops = [], onOpenMap }
     <div className="h-full flex flex-col overflow-hidden space-y-3">
       {/* Header Actions & Filter Tabs (Pinned Top) */}
       <div className="shrink-0 space-y-2.5 print:hidden">
-        <div className="flex justify-end items-center gap-3">
-          {shops && shops.length > 0 && (
-            <ShopSearchSelector 
-              selectedShop={selectedShop} 
-              onSelectShop={onSelectShop} 
-              shops={shops} 
-              onOpenMap={onOpenMap}
-            />
-          )}
-
-          <button
-            onClick={loadOrders}
-            className="py-1.5 px-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-300 hover:text-white text-xs font-medium transition cursor-pointer"
-          >
-            Refresh Dispatches
-          </button>
-        </div>
-
-        {/* Status Filter Tabs */}
-        <div className="inline-flex items-center p-1 rounded-xl bg-zinc-100 dark:bg-[#0c0d12] border border-zinc-200 dark:border-white/10 gap-1 overflow-x-auto scrollbar-none w-fit max-w-full shadow-sm">
-          {filterTabs.map((tab) => {
-            const active = statusFilter === tab.key;
-            return (
-              <button
-                key={tab.key}
-                onClick={() => setStatusFilter(tab.key)}
-                className={`px-3.5 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer ${
-                  active
-                    ? 'bg-orange-500 text-white shadow-sm font-bold'
-                    : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white font-bold'
-                }`}
-              >
-                <span>{tab.label}</span>
-                <span
-                  className={`text-[10px] font-mono px-1.5 py-0.5 rounded-full font-bold transition-colors ${
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          {/* Status Filter Tabs (Top Left) */}
+          <div className="inline-flex items-center p-1 rounded-xl bg-zinc-100 dark:bg-[#0c0d12] border border-zinc-200 dark:border-white/10 gap-1 overflow-x-auto scrollbar-none w-fit max-w-full shadow-sm">
+            {filterTabs.map((tab) => {
+              const active = statusFilter === tab.key;
+              return (
+                <button
+                  key={tab.key}
+                  onClick={() => setStatusFilter(tab.key)}
+                  className={`px-3.5 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer ${
                     active
-                      ? 'bg-white/25 text-white'
-                      : 'bg-black/5 dark:bg-white/5 text-zinc-500 dark:text-zinc-400'
+                      ? 'bg-orange-500 text-white shadow-sm font-bold'
+                      : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white font-bold'
                   }`}
                 >
-                  {tab.count}
-                </span>
-              </button>
-            );
-          })}
+                  <span>{tab.label}</span>
+                  <span
+                    className={`text-[10px] font-mono px-1.5 py-0.5 rounded-full font-bold transition-colors ${
+                      active
+                        ? 'bg-white/25 text-white'
+                        : 'bg-black/5 dark:bg-white/5 text-zinc-500 dark:text-zinc-400'
+                    }`}
+                  >
+                    {tab.count}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Shop Search Selector & Refresh (Top Right) */}
+          <div className="flex items-center gap-2.5 shrink-0">
+            {shops && shops.length > 0 && (
+              <ShopSearchSelector 
+                selectedShop={selectedShop} 
+                onSelectShop={onSelectShop} 
+                shops={shops} 
+                onOpenMap={onOpenMap}
+              />
+            )}
+
+            <button
+              onClick={loadOrders}
+              className="py-1.5 px-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-300 hover:text-white text-xs font-medium transition cursor-pointer"
+            >
+              Refresh Dispatches
+            </button>
+          </div>
         </div>
       </div>
 

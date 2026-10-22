@@ -199,56 +199,79 @@ export function RetailCatalog({ onAddToCart, cart, onNavigateToAddBottle, extern
     <div className="h-full flex flex-col overflow-hidden space-y-3">
       {/* Pinned Top Controls */}
       <div className="shrink-0 space-y-2.5">
-        {/* Header Actions: Add Bottle & View Toggle */}
-        <div className="flex justify-end items-center gap-3">
-          {/* AI Smart Reorder Button */}
-          <button
-            onClick={() => setShowAIPredictions(!showAIPredictions)}
-            className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold uppercase tracking-wider transition flex items-center gap-1.5 cursor-pointer shadow-sm ${
-              showAIPredictions
-                ? 'bg-orange-600 text-white'
-                : 'bg-zinc-100 dark:bg-[#101010] border border-zinc-200 dark:border-white/10 text-orange-600 dark:text-orange-400 hover:border-orange-500'
-            }`}
-            title="Toggle AI Demand Forecasting & Smart Auto-Reorder"
-          >
-            <Sparkles className="w-4 h-4 text-orange-500" />
-            <span>AI Reorder</span>
-          </button>
+        {/* Top Bar: Category Pills on Left, Action Buttons on Right */}
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          {/* Category Filter Pills (Now at the top) */}
+          <div className="inline-flex items-center p-1 rounded-xl bg-white dark:bg-[#101010] border border-zinc-200 dark:border-white/10 gap-1 overflow-x-auto scrollbar-none max-w-full shadow-sm">
+            {categories.map((c) => {
+              const active = selectedCategory === c.key;
+              return (
+                <button
+                  key={c.key}
+                  onClick={() => setSelectedCategory(c.key)}
+                  className={`px-3.5 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${
+                    active
+                      ? 'bg-orange-500 text-white shadow-sm font-semibold'
+                      : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
+                  }`}
+                >
+                  {c.label}
+                </button>
+              );
+            })}
+          </div>
 
-          {/* Add Bottle Button */}
-          <button
-            onClick={onNavigateToAddBottle}
-            className="px-3.5 py-1.5 rounded-xl bg-orange-600 hover:bg-orange-500 text-white text-xs font-mono font-bold uppercase tracking-wider transition flex items-center gap-1.5 shadow-md shadow-orange-950/30 cursor-pointer group"
-            title="Add a new bottle to the wholesale catalog"
-          >
-            <PlusCircle className="w-4 h-4 stroke-[2] group-hover:rotate-90 transition-transform duration-200" />
-            <span>Add Bottle</span>
-          </button>
+          {/* Header Actions: AI Reorder, Add Bottle & View Toggle */}
+          <div className="flex items-center gap-2.5 shrink-0">
+            {/* AI Smart Reorder Button */}
+            <button
+              onClick={() => setShowAIPredictions(!showAIPredictions)}
+              className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold uppercase tracking-wider transition flex items-center gap-1.5 cursor-pointer shadow-sm ${
+                showAIPredictions
+                  ? 'bg-orange-600 text-white'
+                  : 'bg-zinc-100 dark:bg-[#101010] border border-zinc-200 dark:border-white/10 text-orange-600 dark:text-orange-400 hover:border-orange-500'
+              }`}
+              title="Toggle AI Demand Forecasting & Smart Auto-Reorder"
+            >
+              <Sparkles className="w-4 h-4 text-orange-500" />
+              <span>AI Reorder</span>
+            </button>
 
-          {/* View Toggle */}
-          <div className="flex items-center gap-1 bg-zinc-100 dark:bg-[#101010] border border-zinc-200 dark:border-white/10 p-0.5 rounded-xl">
+            {/* Add Bottle Button */}
             <button
-              onClick={() => setViewMode('grid')}
-              className={`px-2.5 py-1 rounded-lg text-xs font-medium flex items-center gap-1.5 transition cursor-pointer ${
-                viewMode === 'grid'
-                  ? 'bg-orange-600 text-white shadow-sm font-semibold'
-                  : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
-              }`}
+              onClick={onNavigateToAddBottle}
+              className="px-3.5 py-1.5 rounded-xl bg-orange-600 hover:bg-orange-500 text-white text-xs font-mono font-bold uppercase tracking-wider transition flex items-center gap-1.5 shadow-md shadow-orange-950/30 cursor-pointer group"
+              title="Add a new bottle to the wholesale catalog"
             >
-              <Grid className="w-3.5 h-3.5" />
-              <span>Card Grid</span>
+              <PlusCircle className="w-4 h-4 stroke-[2] group-hover:rotate-90 transition-transform duration-200" />
+              <span>Add Bottle</span>
             </button>
-            <button
-              onClick={() => setViewMode('table')}
-              className={`px-2.5 py-1 rounded-lg text-xs font-medium flex items-center gap-1.5 transition cursor-pointer ${
-                viewMode === 'table'
-                  ? 'bg-orange-600 text-white shadow-sm font-semibold'
-                  : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
-              }`}
-            >
-              <ListIcon className="w-3.5 h-3.5" />
-              <span>Dense Table</span>
-            </button>
+
+            {/* View Toggle */}
+            <div className="flex items-center gap-1 bg-zinc-100 dark:bg-[#101010] border border-zinc-200 dark:border-white/10 p-0.5 rounded-xl">
+              <button
+                onClick={() => setViewMode('grid')}
+                className={`px-2.5 py-1 rounded-lg text-xs font-medium flex items-center gap-1.5 transition cursor-pointer ${
+                  viewMode === 'grid'
+                    ? 'bg-orange-600 text-white shadow-sm font-semibold'
+                    : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
+                }`}
+              >
+                <Grid className="w-3.5 h-3.5" />
+                <span>Card Grid</span>
+              </button>
+              <button
+                onClick={() => setViewMode('table')}
+                className={`px-2.5 py-1 rounded-lg text-xs font-medium flex items-center gap-1.5 transition cursor-pointer ${
+                  viewMode === 'table'
+                    ? 'bg-orange-600 text-white shadow-sm font-semibold'
+                    : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
+                }`}
+              >
+                <ListIcon className="w-3.5 h-3.5" />
+                <span>Dense Table</span>
+              </button>
+            </div>
           </div>
         </div>
 
@@ -301,26 +324,6 @@ export function RetailCatalog({ onAddToCart, cart, onNavigateToAddBottle, extern
             </div>
           </div>
         )}
-
-        {/* Category Filter Pills */}
-        <div className="inline-flex items-center p-1 rounded-xl bg-white dark:bg-[#101010] border border-zinc-200 dark:border-white/10 gap-1 overflow-x-auto scrollbar-none max-w-full shadow-sm">
-          {categories.map((c) => {
-            const active = selectedCategory === c.key;
-            return (
-              <button
-                key={c.key}
-                onClick={() => setSelectedCategory(c.key)}
-                className={`px-3.5 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${
-                  active
-                    ? 'bg-orange-500 text-white shadow-sm font-semibold'
-                    : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
-                }`}
-              >
-                {c.label}
-              </button>
-            );
-          })}
-        </div>
       </div>
 
 
