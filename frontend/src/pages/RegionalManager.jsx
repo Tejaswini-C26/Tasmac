@@ -66,16 +66,10 @@ export function RegionalManager() {
               <MapPin className="w-3.5 h-3.5" />
               TASMAC Zonal Logistics Command
             </span>
-            <span className="text-[11px] font-mono text-zinc-600 dark:text-zinc-400 bg-zinc-100 dark:bg-white/5 px-2 py-0.5 rounded border border-zinc-200 dark:border-white/10">
-              Regional Manager Console
-            </span>
           </div>
           <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2">
             Territory Depots & Retail Quota Oversight
           </h1>
-          <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
-            Monitor zonal buffer allocations, inter-depot rebalancing, and approve shop quota requests.
-          </p>
         </div>
 
         {/* Zone Selector Chips */}
@@ -105,9 +99,6 @@ export function RegionalManager() {
           <div className="text-3xl sm:text-4xl font-mono font-bold text-zinc-900 dark:text-white mt-2">
             {zoneDepots.length}
           </div>
-          <span className="text-[11px] text-zinc-500 mt-1 block">
-            {currentZoneConfig.districts.slice(0, 3).join(', ')}
-          </span>
         </div>
 
         <div className="forge-card rounded-md p-5 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm">
@@ -123,9 +114,6 @@ export function RegionalManager() {
               style={{ width: `${Math.min(zoneFillPct, 100)}%` }}
             />
           </div>
-          <span className="text-[10px] font-mono text-zinc-500 mt-1 block">
-            {zoneFillPct}% aggregate buffer fill
-          </span>
         </div>
 
         <div className="forge-card rounded-md p-5 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm">
@@ -135,9 +123,6 @@ export function RegionalManager() {
           <div className="text-3xl sm:text-4xl font-mono font-bold text-zinc-900 dark:text-white mt-2">
             {zoneShops.length}
           </div>
-          <span className="text-[11px] text-emerald-600 dark:text-emerald-400 mt-1 block">
-            Active retail license status
-          </span>
         </div>
 
         <div className="forge-card rounded-md p-5 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm">
@@ -147,9 +132,6 @@ export function RegionalManager() {
           <div className="text-3xl sm:text-4xl font-mono font-bold text-zinc-900 dark:text-white mt-2">
             68.4%
           </div>
-          <span className="text-[11px] text-zinc-500 mt-1 block">
-            Pacing normal for cycle day 22
-          </span>
         </div>
       </div>
 

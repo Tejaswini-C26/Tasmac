@@ -63,16 +63,10 @@ export function HQSuperAdmin() {
               <Landmark className="w-3.5 h-3.5" />
               TASMAC Head Office (HQ CMDA Tower)
             </span>
-            <span className="text-[11px] font-mono text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-              Super Admin Level
-            </span>
           </div>
           <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2">
             Statewide Command & Policy Directorate
           </h1>
-          <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
-            State excise duties, wholesale pricing formulas, licensing sign-offs, and master system governance.
-          </p>
         </div>
 
         {/* Global Action Badges */}
@@ -92,9 +86,6 @@ export function HQSuperAdmin() {
           <div className="text-3xl sm:text-4xl font-mono font-bold text-zinc-900 dark:text-white mt-2">
             ₹{metrics?.total_sales_value ? Math.round(metrics.total_sales_value).toLocaleString() : '5,86,153'}
           </div>
-          <span className="text-[11px] text-emerald-600 dark:text-emerald-400 mt-1 block">
-            ↑ 14.8% vs last fiscal cycle
-          </span>
         </div>
 
         <div className="forge-card rounded-md p-5 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm">
@@ -104,9 +95,6 @@ export function HQSuperAdmin() {
           <div className="text-3xl sm:text-4xl font-mono font-bold text-zinc-900 dark:text-white mt-2">
             {metrics?.total_depots || 5}
           </div>
-          <span className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1 block">
-            Total capacity: 1,45,000 cases
-          </span>
         </div>
 
         <div className="forge-card rounded-md p-5 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm">
@@ -116,9 +104,6 @@ export function HQSuperAdmin() {
           <div className="text-3xl sm:text-4xl font-mono font-bold text-zinc-900 dark:text-white mt-2">
             {suppliers.length || 5}
           </div>
-          <span className="text-[11px] text-orange-600 dark:text-orange-400 mt-1 block">
-            {pendingSuppliers.length} pending KYC review
-          </span>
         </div>
 
         <div className="forge-card rounded-md p-5 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm">
@@ -128,49 +113,48 @@ export function HQSuperAdmin() {
           <div className="text-3xl sm:text-4xl font-mono font-bold text-zinc-900 dark:text-white mt-2">
             {shops.length || 5}
           </div>
-          <span className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1 block">
-            100% active state quota compliance
-          </span>
         </div>
       </div>
 
       {/* HQ Navigation Tabs */}
-      <div className="flex border-b border-zinc-200 dark:border-white/10 gap-2 overflow-x-auto pb-px">
-        <button
-          onClick={() => setActiveTab('tax-policy')}
-          className={`px-4 py-2 text-xs font-medium border-b-2 transition cursor-pointer flex items-center gap-2 whitespace-nowrap ${
-            activeTab === 'tax-policy'
-              ? 'border-orange-500 text-orange-600 dark:text-orange-400 font-semibold'
-              : 'border-transparent text-zinc-500 hover:text-zinc-900 dark:hover:text-white'
-          }`}
-        >
-          <Scale className="w-3.5 h-3.5" />
-          Excise Duty & Tax Engine
-        </button>
+      <div className="flex items-center">
+        <div className="inline-flex items-center p-1 rounded-xl bg-zinc-100 dark:bg-[#0c0d12] border border-zinc-200 dark:border-white/10 gap-1 overflow-x-auto">
+          <button
+            onClick={() => setActiveTab('tax-policy')}
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer flex items-center gap-2 whitespace-nowrap ${
+              activeTab === 'tax-policy'
+                ? 'bg-orange-500 text-white font-semibold shadow-sm'
+                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
+            }`}
+          >
+            <Scale className="w-3.5 h-3.5" />
+            Excise Duty & Tax Engine
+          </button>
 
-        <button
-          onClick={() => setActiveTab('supplier-licensing')}
-          className={`px-4 py-2 text-xs font-medium border-b-2 transition cursor-pointer flex items-center gap-2 whitespace-nowrap ${
-            activeTab === 'supplier-licensing'
-              ? 'border-orange-500 text-orange-600 dark:text-orange-400 font-semibold'
-              : 'border-transparent text-zinc-500 hover:text-zinc-900 dark:hover:text-white'
-          }`}
-        >
-          <Building2 className="w-3.5 h-3.5" />
-          Supplier Distilleries & KYC ({suppliers.length})
-        </button>
+          <button
+            onClick={() => setActiveTab('supplier-licensing')}
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer flex items-center gap-2 whitespace-nowrap ${
+              activeTab === 'supplier-licensing'
+                ? 'bg-orange-500 text-white font-semibold shadow-sm'
+                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
+            }`}
+          >
+            <Building2 className="w-3.5 h-3.5" />
+            Supplier Distilleries & KYC ({suppliers.length})
+          </button>
 
-        <button
-          onClick={() => setActiveTab('shop-licensing')}
-          className={`px-4 py-2 text-xs font-medium border-b-2 transition cursor-pointer flex items-center gap-2 whitespace-nowrap ${
-            activeTab === 'shop-licensing'
-              ? 'border-orange-500 text-orange-600 dark:text-orange-400 font-semibold'
-              : 'border-transparent text-zinc-500 hover:text-zinc-900 dark:hover:text-white'
-          }`}
-        >
-          <Store className="w-3.5 h-3.5" />
-          Retail Vend Licenses ({shops.length})
-        </button>
+          <button
+            onClick={() => setActiveTab('shop-licensing')}
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer flex items-center gap-2 whitespace-nowrap ${
+              activeTab === 'shop-licensing'
+                ? 'bg-orange-500 text-white font-semibold shadow-sm'
+                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
+            }`}
+          >
+            <Store className="w-3.5 h-3.5" />
+            Retail Vend Licenses ({shops.length})
+          </button>
+        </div>
       </div>
 
       {/* Tab 1: Tax Policy Engine */}

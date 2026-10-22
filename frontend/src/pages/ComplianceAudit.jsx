@@ -101,16 +101,10 @@ export function ComplianceAudit() {
               <ShieldCheck className="w-3.5 h-3.5" />
               Prohibition & Excise Vigilance Directorate
             </span>
-            <span className="text-[11px] font-mono text-zinc-600 dark:text-zinc-400 bg-zinc-100 dark:bg-white/5 px-2 py-0.5 rounded border border-zinc-200 dark:border-white/10 flex items-center gap-1">
-              <Lock className="w-3 h-3" /> Read-Only Auditor Console
-            </span>
           </div>
           <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2">
             Excise Compliance, Batch Recall & Hologram Audit
           </h1>
-          <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
-            Independent statutory audit trail, anti-counterfeit QR lookups, and statewide emergency quarantine controls.
-          </p>
         </div>
 
         {/* Emergency Action */}
@@ -132,9 +126,6 @@ export function ComplianceAudit() {
           <div className="text-3xl sm:text-4xl font-mono font-bold text-rose-600 dark:text-rose-400 mt-2">
             {recalls.length}
           </div>
-          <span className="text-[11px] text-zinc-500 mt-1 block">
-            {recalls.reduce((acc, r) => acc + r.quarantined_cases, 0).toLocaleString()} cases frozen
-          </span>
         </div>
 
         <div className="forge-card rounded-md p-5 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm">
@@ -144,9 +135,6 @@ export function ComplianceAudit() {
           <div className="text-3xl sm:text-4xl font-mono font-bold text-zinc-900 dark:text-white mt-2">
             {suppliers.length || 5}
           </div>
-          <span className="text-[11px] text-emerald-600 dark:text-emerald-400 mt-1 block">
-            100% active FSSAI & Excise permits
-          </span>
         </div>
 
         <div className="forge-card rounded-md p-5 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm">
@@ -156,9 +144,6 @@ export function ComplianceAudit() {
           <div className="text-3xl sm:text-4xl font-mono font-bold text-zinc-900 dark:text-white mt-2">
             {shops.length || 5}
           </div>
-          <span className="text-[11px] text-zinc-500 mt-1 block">
-            0 expired licenses detected
-          </span>
         </div>
 
         <div className="forge-card rounded-md p-5 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm">
@@ -168,49 +153,48 @@ export function ComplianceAudit() {
           <div className="text-3xl sm:text-4xl font-mono font-bold text-emerald-600 dark:text-emerald-400 mt-2">
             99.98%
           </div>
-          <span className="text-[11px] text-zinc-500 mt-1 block">
-            Cryptographic QR stamp verified
-          </span>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex border-b border-zinc-200 dark:border-white/10 gap-2 overflow-x-auto pb-px">
-        <button
-          onClick={() => setActiveTab('licenses')}
-          className={`px-4 py-2 text-xs font-medium border-b-2 transition cursor-pointer flex items-center gap-2 whitespace-nowrap ${
-            activeTab === 'licenses'
-              ? 'border-orange-500 text-orange-600 dark:text-orange-400 font-semibold'
-              : 'border-transparent text-zinc-500 hover:text-zinc-900 dark:hover:text-white'
-          }`}
-        >
-          <FileText className="w-3.5 h-3.5" />
-          Statutory License Register
-        </button>
+      <div className="flex items-center">
+        <div className="inline-flex items-center p-1 rounded-xl bg-zinc-100 dark:bg-[#0c0d12] border border-zinc-200 dark:border-white/10 gap-1 overflow-x-auto">
+          <button
+            onClick={() => setActiveTab('licenses')}
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer flex items-center gap-2 whitespace-nowrap ${
+              activeTab === 'licenses'
+                ? 'bg-orange-500 text-white font-semibold shadow-sm'
+                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
+            }`}
+          >
+            <FileText className="w-3.5 h-3.5" />
+            Statutory License Register
+          </button>
 
-        <button
-          onClick={() => setActiveTab('recalls')}
-          className={`px-4 py-2 text-xs font-medium border-b-2 transition cursor-pointer flex items-center gap-2 whitespace-nowrap ${
-            activeTab === 'recalls'
-              ? 'border-orange-500 text-orange-600 dark:text-orange-400 font-semibold'
-              : 'border-transparent text-zinc-500 hover:text-zinc-900 dark:hover:text-white'
-          }`}
-        >
-          <AlertOctagon className="w-3.5 h-3.5" />
-          Statewide Batch Recalls ({recalls.length})
-        </button>
+          <button
+            onClick={() => setActiveTab('recalls')}
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer flex items-center gap-2 whitespace-nowrap ${
+              activeTab === 'recalls'
+                ? 'bg-orange-500 text-white font-semibold shadow-sm'
+                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
+            }`}
+          >
+            <AlertOctagon className="w-3.5 h-3.5" />
+            Statewide Batch Recalls ({recalls.length})
+          </button>
 
-        <button
-          onClick={() => setActiveTab('counterfeit')}
-          className={`px-4 py-2 text-xs font-medium border-b-2 transition cursor-pointer flex items-center gap-2 whitespace-nowrap ${
-            activeTab === 'counterfeit'
-              ? 'border-orange-500 text-orange-600 dark:text-orange-400 font-semibold'
-              : 'border-transparent text-zinc-500 hover:text-zinc-900 dark:hover:text-white'
-          }`}
-        >
-          <QrCode className="w-3.5 h-3.5" />
-          Anti-Counterfeit Hologram Check
-        </button>
+          <button
+            onClick={() => setActiveTab('counterfeit')}
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer flex items-center gap-2 whitespace-nowrap ${
+              activeTab === 'counterfeit'
+                ? 'bg-orange-500 text-white font-semibold shadow-sm'
+                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
+            }`}
+          >
+            <QrCode className="w-3.5 h-3.5" />
+            Anti-Counterfeit Hologram Check
+          </button>
+        </div>
       </div>
 
       {/* Tab 1: Statutory License Register */}
