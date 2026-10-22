@@ -54,6 +54,7 @@ import { FinanceLedger } from './pages/FinanceLedger';
 import { OrderDrawer } from './components/OrderDrawer';
 import { ShopSearchSelector } from './components/ShopSearchSelector';
 import { ShopMapModal } from './components/ShopMapModal';
+import { UserProfileDropdown } from './components/UserProfileDropdown';
 import { fetchShops, fetchDepots, fetchMetrics, fetchCurrentUser } from './services/api';
 
 const ALL_PAGE_IDS = [
@@ -299,6 +300,31 @@ useEffect(() => {
     localStorage.removeItem('tasmac_auth_user');
     setCurrentUser(null);
     navigateToLogin();
+  };
+
+  const handleSwitchRole = (roleConfig) => {
+    const switchedUser = {
+      id: currentUser?.id || 1,
+      username: roleConfig.roleKey.toLowerCase(),
+      email: roleConfig.email,
+      full_name: roleConfig.full_name,
+      role: roleConfig.roleKey,
+      organization: roleConfig.organization,
+      code: roleConfig.code,
+      default_stage: roleConfig.default_stage,
+      allowed_stages: [roleConfig.default_stage],
+      is_active: true
+    };
+    setCurrentUser(switchedUser);
+    localStorage.setItem('tasmac_auth_user', JSON.stringify(switchedUser));
+    setPortalMode(roleConfig.portalMode);
+    localStorage.setItem('tasmac_portal_mode', roleConfig.portalMode);
+    navigateToPortal(roleConfig.default_stage);
+  };
+
+  const handleTogglePortalMode = () => {
+    const newMode = portalMode === 'manufacturing' ? 'retail' : 'manufacturing';
+    handleSelectPortal(newMode);
   };
 
   const getRolePages = () => {
@@ -642,27 +668,15 @@ useEffect(() => {
                 </button>
               )}
 
-              {/* Sign Out / User Status Button (Hidden on login page if not logged in) */}
-              {currentUser ? (
-                <button
-                  onClick={handleLogout}
-                  title="Sign out of portal"
-                  className="flex items-center gap-1.5 text-xs text-zinc-600 dark:text-zinc-400 hover:text-rose-500 dark:hover:text-rose-400 transition cursor-pointer px-2.5 py-1 rounded-lg hover:bg-rose-500/10 border border-transparent hover:border-rose-500/20 font-bold"
-                >
-                  <LogOut className="w-3.5 h-3.5" />
-                  <span className="hidden md:inline">Sign Out</span>
-                </button>
-              ) : currentTab !== 'login' ? (
-                <button
-                  onClick={() => navigateToLogin()}
-                  title="Official Department Login (Choose Portal)"
-                  className="flex items-center gap-1.5 text-xs text-orange-600 dark:text-orange-400 hover:text-orange-500 dark:hover:text-orange-300 transition cursor-pointer px-2.5 py-1 rounded-lg hover:bg-orange-500/10 border border-transparent hover:border-orange-500/20 font-bold"
-                >
-                  <KeyRound className="w-3.5 h-3.5" />
-                  <span className="hidden md:inline">Department Login</span>
-                  <span className="md:hidden">Login</span>
-                </button>
-              ) : null}
+              {/* User Profile Avatar Dropdown with Active Role Switcher */}
+              <UserProfileDropdown 
+                currentUser={currentUser}
+                portalMode={portalMode}
+                onSwitchRole={handleSwitchRole}
+                onTogglePortalMode={handleTogglePortalMode}
+                onLogout={handleLogout}
+                onOpenLogin={() => navigateToLogin()}
+              />
             </div>
           </div>
         </header>
