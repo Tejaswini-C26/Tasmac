@@ -21,6 +21,18 @@ import {
 
 export const APP_ROLES = [
   {
+    roleKey: 'ADMIN',
+    label: 'Admin (Master Control)',
+    email: 'admin@tasmac.tn.gov',
+    full_name: 'TASMAC Master Admin',
+    organization: 'TASMAC Managing Directorate (CMDA)',
+    code: 'HQ-ADMIN-001',
+    default_stage: 'suppliers',
+    portalMode: 'manufacturing',
+    icon: ShieldCheck,
+    initials: 'AD'
+  },
+  {
     roleKey: 'MANUFACTURING',
     label: 'Manufacturing View',
     email: 'supplier@tasmac.tn.gov',

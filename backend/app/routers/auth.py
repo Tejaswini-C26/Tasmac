@@ -53,6 +53,20 @@ def format_user_response(user: User) -> UserResponse:
 
 def seed_default_users(db: Session):
     default_users = [
+        # Master Admin (HQ - Handles Whole Project: Manufacturing & Retail)
+        {
+            "username": "admin",
+            "email": "admin@tasmac.tn.gov",
+            "full_name": "TASMAC Master Admin",
+            "password": "tasmac123",
+            "role": "ADMIN",
+            "organization": "TASMAC Head Office (CMDA Tower, Egmore)",
+            "code": "HQ-ADMIN-001",
+            "default_stage": "suppliers",
+            "allowed_stages": "suppliers,depots,inventory,catalog,orders,add-bottle",
+            "assigned_region": "Statewide (All Regions)",
+            "phone": "+91 44 2852 1101"
+        },
         # 1. Manufacturing Supplier
         {
             "username": "supplier_owner",

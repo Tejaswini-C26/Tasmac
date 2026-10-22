@@ -311,16 +311,27 @@ useEffect(() => {
     handleSelectPortal(newMode);
   };
 
+  const isAdmin = currentUser?.role?.toUpperCase().includes('ADMIN') || currentUser?.username === 'admin';
+
   const getRolePages = () => {
+    if (isAdmin) {
+      return [
+        { id: 'suppliers', label: '1. Inward (Mfg)', icon: Factory, mode: 'manufacturing' },
+        { id: 'depots', label: '2. Depots (Mfg)', icon: Warehouse, mode: 'manufacturing' },
+        { id: 'inventory', label: '1. Stock (Retail)', icon: Store, mode: 'retail' },
+        { id: 'catalog', label: '2. Catalog (Retail)', icon: LayoutGrid, mode: 'retail' },
+        { id: 'orders', label: '3. Orders (Retail)', icon: Truck, mode: 'retail' },
+      ];
+    }
     return portalMode === 'manufacturing'
       ? [
-          { id: 'suppliers', label: 'Supplier Inward', icon: Factory },
-          { id: 'depots', label: 'Wholesale Depots', icon: Warehouse },
+          { id: 'suppliers', label: 'Supplier Inward', icon: Factory, mode: 'manufacturing' },
+          { id: 'depots', label: 'Wholesale Depots', icon: Warehouse, mode: 'manufacturing' },
         ]
       : [
-          { id: 'inventory', label: 'Store Stockroom', icon: Store },
-          { id: 'catalog', label: 'Wholesale Catalog', icon: LayoutGrid },
-          { id: 'orders', label: 'Orders & Transit', icon: Truck },
+          { id: 'inventory', label: 'Store Stockroom', icon: Store, mode: 'retail' },
+          { id: 'catalog', label: 'Wholesale Catalog', icon: LayoutGrid, mode: 'retail' },
+          { id: 'orders', label: 'Orders & Transit', icon: Truck, mode: 'retail' },
         ];
   };
 
@@ -503,6 +514,10 @@ useEffect(() => {
                 <button
                   key={item.id}
                   onClick={() => {
+                    if (item.mode && item.mode !== portalMode) {
+                      setPortalMode(item.mode);
+                      localStorage.setItem('tasmac_portal_mode', item.mode);
+                    }
                     setCurrentTab(item.id);
                     window.location.hash = `#${item.id}`;
                   }}
@@ -545,8 +560,40 @@ useEffect(() => {
         {/* Top Header - Hidden in Print */}
         <header className="shrink-0 z-20 bg-transparent print:hidden">
           <div className={`w-full px-4 sm:px-6 lg:px-8 ${currentTab === 'login' ? 'h-11' : 'h-14'} flex items-center justify-between gap-4 font-mono`}>
-            {/* Left Area (Spacer) */}
-            <div />
+            {/* Left Area: Admin Portal Switcher */}
+            {isAdmin && currentTab !== 'login' ? (
+              <div className="flex items-center gap-1.5 p-1 rounded-xl bg-zinc-100 dark:bg-white/5 border border-zinc-200 dark:border-white/10 text-xs">
+                <div className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-orange-600 dark:text-orange-400 flex items-center gap-1">
+                  <ShieldCheck className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">Admin</span>
+                </div>
+                <div className="h-4 w-[1px] bg-zinc-300 dark:bg-white/10" />
+                <button
+                  onClick={() => handleSelectPortal('manufacturing')}
+                  className={`px-2.5 py-1 rounded-lg font-bold text-[11px] transition cursor-pointer flex items-center gap-1.5 ${
+                    portalMode === 'manufacturing'
+                      ? 'bg-white dark:bg-[#161616] text-orange-600 dark:text-orange-400 shadow-sm border border-zinc-200 dark:border-white/10'
+                      : 'text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-white'
+                  }`}
+                >
+                  <Factory className="w-3 h-3" />
+                  <span>Manufacturing</span>
+                </button>
+                <button
+                  onClick={() => handleSelectPortal('retail')}
+                  className={`px-2.5 py-1 rounded-lg font-bold text-[11px] transition cursor-pointer flex items-center gap-1.5 ${
+                    portalMode === 'retail'
+                      ? 'bg-white dark:bg-[#161616] text-orange-600 dark:text-orange-400 shadow-sm border border-zinc-200 dark:border-white/10'
+                      : 'text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-white'
+                  }`}
+                >
+                  <Store className="w-3 h-3" />
+                  <span>Retail</span>
+                </button>
+              </div>
+            ) : (
+              <div />
+            )}
 
             {/* Right: Actions */}
             <div className="flex items-center justify-end gap-5 sm:gap-6 font-mono">

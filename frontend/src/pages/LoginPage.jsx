@@ -26,6 +26,16 @@ import { loginUser } from '../services/api';
 
 const PORTAL_OPTIONS = [
   {
+    id: 'admin',
+    title: 'Admin (Master Control)',
+    subtitle: 'Full Access: Both Manufacturing & Retail',
+    icon: ShieldCheck,
+    defaultEmail: 'admin@tasmac.tn.gov',
+    defaultPassword: 'tasmac123',
+    portalMode: 'manufacturing',
+    stage: 'suppliers',
+  },
+  {
     id: 'manufacturing',
     title: 'Manufacturing Supplier',
     subtitle: 'Distilleries, Breweries & Inward Consignments',
@@ -48,6 +58,16 @@ const PORTAL_OPTIONS = [
 ];
 
 const ALL_DEMO_ACCOUNTS = [
+  {
+    portal: 'manufacturing',
+    role: 'Admin (Master Control)',
+    email: 'admin@tasmac.tn.gov',
+    username: 'admin',
+    password: 'tasmac123',
+    stage: 'suppliers',
+    org: 'TASMAC Head Office (CMDA Tower)',
+    icon: ShieldCheck,
+  },
   {
     portal: 'manufacturing',
     role: 'Manufacturing Supplier',
