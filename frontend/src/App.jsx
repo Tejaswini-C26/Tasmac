@@ -345,16 +345,31 @@ useEffect(() => {
     });
   };
 
+  const loadInitialData = async () => {
+    try {
+      const [shopsResult, depotsResult, metricsResult] = await Promise.allSettled([
+        fetchShops(),
+        fetchDepots(),
+        fetchMetrics()
+      ]);
+      
+      if (shopsResult.status === 'fulfilled' && Array.isArray(shopsResult.value) && shopsResult.value.length > 0) {
+        setShops(shopsResult.value);
+        setSelectedShop((prev) => prev || shopsResult.value[0]);
+      }
+      if (depotsResult.status === 'fulfilled') {
+        setDepots(depotsResult.value);
+      }
+      if (metricsResult.status === 'fulfilled') {
+        setMetrics(metricsResult.value);
+      }
+    } catch (err) {
+      console.error('Initial data load failed:', err);
+    }
+  };
+
   useEffect(() => {
-    // Fetch initial setup data
-    Promise.all([fetchShops(), fetchDepots(), fetchMetrics()])
-      .then(([shopsData, depotsData, metricsData]) => {
-        setShops(shopsData);
-        if (shopsData.length > 0) setSelectedShop(shopsData[0]);
-        setDepots(depotsData);
-        setMetrics(metricsData);
-      })
-      .catch((err) => console.error('Initial data load failed:', err));
+    loadInitialData();
   }, []);
 
   const handleAddToCart = (brand, packRate = null, quantity = 1) => {
