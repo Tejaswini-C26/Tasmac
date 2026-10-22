@@ -3,14 +3,12 @@ import { createPortal } from 'react-dom';
 import { 
   AlertTriangle, 
   Package, 
-  TrendingUp, 
   Plus, 
   CheckCircle2, 
-  ShoppingCart,
-  RotateCcw,
-  Store,
-  ArrowRight,
-  X
+  ShoppingCart, 
+  RotateCcw, 
+  ArrowRight, 
+  X 
 } from 'lucide-react';
 import { fetchShopInventory, fetchShops } from '../services/api';
 import { ShopSearchSelector } from '../components/ShopSearchSelector';
@@ -105,6 +103,9 @@ export function ShopInventory({ selectedShop, onSelectShop, shops = [], onOpenMa
           <div className="text-2xl sm:text-3xl font-mono font-bold text-zinc-900 dark:text-white mt-1">
             {totalCasesOnHand.toLocaleString()}
           </div>
+          <span className="text-[10px] font-mono text-zinc-500 dark:text-zinc-400 mt-1 block">
+            ~{(totalCasesOnHand * 12).toLocaleString()} buffer bottles
+          </span>
         </div>
 
         {/* Card 2: Bottles on Shelf */}
@@ -115,6 +116,9 @@ export function ShopInventory({ selectedShop, onSelectShop, shops = [], onOpenMa
           <div className="text-2xl sm:text-3xl font-mono font-bold text-zinc-900 dark:text-white mt-1">
             {totalBottlesOnShelf.toLocaleString()}
           </div>
+          <span className="text-[10px] font-mono text-zinc-500 dark:text-zinc-400 mt-1 block">
+            ~{Math.round(totalBottlesOnShelf / Math.max(1, inventory.length))} avg / SKU
+          </span>
         </div>
 
         {/* Card 3: Low Stock SKUs */}
@@ -127,6 +131,9 @@ export function ShopInventory({ selectedShop, onSelectShop, shops = [], onOpenMa
           }`}>
             {lowStockCount.toLocaleString()}
           </div>
+          <span className="text-[10px] font-mono text-zinc-500 dark:text-zinc-400 mt-1 block">
+            {lowStockCount > 0 ? `${lowStockCount} below reorder threshold` : 'All items optimal'}
+          </span>
         </div>
 
         {/* Card 4: Est. Shelf Stock Value */}
@@ -137,6 +144,9 @@ export function ShopInventory({ selectedShop, onSelectShop, shops = [], onOpenMa
           <div className="text-2xl sm:text-3xl font-mono font-bold text-zinc-900 dark:text-white mt-1">
             ₹{Math.round(estimatedShelfValue).toLocaleString()}
           </div>
+          <span className="text-[10px] font-mono text-zinc-500 dark:text-zinc-400 mt-1 block">
+            Statutory Gazette MRP
+          </span>
         </div>
       </div>
 

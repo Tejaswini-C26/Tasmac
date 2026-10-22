@@ -353,6 +353,9 @@ export function SupplierManagement({ externalSearchQuery = '' }) {
           <div className="text-2xl sm:text-3xl font-mono font-bold text-zinc-900 dark:text-white mt-1">
             {suppliers.length}
           </div>
+          <span className="text-[10px] font-mono text-zinc-500 dark:text-zinc-400 mt-1 block">
+            State authorized distilleries
+          </span>
         </div>
 
         {/* Card 2: Inward Cases */}
@@ -363,6 +366,9 @@ export function SupplierManagement({ externalSearchQuery = '' }) {
           <div className="text-2xl sm:text-3xl font-mono font-bold text-zinc-900 dark:text-white mt-1">
             {analytics?.total_inward_cases?.toLocaleString() || '1,600'}
           </div>
+          <span className="text-[10px] font-mono text-zinc-500 dark:text-zinc-400 mt-1 block">
+            Depot routed shipments
+          </span>
         </div>
 
         {/* Card 3: OTIF */}
@@ -373,6 +379,9 @@ export function SupplierManagement({ externalSearchQuery = '' }) {
           <div className="text-2xl sm:text-3xl font-mono font-bold text-emerald-600 dark:text-emerald-400 mt-1">
             {analytics?.otif_percentage || 97.2}%
           </div>
+          <span className="text-[10px] font-mono text-zinc-500 dark:text-zinc-400 mt-1 block">
+            On-time In-full target &gt; 95%
+          </span>
         </div>
 
         {/* Card 4: Active Trucks */}
@@ -380,12 +389,12 @@ export function SupplierManagement({ externalSearchQuery = '' }) {
           <span className="text-[11px] font-mono font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
             Active Supply Trucks
           </span>
-          <div className="text-2xl sm:text-3xl font-mono font-bold text-zinc-900 dark:text-white mt-1 flex items-center gap-2.5">
+          <div className="text-2xl sm:text-3xl font-mono font-bold text-zinc-900 dark:text-white mt-1">
             {activeTrucksCount}
-            {activeTrucksCount > 0 && (
-              <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse inline-block" />
-            )}
           </div>
+          <span className="text-[10px] font-mono text-zinc-500 dark:text-zinc-400 mt-1 block">
+            GPS logistics tracked
+          </span>
         </div>
       </div>
 
