@@ -591,7 +591,7 @@ useEffect(() => {
       {/* 2. Main Viewport Area */}
       <div className="flex-1 flex flex-col min-w-0 h-full overflow-hidden print:h-auto print:overflow-visible print:w-full">
         {/* Top Header - Matching Reference Screenshot */}
-        <header className="shrink-0 z-20 bg-white dark:bg-[#000000] border-b border-zinc-200 dark:border-white/10 print:hidden transition-colors">
+        <header className="shrink-0 z-10 bg-white dark:bg-[#000000] border-b border-zinc-200 dark:border-white/10 print:hidden transition-colors">
           <div className={`w-full px-4 sm:px-6 lg:px-8 ${currentTab === 'login' ? 'h-11' : 'h-14'} flex items-center justify-between gap-4 font-sans`}>
             {/* Left: Heading matching screenshot */}
             <div className="flex items-center gap-3 min-w-0">

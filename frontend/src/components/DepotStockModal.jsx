@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { X, Building2, Package, MapPin, CheckCircle2 } from 'lucide-react';
 import { fetchBrandDepotStock } from '../services/api';
 
@@ -33,9 +34,11 @@ export function DepotStockModal({ brand, onClose }) {
 
   const totalCases = stocks.reduce((acc, s) => acc + s.available_cases, 0);
 
-  return (
+  if (typeof document === 'undefined') return null;
+
+  return createPortal(
     <div 
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fade-in cursor-pointer"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-fade-in cursor-pointer"
       onClick={onClose}
     >
       <div 
@@ -141,7 +144,8 @@ export function DepotStockModal({ brand, onClose }) {
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 

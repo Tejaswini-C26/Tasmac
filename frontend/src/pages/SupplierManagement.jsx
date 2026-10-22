@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { 
   Factory, 
   Truck, 
@@ -720,9 +721,9 @@ export function SupplierManagement() {
       )}
 
       {/* MODAL 1: Dispatch New Inward Consignment */}
-      {isDispatchModalOpen && (
+      {isDispatchModalOpen && typeof document !== 'undefined' && createPortal(
         <div 
-          className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 cursor-pointer"
+          className="fixed inset-0 z-[100] bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 cursor-pointer"
           onClick={() => setIsDispatchModalOpen(false)}
         >
           <div 
@@ -884,13 +885,14 @@ export function SupplierManagement() {
               </div>
             </form>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* MODAL 2: Inspect & Receive (GRN) */}
-      {isGrnModalOpen && inspectingConsignment && (
+      {isGrnModalOpen && inspectingConsignment && typeof document !== 'undefined' && createPortal(
         <div 
-          className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 cursor-pointer"
+          className="fixed inset-0 z-[100] bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 cursor-pointer"
           onClick={() => setIsGrnModalOpen(false)}
         >
           <div 
@@ -983,13 +985,14 @@ export function SupplierManagement() {
               </div>
             </form>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* MODAL 3: View Supplier's Registered Brands */}
-      {selectedSupplierForBrands && (
+      {selectedSupplierForBrands && typeof document !== 'undefined' && createPortal(
         <div 
-          className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 cursor-pointer"
+          className="fixed inset-0 z-[100] bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 cursor-pointer"
           onClick={() => setSelectedSupplierForBrands(null)}
         >
           <div 
@@ -1044,7 +1047,8 @@ export function SupplierManagement() {
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
