@@ -193,7 +193,7 @@ export function SupplierManagement({ externalSearchQuery = '' }) {
   const loadData = async () => {
     try {
       setLoading(true);
-      const [supData, csgData, anlData, depData, brdData] = await Promise.all([
+      const [supRes, csgRes, anlRes, depRes, brdRes] = await Promise.allSettled([
         fetchSuppliers(),
         fetchSupplierConsignments(),
         fetchSupplierAnalytics(),
@@ -201,9 +201,15 @@ export function SupplierManagement({ externalSearchQuery = '' }) {
         fetchBrands()
       ]);
 
+      const supData = supRes.status === 'fulfilled' && Array.isArray(supRes.value) ? supRes.value : [];
+      const csgData = csgRes.status === 'fulfilled' && Array.isArray(csgRes.value) ? csgRes.value : [];
+      const anlData = anlRes.status === 'fulfilled' ? anlRes.value : null;
+      const depData = depRes.status === 'fulfilled' && Array.isArray(depRes.value) ? depRes.value : [];
+      const brdData = brdRes.status === 'fulfilled' && Array.isArray(brdRes.value) ? brdRes.value : [];
+
       setSuppliers(supData);
       setConsignments(csgData);
-      setAnalytics(anlData);
+      if (anlData) setAnalytics(anlData);
       setDepots(depData);
       setBrands(brdData);
 

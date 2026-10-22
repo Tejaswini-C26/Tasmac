@@ -8,7 +8,13 @@ from .seed_data import seed_retail_supplier_database
 from .routers import brands, orders, depots, shops, suppliers, auth
 
 # Create database tables
-Base.metadata.create_all(bind=engine)
+try:
+    Base.metadata.create_all(bind=engine)
+except Exception as e:
+    import logging
+    logging.warning(f"Could not initialize tables on primary database ({e}). Ensuring local tables exist.")
+    from .database import sqlite_engine
+    Base.metadata.create_all(bind=sqlite_engine)
 
 app = FastAPI(
     title="TASMAC B2B Wholesale Retail Supplier Platform",
@@ -40,11 +46,15 @@ app.include_router(suppliers.router)
 
 @app.on_event("startup")
 def startup_event():
-    db = SessionLocal()
     try:
-        seed_retail_supplier_database(db)
-    finally:
-        db.close()
+        db = SessionLocal()
+        try:
+            seed_retail_supplier_database(db)
+        finally:
+            db.close()
+    except Exception as e:
+        import logging
+        logging.warning(f"Database seed check warning: {e}")
 
 @app.get("/")
 def root():
