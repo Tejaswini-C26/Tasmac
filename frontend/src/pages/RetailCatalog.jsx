@@ -199,25 +199,9 @@ export function RetailCatalog({ onAddToCart, cart, onNavigateToAddBottle }) {
 
     <div className="space-y-6">
 
-      {/* Page Title & Stats Ribbon */}
+      {/* Header Actions: Add Bottle & View Toggle */}
 
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-2">
-
-        <div>
-
-          <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2">
-
-            Wholesale Product Catalog & Indent
-
-          </h1>
-
-        </div>
-
-
-
-        {/* Header Actions: Add Bottle & View Toggle */}
-
-        <div className="flex items-center gap-3 self-start md:self-auto">
+      <div className="flex justify-end items-center gap-3 pb-2">
 
           {/* AI Smart Reorder Button */}
           <button
@@ -302,8 +286,6 @@ export function RetailCatalog({ onAddToCart, cart, onNavigateToAddBottle }) {
             </button>
 
           </div>
-
-        </div>
 
       </div>
 

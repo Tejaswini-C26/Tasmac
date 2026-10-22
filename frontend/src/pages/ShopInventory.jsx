@@ -92,13 +92,8 @@ export function ShopInventory({ selectedShop, onSelectShop, shops = [], onOpenMa
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-2">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2">
-            Shop Shelf Inventory & Stock Telemetry
-          </h1>
-        </div>
+      {/* Store Selector & Actions */}
+      <div className="flex justify-end items-center gap-2 pb-2">
 
         {/* Search & Select Retail Store */}
         <div className="flex items-center gap-2">

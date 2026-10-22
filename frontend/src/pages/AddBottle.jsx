@@ -213,12 +213,6 @@ export function AddBottle({ onBottleAdded }) {
 
   return (
     <div className="space-y-8 max-w-7xl mx-auto pb-12">
-      {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2">
-          Add New Bottle to Wholesale Catalog
-        </h1>
-      </div>
 
       {/* Success Notification Modal / Banner */}
       {successData && (

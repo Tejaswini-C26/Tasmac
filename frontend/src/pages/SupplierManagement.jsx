@@ -335,14 +335,8 @@ export function SupplierManagement() {
 
   return (
     <div className="space-y-6">
-      {/* Page Header */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-2">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2">
-            Supplier &amp; Distillery Management
-          </h1>
-        </div>
-
+      {/* Page Actions */}
+      <div className="flex justify-end items-center pb-2">
         {/* Action Button */}
         <button
           onClick={() => setIsDispatchModalOpen(true)}

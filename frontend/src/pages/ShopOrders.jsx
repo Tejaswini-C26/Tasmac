@@ -208,23 +208,9 @@ export function ShopOrders({ selectedShop, onSelectShop, shops = [], onOpenMap }
 
     <div className="space-y-6">
 
-      {/* Header - Hidden in Print */}
+      {/* Header Actions - Hidden in Print */}
 
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-2 print:hidden">
-
-        <div>
-
-          <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2">
-
-            Replenishment Orders & Dispatches
-
-          </h1>
-
-        </div>
-
-
-
-        <div className="flex items-center gap-3 self-start md:self-auto">
+      <div className="flex justify-end items-center gap-3 pb-2 print:hidden">
 
           {shops && shops.length > 0 && (
 
@@ -253,8 +239,6 @@ export function ShopOrders({ selectedShop, onSelectShop, shops = [], onOpenMap }
             Refresh Dispatches
 
           </button>
-
-        </div>
 
       </div>
 
