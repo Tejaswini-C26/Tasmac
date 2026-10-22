@@ -113,16 +113,10 @@ export function FinanceLedger() {
               <Landmark className="w-3.5 h-3.5" />
               TASMAC State Treasury & Accounts
             </span>
-            <span className="text-[11px] font-mono text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-              B2B Ledgers & Reverse Logistics
-            </span>
           </div>
           <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2">
             Financial Ledger & Returnable Bottles (DRS)
           </h1>
-          <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
-            Real-time accounts receivable, supplier disbursements, and deposit refunds credited for recycled bottles.
-          </p>
         </div>
 
         {/* Action Button */}
@@ -153,9 +147,6 @@ export function FinanceLedger() {
           <div className="text-3xl sm:text-4xl font-mono font-bold text-zinc-900 dark:text-white mt-2">
             ₹{summary ? Math.round(summary.total_receivables).toLocaleString() : '4,12,500'}
           </div>
-          <span className="text-[11px] text-zinc-500 mt-1 block">
-            Across {summary?.monitored_shops || 5} active retail accounts
-          </span>
         </div>
 
         <div className="forge-card rounded-md p-5 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm">
@@ -165,9 +156,6 @@ export function FinanceLedger() {
           <div className="text-3xl sm:text-4xl font-mono font-bold text-zinc-900 dark:text-white mt-2">
             ₹{summary ? Math.round(summary.total_supplier_payouts).toLocaleString() : '4,85,000'}
           </div>
-          <span className="text-[11px] text-zinc-500 mt-1 block">
-            Ready for Treasury RTGS dispatch
-          </span>
         </div>
 
         <div className="forge-card rounded-md p-5 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm">
@@ -177,9 +165,6 @@ export function FinanceLedger() {
           <div className="text-3xl sm:text-4xl font-mono font-bold text-emerald-600 dark:text-emerald-400 mt-2">
             ₹{summary ? Math.round(summary.total_bottle_refunds).toLocaleString() : '3,600'}
           </div>
-          <span className="text-[11px] text-emerald-600 dark:text-emerald-400 mt-1 block">
-            Credited directly to shop balances
-          </span>
         </div>
 
         <div className="forge-card rounded-md p-5 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm">
@@ -189,9 +174,6 @@ export function FinanceLedger() {
           <div className="text-3xl sm:text-4xl font-mono font-bold text-orange-600 dark:text-orange-400 mt-2">
             {summary ? summary.total_bottles_recycled.toLocaleString() : '240'}
           </div>
-          <span className="text-[11px] text-zinc-500 mt-1 block">
-            Circular glass reverse logistics
-          </span>
         </div>
       </div>
 
@@ -482,3 +464,4 @@ export function FinanceLedger() {
     </div>
   );
 }
+
