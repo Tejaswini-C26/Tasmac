@@ -346,45 +346,102 @@ export function SupplierManagement({ externalSearchQuery = '' }) {
       {/* KPI Cards (Pinned Top) */}
       <div className="shrink-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         {/* Card 1: Suppliers */}
-        <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all">
-          <span className="text-[11px] font-mono font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
-            Licensed Suppliers
-          </span>
-          <div className="text-2xl sm:text-3xl font-mono font-bold text-zinc-900 dark:text-white mt-1">
-            {suppliers.length}
+        <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all flex items-start justify-between">
+          <div>
+            <span className="text-[11px] font-mono font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
+              Licensed Suppliers
+            </span>
+            <div className="text-2xl sm:text-3xl font-mono font-bold text-zinc-900 dark:text-white mt-1">
+              {suppliers.length}
+            </div>
+            <span className="text-[10px] font-mono text-zinc-500 dark:text-zinc-400 mt-1 block">
+              State authorized distilleries
+            </span>
+          </div>
+
+          <div className="flex flex-col items-end gap-1.5 shrink-0 pl-2">
+            <div className="p-2 rounded-xl bg-orange-500/10 text-orange-500 border border-orange-500/20">
+              <Factory className="w-5 h-5" />
+            </div>
+            <span className="inline-flex items-center gap-1 text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+              100% Active
+            </span>
           </div>
         </div>
 
         {/* Card 2: Inward Cases */}
-        <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all">
-          <span className="text-[11px] font-mono font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
-            Total Inward Cases
-          </span>
-          <div className="text-2xl sm:text-3xl font-mono font-bold text-zinc-900 dark:text-white mt-1">
-            {analytics?.total_inward_cases?.toLocaleString() || '1,600'}
+        <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all flex items-start justify-between">
+          <div>
+            <span className="text-[11px] font-mono font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
+              Total Inward Cases
+            </span>
+            <div className="text-2xl sm:text-3xl font-mono font-bold text-zinc-900 dark:text-white mt-1">
+              {analytics?.total_inward_cases?.toLocaleString() || '1,600'}
+            </div>
+            <span className="text-[10px] font-mono text-zinc-500 dark:text-zinc-400 mt-1 block">
+              Depot routed shipments
+            </span>
+          </div>
+
+          <div className="flex flex-col items-end gap-1.5 shrink-0 pl-2">
+            <div className="p-2 rounded-xl bg-blue-500/10 text-blue-500 border border-blue-500/20">
+              <Package className="w-5 h-5" />
+            </div>
+            <span className="inline-flex items-center gap-1 text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+              Transit Monitored
+            </span>
           </div>
         </div>
 
         {/* Card 3: OTIF */}
-        <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all">
-          <span className="text-[11px] font-mono font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
-            Fulfillment (OTIF)
-          </span>
-          <div className="text-2xl sm:text-3xl font-mono font-bold text-emerald-600 dark:text-emerald-400 mt-1">
-            {analytics?.otif_percentage || 97.2}%
+        <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all flex items-start justify-between">
+          <div>
+            <span className="text-[11px] font-mono font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
+              Fulfillment (OTIF)
+            </span>
+            <div className="text-2xl sm:text-3xl font-mono font-bold text-emerald-600 dark:text-emerald-400 mt-1">
+              {analytics?.otif_percentage || 97.2}%
+            </div>
+            <span className="text-[10px] font-mono text-zinc-500 dark:text-zinc-400 mt-1 block">
+              On-time In-full target &gt; 95%
+            </span>
+          </div>
+
+          <div className="flex flex-col items-end gap-1.5 shrink-0 pl-2">
+            <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
+              <TrendingUp className="w-5 h-5" />
+            </div>
+            <span className="inline-flex items-center gap-1 text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+              Above Target
+            </span>
           </div>
         </div>
 
         {/* Card 4: Active Trucks */}
-        <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all">
-          <span className="text-[11px] font-mono font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
-            Active Supply Trucks
-          </span>
-          <div className="text-2xl sm:text-3xl font-mono font-bold text-zinc-900 dark:text-white mt-1 flex items-center gap-2.5">
-            {activeTrucksCount}
-            {activeTrucksCount > 0 && (
-              <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse inline-block" />
-            )}
+        <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all flex items-start justify-between">
+          <div>
+            <span className="text-[11px] font-mono font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
+              Active Supply Trucks
+            </span>
+            <div className="text-2xl sm:text-3xl font-mono font-bold text-zinc-900 dark:text-white mt-1">
+              {activeTrucksCount}
+            </div>
+            <span className="text-[10px] font-mono text-zinc-500 dark:text-zinc-400 mt-1 block">
+              GPS logistics tracked
+            </span>
+          </div>
+
+          <div className="flex flex-col items-end gap-1.5 shrink-0 pl-2">
+            <div className="p-2 rounded-xl bg-amber-500/10 text-amber-500 border border-amber-500/20">
+              <Truck className="w-5 h-5" />
+            </div>
+            <span className="inline-flex items-center gap-1 text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+              {activeTrucksCount > 0 ? 'Live En Route' : 'Depot Staged'}
+            </span>
           </div>
         </div>
       </div>
