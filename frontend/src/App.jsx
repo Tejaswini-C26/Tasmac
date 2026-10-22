@@ -18,6 +18,7 @@ import {
   Sun,
   Moon,
   PanelLeft,
+  LayoutDashboard,
   LayoutGrid,
   Factory,
   ChevronRight,
@@ -45,6 +46,7 @@ import { DepotStock } from './pages/DepotStock';
 import { ShopInventory } from './pages/ShopInventory';
 import { AddBottle } from './pages/AddBottle';
 import { SupplierManagement } from './pages/SupplierManagement';
+import { Dashboard } from './pages/Dashboard';
 import { PublicLandingPage } from './pages/PublicLandingPage';
 import { OrderDrawer } from './components/OrderDrawer';
 import { ShopSearchSelector } from './components/ShopSearchSelector';
@@ -53,6 +55,7 @@ import { UserProfileDropdown } from './components/UserProfileDropdown';
 import { fetchShops, fetchDepots, fetchMetrics, fetchCurrentUser } from './services/api';
 
 const ALL_PAGE_IDS = [
+  'dashboard',
   'suppliers',
   'depots',
   'inventory',
@@ -213,6 +216,9 @@ export function App() {
           setPortalMode('retail');
           localStorage.setItem('tasmac_portal_mode', 'retail');
         }
+      } else if (rawHash === 'dashboard') {
+        setViewMode('portal');
+        setCurrentTab('dashboard');
       } else if (rawHash === 'suppliers' || rawHash === 'depots') {
         setViewMode('portal');
         setPortalMode('manufacturing');
@@ -316,10 +322,12 @@ useEffect(() => {
   const getRolePages = () => {
     return portalMode === 'manufacturing'
       ? [
+          { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, mode: 'manufacturing' },
           { id: 'suppliers', label: 'Supplier Inward', icon: Factory, mode: 'manufacturing' },
           { id: 'depots', label: 'Wholesale Depots', icon: Warehouse, mode: 'manufacturing' },
         ]
       : [
+          { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, mode: 'retail' },
           { id: 'inventory', label: 'Store Stockroom', icon: Store, mode: 'retail' },
           { id: 'catalog', label: 'Wholesale Catalog', icon: LayoutGrid, mode: 'retail' },
           { id: 'orders', label: 'Orders & Transit', icon: Truck, mode: 'retail' },
@@ -626,6 +634,18 @@ useEffect(() => {
                 }}
                 portalMode={portalMode}
                 onSwitchPortal={(mode) => handleSelectPortal(mode)}
+              />
+            )}
+            {currentTab === 'dashboard' && (
+              <Dashboard
+                portalMode={portalMode}
+                onNavigate={(stage) => {
+                  setCurrentTab(stage);
+                  window.location.hash = `#${stage}`;
+                }}
+                currentUser={currentUser}
+                theme={theme}
+                onToggleTheme={toggleTheme}
               />
             )}
             {currentTab === 'catalog' && (

@@ -33,7 +33,7 @@ const PORTAL_OPTIONS = [
     defaultEmail: 'admin@tasmac.tn.gov',
     defaultPassword: 'tasmac123',
     portalMode: 'manufacturing',
-    stage: 'suppliers',
+    stage: 'dashboard',
   },
   {
     id: 'manufacturing',
@@ -64,7 +64,7 @@ const ALL_DEMO_ACCOUNTS = [
     email: 'admin@tasmac.tn.gov',
     username: 'admin',
     password: 'tasmac123',
-    stage: 'suppliers',
+    stage: 'dashboard',
     org: 'TASMAC Head Office (CMDA Tower)',
     icon: ShieldCheck,
   },
