@@ -68,7 +68,7 @@ const MANUFACTURING_STAGES = [
     step: 1, 
     badge: '01', 
     label: 'Supplier Inward', 
-    shortLabel: '1. Inward', 
+    shortLabel: 'Inward', 
     title: 'Stage 1: Supplier Inward', 
     icon: Factory, 
     desc: 'Distilleries dispatch bulk cases & generate GRN to stock wholesale depots.' 
@@ -78,7 +78,7 @@ const MANUFACTURING_STAGES = [
     step: 2, 
     badge: '02', 
     label: 'Wholesale Depots', 
-    shortLabel: '2. Depots', 
+    shortLabel: 'Depots', 
     title: 'Stage 2: Wholesale Depots', 
     icon: Warehouse, 
     desc: 'Regional state buffer warehouse capacity, available cases & inward arrivals.' 
@@ -91,7 +91,7 @@ const RETAIL_STAGES = [
     step: 1, 
     badge: '01', 
     label: 'Store Stockroom', 
-    shortLabel: '1. Store Stock', 
+    shortLabel: 'Store Stock', 
     title: 'Stage 1: Store Stockroom', 
     icon: Store, 
     desc: 'Retail store shelf inventory, daily sales velocity & replenishment alerts.' 
@@ -101,7 +101,7 @@ const RETAIL_STAGES = [
     step: 2, 
     badge: '02', 
     label: 'Wholesale Catalog', 
-    shortLabel: '2. Catalog', 
+    shortLabel: 'Catalog', 
     title: 'Stage 2: Wholesale Catalog', 
     icon: LayoutGrid, 
     desc: 'Browse approved brands, check MRP & submit retail store replenishment indents.' 
@@ -111,7 +111,7 @@ const RETAIL_STAGES = [
     step: 3, 
     badge: '03', 
     label: 'Orders & Transit', 
-    shortLabel: '3. In Transit', 
+    shortLabel: 'Orders', 
     title: 'Stage 3: Orders & Transit', 
     icon: Truck, 
     desc: 'Sequential delivery tracking, dispatch timeline, animated truck & official transit e-Pass.' 
@@ -314,15 +314,6 @@ useEffect(() => {
   const isAdmin = currentUser?.role?.toUpperCase().includes('ADMIN') || currentUser?.username === 'admin';
 
   const getRolePages = () => {
-    if (isAdmin) {
-      return [
-        { id: 'suppliers', label: '1. Inward (Mfg)', icon: Factory, mode: 'manufacturing' },
-        { id: 'depots', label: '2. Depots (Mfg)', icon: Warehouse, mode: 'manufacturing' },
-        { id: 'inventory', label: '1. Stock (Retail)', icon: Store, mode: 'retail' },
-        { id: 'catalog', label: '2. Catalog (Retail)', icon: LayoutGrid, mode: 'retail' },
-        { id: 'orders', label: '3. Orders (Retail)', icon: Truck, mode: 'retail' },
-      ];
-    }
     return portalMode === 'manufacturing'
       ? [
           { id: 'suppliers', label: 'Supplier Inward', icon: Factory, mode: 'manufacturing' },
