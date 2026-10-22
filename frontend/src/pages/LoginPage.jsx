@@ -26,18 +26,74 @@ import { loginUser } from '../services/api';
 
 const PORTAL_OPTIONS = [
   {
-    id: 'manufacturing',
-    title: 'Manufacturing Supplier',
-    subtitle: 'Distilleries, Breweries & Wholesale Depots',
-    icon: Factory,
-    defaultEmail: 'distillery@tasmac.tn.gov',
+    id: 'super-admin',
+    title: '1. Super Admin (HQ)',
+    subtitle: 'TASMAC Managing Directorate (CMDA)',
+    icon: Landmark,
+    defaultEmail: 'superadmin@tasmac.tn.gov',
+    defaultPassword: 'tasmac123',
+    portalMode: 'manufacturing',
+    stage: 'super-admin',
   },
   {
-    id: 'retail',
-    title: 'Retail Shops Supplier',
-    subtitle: 'Retail Stores, Wholesale Catalog & Indents',
+    id: 'regional-manager',
+    title: '2. Regional Manager',
+    subtitle: 'Northern & Chennai Zonal Office',
+    icon: MapPin,
+    defaultEmail: 'regional@tasmac.tn.gov',
+    defaultPassword: 'tasmac123',
+    portalMode: 'manufacturing',
+    stage: 'regional',
+  },
+  {
+    id: 'warehouse-manager',
+    title: '3. Warehouse Manager',
+    subtitle: 'Ambattur Central Wholesale Depot',
+    icon: Warehouse,
+    defaultEmail: 'warehouse@tasmac.tn.gov',
+    defaultPassword: 'tasmac123',
+    portalMode: 'manufacturing',
+    stage: 'depots',
+  },
+  {
+    id: 'supplier',
+    title: '4. Supplier / Brand Owner',
+    subtitle: 'United Breweries & Mohan Distilleries',
+    icon: Factory,
+    defaultEmail: 'supplier@tasmac.tn.gov',
+    defaultPassword: 'tasmac123',
+    portalMode: 'manufacturing',
+    stage: 'suppliers',
+  },
+  {
+    id: 'retail-shop',
+    title: '5. Retail Shop Owner',
+    subtitle: 'TASMAC Retail Vend #1042 (T. Nagar)',
     icon: Store,
     defaultEmail: 'shop@tasmac.tn.gov',
+    defaultPassword: 'tasmac123',
+    portalMode: 'retail',
+    stage: 'inventory',
+  },
+  {
+    id: 'delivery-driver',
+    title: '6. Delivery Driver',
+    subtitle: 'State Logistics Fleet #TN-04-E-8812',
+    icon: Truck,
+    defaultEmail: 'driver@tasmac.tn.gov',
+    defaultPassword: 'tasmac123',
+    portalMode: 'retail',
+    stage: 'driver-console',
+  },
+  {
+    id: 'compliance-auditor',
+    title: '7. Auditor / Compliance Officer',
+    subtitle: 'Prohibition & Excise Enforcement',
+    icon: ShieldCheck,
+    defaultEmail: 'auditor@tasmac.tn.gov',
+    defaultPassword: 'tasmac123',
+    portalMode: 'manufacturing',
+    stage: 'compliance',
   },
 ];
 
@@ -122,10 +178,14 @@ export function LoginPage({
   portalMode = 'manufacturing',
   onSwitchPortal
 }) {
-  const [selectedOption, setSelectedOption] = useState(portalMode);
-  const [identifier, setIdentifier] = useState(() => 
-    portalMode === 'retail' ? 'shop@tasmac.tn.gov' : 'distillery@tasmac.tn.gov'
-  );
+  const [selectedOption, setSelectedOption] = useState(() => {
+    const matched = PORTAL_OPTIONS.find((p) => p.id === portalMode || p.portalMode === portalMode);
+    return matched ? matched.id : PORTAL_OPTIONS[0].id;
+  });
+  const [identifier, setIdentifier] = useState(() => {
+    const matched = PORTAL_OPTIONS.find((p) => p.id === portalMode || p.portalMode === portalMode);
+    return matched ? matched.defaultEmail : PORTAL_OPTIONS[0].defaultEmail;
+  });
   const [password, setPassword] = useState('tasmac123');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
@@ -150,28 +210,35 @@ export function LoginPage({
 
   // Sync state if portalMode prop changes
   useEffect(() => {
-    setSelectedOption(portalMode);
-    if (!identifier || identifier === 'distillery@tasmac.tn.gov' || identifier === 'shop@tasmac.tn.gov') {
-      setIdentifier(portalMode === 'retail' ? 'shop@tasmac.tn.gov' : 'distillery@tasmac.tn.gov');
+    const current = PORTAL_OPTIONS.find((p) => p.id === selectedOption);
+    if (!current || (current.portalMode !== portalMode && current.id !== portalMode)) {
+      const match = PORTAL_OPTIONS.find((p) => p.portalMode === portalMode || p.id === portalMode) || PORTAL_OPTIONS[0];
+      setSelectedOption(match.id);
+      setIdentifier(match.defaultEmail);
     }
   }, [portalMode]);
 
   const handleSelectOption = (optionId) => {
     setSelectedOption(optionId);
     setErrorMessage('');
-    if (optionId === 'manufacturing') {
-      setIdentifier('distillery@tasmac.tn.gov');
-    } else {
-      setIdentifier('shop@tasmac.tn.gov');
-    }
-    if (onSwitchPortal) {
-      onSwitchPortal(optionId);
+    const target = PORTAL_OPTIONS.find((p) => p.id === optionId);
+    if (target) {
+      setIdentifier(target.defaultEmail);
+      if (target.defaultPassword) setPassword(target.defaultPassword);
+      if (onSwitchPortal && target.portalMode) {
+        onSwitchPortal(target.portalMode);
+      }
     }
   };
 
   const handleApplyDemo = (demo) => {
-    setSelectedOption(demo.portal);
-    if (onSwitchPortal) onSwitchPortal(demo.portal);
+    const matched = PORTAL_OPTIONS.find((p) => p.defaultEmail === demo.email || p.stage === demo.stage);
+    if (matched) {
+      setSelectedOption(matched.id);
+      if (onSwitchPortal && matched.portalMode) onSwitchPortal(matched.portalMode);
+    } else if (onSwitchPortal && demo.portal) {
+      onSwitchPortal(demo.portal);
+    }
     setIdentifier(demo.email);
     setPassword(demo.password);
     setErrorMessage('');
@@ -180,9 +247,7 @@ export function LoginPage({
   };
 
   const handleSocialClick = (provider) => {
-    const defaultDemo = selectedOption === 'manufacturing' 
-      ? ALL_DEMO_ACCOUNTS[0] 
-      : ALL_DEMO_ACCOUNTS[2];
+    const defaultDemo = ALL_DEMO_ACCOUNTS[0];
     handleApplyDemo(defaultDemo);
     setNoticeMessage(`Linked via ${provider} (${defaultDemo.role})`);
     setTimeout(() => setNoticeMessage(''), 3000);
@@ -199,11 +264,14 @@ export function LoginPage({
         password: password,
       });
 
+      const selectedOptObj = PORTAL_OPTIONS.find((p) => p.id === selectedOption);
+      const effectiveMode = selectedOptObj ? selectedOptObj.portalMode : (response.user?.role?.includes('Distillery') || response.user?.role?.includes('Depot') ? 'manufacturing' : 'retail');
+
       localStorage.setItem('tasmac_auth_token', response.access_token);
       localStorage.setItem('tasmac_auth_user', JSON.stringify(response.user));
-      localStorage.setItem('tasmac_portal_mode', selectedOption);
+      localStorage.setItem('tasmac_portal_mode', effectiveMode);
       
-      onLoginSuccess(response.user, response.access_token, selectedOption);
+      onLoginSuccess(response.user, response.access_token, effectiveMode);
     } catch (err) {
       setErrorMessage(err.message || 'Authentication failed. Please verify credentials.');
     } finally {
@@ -243,9 +311,9 @@ export function LoginPage({
               <span className="font-semibold text-zinc-800 dark:text-zinc-200">{currentUser.role}</span>
             </div>
             <div className="flex justify-between items-center text-[11px]">
-              <span className="text-zinc-500">Workspace:</span>
-              <span className="capitalize font-semibold text-zinc-800 dark:text-zinc-200">
-                {selectedOption === 'manufacturing' ? 'Manufacturing' : 'Retail'}
+              <span className="text-zinc-500">Target Portal:</span>
+              <span className="font-semibold text-zinc-800 dark:text-zinc-200">
+                {selectedPortalObj ? selectedPortalObj.title : (currentUser.role || 'Official Portal')}
               </span>
             </div>
           </div>
@@ -254,7 +322,7 @@ export function LoginPage({
             {onNavigateToStage && (
               <button
                 type="button"
-                onClick={() => onNavigateToStage(currentUser.default_stage || (selectedOption === 'manufacturing' ? 'suppliers' : 'inventory'))}
+                onClick={() => onNavigateToStage(currentUser.default_stage || selectedPortalObj.stage || (selectedPortalObj.portalMode === 'manufacturing' ? 'suppliers' : 'inventory'))}
                 className="w-full py-2.5 px-4 rounded-full bg-orange-600 hover:bg-orange-500 active:bg-orange-700 text-white font-bold text-xs tracking-wider uppercase transition shadow-md shadow-orange-600/30 dark:shadow-orange-950/50 flex items-center justify-center gap-2 cursor-pointer"
               >
                 <span>Enter Workspace</span>
@@ -374,7 +442,7 @@ export function LoginPage({
 
             {/* Dropdown Menu */}
             {isPortalDropdownOpen && (
-              <div className="absolute top-full left-0 right-0 mt-1 z-40 p-1 rounded-xl bg-white dark:bg-[#161616] border border-zinc-200 dark:border-white/10 shadow-2xl space-y-0.5 animate-fade-in">
+              <div className="absolute top-full left-0 right-0 mt-1 z-40 p-1 rounded-xl bg-white dark:bg-[#161616] border border-zinc-200 dark:border-white/10 shadow-2xl space-y-0.5 animate-fade-in max-h-64 overflow-y-auto">
                 {PORTAL_OPTIONS.map((opt) => {
                   const Icon = opt.icon;
                   const isSelected = selectedOption === opt.id;
