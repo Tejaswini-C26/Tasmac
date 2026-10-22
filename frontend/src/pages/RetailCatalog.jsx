@@ -205,16 +205,6 @@ export function RetailCatalog({ onAddToCart, cart, onNavigateToAddBottle }) {
 
         <div>
 
-          <div className="flex items-center gap-2 mb-1">
-
-            <span className="text-[11px] font-mono uppercase tracking-wider text-orange-400 bg-orange-500/10 px-2 py-0.5 rounded border border-orange-500/20">
-
-              TASMAC Official Wholesale Repository
-
-            </span>
-
-          </div>
-
           <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2">
 
             Wholesale Product Catalog & Indent
