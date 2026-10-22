@@ -178,30 +178,32 @@ export function FinanceLedger() {
       </div>
 
       {/* Tabs */}
-      <div className="flex border-b border-zinc-200 dark:border-white/10 gap-2 overflow-x-auto pb-px">
-        <button
-          onClick={() => setActiveTab('ledgers')}
-          className={`px-4 py-2 text-xs font-medium border-b-2 transition cursor-pointer flex items-center gap-2 whitespace-nowrap ${
-            activeTab === 'ledgers'
-              ? 'border-orange-500 text-orange-600 dark:text-orange-400 font-semibold'
-              : 'border-transparent text-zinc-500 hover:text-zinc-900 dark:hover:text-white'
-          }`}
-        >
-          <CreditCard className="w-3.5 h-3.5" />
-          Financial Ledgers & Statements ({ledgers.length})
-        </button>
+      <div className="flex items-center">
+        <div className="inline-flex items-center p-1 rounded-xl bg-zinc-100 dark:bg-[#0c0d12] border border-zinc-200 dark:border-white/10 gap-1">
+          <button
+            onClick={() => setActiveTab('ledgers')}
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer flex items-center gap-2 whitespace-nowrap ${
+              activeTab === 'ledgers'
+                ? 'bg-orange-500 text-white font-semibold shadow-sm'
+                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
+            }`}
+          >
+            <CreditCard className="w-3.5 h-3.5" />
+            Financial Ledgers & Statements ({ledgers.length})
+          </button>
 
-        <button
-          onClick={() => setActiveTab('returns')}
-          className={`px-4 py-2 text-xs font-medium border-b-2 transition cursor-pointer flex items-center gap-2 whitespace-nowrap ${
-            activeTab === 'returns'
-              ? 'border-orange-500 text-orange-600 dark:text-orange-400 font-semibold'
-              : 'border-transparent text-zinc-500 hover:text-zinc-900 dark:hover:text-white'
-          }`}
-        >
-          <RotateCcw className="w-3.5 h-3.5" />
-          Empty Bottle Return Manifests ({returns.length})
-        </button>
+          <button
+            onClick={() => setActiveTab('returns')}
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer flex items-center gap-2 whitespace-nowrap ${
+              activeTab === 'returns'
+                ? 'bg-orange-500 text-white font-semibold shadow-sm'
+                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
+            }`}
+          >
+            <RotateCcw className="w-3.5 h-3.5" />
+            Empty Bottle Return Manifests ({returns.length})
+          </button>
+        </div>
       </div>
 
       {/* Tab 1: Financial Ledgers */}
