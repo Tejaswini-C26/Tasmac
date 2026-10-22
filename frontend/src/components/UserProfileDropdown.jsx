@@ -170,7 +170,10 @@ export function UserProfileDropdown({
 
       {/* Dropdown Menu Modal Container */}
       {isOpen && (
-        <div className="absolute right-0 top-full mt-2 w-64 sm:w-72 rounded-2xl bg-white dark:bg-[#121214] border border-zinc-200 dark:border-white/10 shadow-2xl p-2 z-50 animate-fade-in text-left">
+        <div 
+          className="absolute right-0 top-full mt-2 w-64 sm:w-72 rounded-lg bg-white dark:bg-[#101010] border border-zinc-200 dark:border-white/10 shadow-xl p-2 z-50 animate-fade-in text-left select-none"
+          style={{ borderRadius: '8px' }}
+        >
           
           {/* Header: Signed in as */}
           <div className="px-2.5 py-2">
@@ -206,7 +209,7 @@ export function UserProfileDropdown({
                     if (onSwitchRole) onSwitchRole(role);
                     setIsOpen(false);
                   }}
-                  className={`w-full px-2.5 py-1.5 rounded-lg flex items-center justify-between text-left text-xs transition cursor-pointer ${
+                  className={`w-full px-2.5 py-1.5 rounded-md flex items-center justify-between text-left text-xs transition cursor-pointer ${
                     isActive
                       ? 'font-semibold text-zinc-900 dark:text-white bg-zinc-100 dark:bg-white/10'
                       : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/5 hover:text-zinc-900 dark:hover:text-white'
@@ -233,7 +236,7 @@ export function UserProfileDropdown({
               setIsSettingsModalOpen(true);
               setIsOpen(false);
             }}
-            className="w-full px-2.5 py-1.5 rounded-lg flex items-center gap-2.5 text-xs text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-white/5 transition cursor-pointer"
+            className="w-full px-2.5 py-1.5 rounded-md flex items-center gap-2.5 text-xs text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-white/5 transition cursor-pointer"
           >
             <Settings className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
             <span>Account & settings</span>
@@ -246,7 +249,7 @@ export function UserProfileDropdown({
               if (onTogglePortalMode) onTogglePortalMode();
               setIsOpen(false);
             }}
-            className="w-full px-2.5 py-1.5 rounded-lg flex items-center gap-2.5 text-xs text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-white/5 transition cursor-pointer"
+            className="w-full px-2.5 py-1.5 rounded-md flex items-center gap-2.5 text-xs text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-white/5 transition cursor-pointer"
           >
             <ArrowLeftRight className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
             <span>Switch to {portalMode === 'manufacturing' ? 'Retail view' : 'Manufacturing view'}</span>
@@ -261,7 +264,7 @@ export function UserProfileDropdown({
               setIsOpen(false);
               if (onLogout) onLogout();
             }}
-            className="w-full px-2.5 py-1.5 rounded-lg flex items-center gap-2.5 text-xs text-rose-600 dark:text-rose-400 hover:bg-rose-500/10 transition cursor-pointer font-medium"
+            className="w-full px-2.5 py-1.5 rounded-md flex items-center gap-2.5 text-xs text-rose-600 dark:text-rose-400 hover:bg-rose-500/10 transition cursor-pointer font-medium"
           >
             <LogOut className="w-3.5 h-3.5 shrink-0" />
             <span>Log out</span>
@@ -272,7 +275,10 @@ export function UserProfileDropdown({
       {/* Account & Settings Modal */}
       {isSettingsModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="w-full max-w-sm rounded-2xl bg-white dark:bg-[#121214] border border-zinc-200 dark:border-white/10 shadow-2xl p-5 space-y-4 animate-fade-in text-left">
+          <div 
+            className="w-full max-w-sm rounded-lg bg-white dark:bg-[#101010] border border-zinc-200 dark:border-white/10 shadow-2xl p-5 space-y-4 animate-fade-in text-left"
+            style={{ borderRadius: '8px' }}
+          >
             <div className="flex items-center justify-between pb-2 border-b border-zinc-200 dark:border-white/10">
               <div className="flex items-center gap-2">
                 <Settings className="w-4 h-4 text-orange-500" />
@@ -287,7 +293,7 @@ export function UserProfileDropdown({
             </div>
 
             <div className="space-y-3 text-xs">
-              <div className="flex items-center gap-3 p-3 rounded-xl bg-zinc-50 dark:bg-white/[0.03] border border-zinc-200 dark:border-white/5">
+              <div className="flex items-center gap-3 p-3 rounded-md bg-zinc-50 dark:bg-white/[0.03] border border-zinc-200 dark:border-white/5">
                 <div className="w-10 h-10 rounded-full bg-orange-500/10 text-orange-600 dark:text-orange-400 flex items-center justify-center font-bold text-sm">
                   {initials}
                 </div>
@@ -321,7 +327,7 @@ export function UserProfileDropdown({
 
             <button
               onClick={() => setIsSettingsModalOpen(false)}
-              className="w-full py-2 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-bold text-xs uppercase tracking-wider transition cursor-pointer"
+              className="w-full py-2 rounded-md bg-orange-600 hover:bg-orange-500 text-white font-bold text-xs uppercase tracking-wider transition cursor-pointer"
             >
               Done
             </button>
@@ -331,3 +337,4 @@ export function UserProfileDropdown({
     </div>
   );
 }
+

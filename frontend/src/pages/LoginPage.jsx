@@ -283,7 +283,10 @@ export function LoginPage({
   if (currentUser) {
     return (
       <div className="w-full h-full flex items-center justify-center">
-        <div className="w-full max-w-[380px] bg-white dark:bg-[#101010] border border-zinc-200 dark:border-white/10 rounded-xl p-6 shadow-2xl space-y-4 text-center">
+        <div 
+          className="w-full max-w-[380px] bg-white dark:bg-[#101010] border border-zinc-200 dark:border-white/10 rounded-lg p-6 shadow-xl space-y-4 text-center select-none"
+          style={{ borderRadius: '8px' }}
+        >
           <div className="w-14 h-14 rounded-full bg-orange-500/10 border border-orange-500/25 flex items-center justify-center text-orange-600 dark:text-orange-500 font-bold text-xl mx-auto shadow-sm">
             {currentUser.full_name ? currentUser.full_name.charAt(0) : 'U'}
           </div>
@@ -301,7 +304,7 @@ export function LoginPage({
             </p>
           </div>
 
-          <div className="p-3 rounded-xl bg-zinc-50 dark:bg-[#161616] border border-zinc-200 dark:border-white/5 space-y-1.5 text-xs text-left">
+          <div className="p-3 rounded-md bg-zinc-50 dark:bg-[#161616] border border-zinc-200 dark:border-white/5 space-y-1.5 text-xs text-left">
             <div className="flex justify-between items-center text-[11px]">
               <span className="text-zinc-500">Department Token:</span>
               <span className="font-mono font-bold text-orange-600 dark:text-orange-400">{currentUser.code}</span>
@@ -323,7 +326,7 @@ export function LoginPage({
               <button
                 type="button"
                 onClick={() => onNavigateToStage(currentUser.default_stage || selectedPortalObj.stage || (selectedPortalObj.portalMode === 'manufacturing' ? 'suppliers' : 'inventory'))}
-                className="w-full py-2.5 px-4 rounded-full bg-orange-600 hover:bg-orange-500 active:bg-orange-700 text-white font-bold text-xs tracking-wider uppercase transition shadow-md shadow-orange-600/30 dark:shadow-orange-950/50 flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full py-2.5 px-4 rounded-md bg-orange-600 hover:bg-orange-500 active:bg-orange-700 text-white font-bold text-xs tracking-wider uppercase transition shadow-md shadow-orange-600/30 dark:shadow-orange-950/50 flex items-center justify-center gap-2 cursor-pointer"
               >
                 <span>Enter Workspace</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -333,7 +336,7 @@ export function LoginPage({
             <button
               type="button"
               onClick={onLogout}
-              className="w-full py-2 px-4 rounded-full border border-zinc-200 dark:border-white/10 hover:border-rose-500/40 text-zinc-600 dark:text-zinc-400 hover:text-rose-500 dark:hover:text-rose-400 text-xs font-semibold transition flex items-center justify-center gap-1.5 cursor-pointer"
+              className="w-full py-2 px-4 rounded-md border border-zinc-200 dark:border-white/10 hover:border-rose-500/40 text-zinc-600 dark:text-zinc-400 hover:text-rose-500 dark:hover:text-rose-400 text-xs font-semibold transition flex items-center justify-center gap-1.5 cursor-pointer"
             >
               <LogOut className="w-3.5 h-3.5" />
               <span>Sign Out</span>
