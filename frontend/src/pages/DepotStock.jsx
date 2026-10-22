@@ -26,7 +26,7 @@ import { fetchDepots, fetchDepotInventory } from '../services/api';
 
 
 
-export function DepotStock() {
+export function DepotStock({ externalSearchQuery = '' }) {
 
   const [depots, setDepots] = useState([]);
 
@@ -96,14 +96,11 @@ export function DepotStock() {
 
 
 
+  const effectiveSearch = (externalSearchQuery || search).trim().toLowerCase();
   const filteredItems = (depotInventory?.items || []).filter((item) => {
-
-    if (!search) return true;
-
-    return item.brand_name.toLowerCase().includes(search.toLowerCase()) ||
-
-           item.category.toLowerCase().includes(search.toLowerCase());
-
+    if (!effectiveSearch) return true;
+    return item.brand_name.toLowerCase().includes(effectiveSearch) ||
+           item.category.toLowerCase().includes(effectiveSearch);
   });
 
 

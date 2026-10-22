@@ -154,7 +154,7 @@ function CustomModalSelect({ value, onChange, options, placeholder = 'Select...'
   );
 }
 
-export function SupplierManagement() {
+export function SupplierManagement({ externalSearchQuery = '' }) {
   const [activeTab, setActiveTab] = useState('consignments'); // 'consignments' | 'directory' | 'scorecard'
   const [animateShares, setAnimateShares] = useState(false);
   const [suppliers, setSuppliers] = useState([]);
@@ -319,14 +319,14 @@ export function SupplierManagement() {
     }
   };
 
+  const effectiveQuery = (externalSearchQuery || searchQuery).trim().toLowerCase();
   const filteredConsignments = consignments.filter((c) => {
     if (statusFilter !== 'ALL' && c.status !== statusFilter) return false;
-    if (searchQuery) {
-      const q = searchQuery.toLowerCase();
-      const matchNo = c.consignment_no.toLowerCase().includes(q);
-      const matchSup = c.supplier_name.toLowerCase().includes(q);
-      const matchDep = c.depot_name.toLowerCase().includes(q);
-      const matchBatch = c.batch_no?.toLowerCase().includes(q);
+    if (effectiveQuery) {
+      const matchNo = c.consignment_no?.toLowerCase().includes(effectiveQuery);
+      const matchSup = c.supplier_name?.toLowerCase().includes(effectiveQuery);
+      const matchDep = c.depot_name?.toLowerCase().includes(effectiveQuery);
+      const matchBatch = c.batch_no?.toLowerCase().includes(effectiveQuery);
       if (!matchNo && !matchSup && !matchDep && !matchBatch) return false;
     }
     return true;
@@ -466,7 +466,7 @@ export function SupplierManagement() {
               <input
                 type="text"
                 placeholder="Search consignments..."
-                value={searchQuery}
+                value={searchQuery || externalSearchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-8 pr-3 py-1.5 bg-zinc-50 dark:bg-[#000000] border border-zinc-200 dark:border-white/10 rounded-lg text-xs text-zinc-900 dark:text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-orange-500"
               />
