@@ -253,6 +253,24 @@ def receive_consignment_grn(
             )
             db.add(new_stock)
 
+    # Update supplier payout balance & record Financial Ledger liability
+    supplier = db.query(models.Supplier).filter(models.Supplier.id == consignment.supplier_id).first()
+    if supplier:
+        supplier.payout_balance = float(getattr(supplier, "payout_balance", 0.0) or 0.0) + float(consignment.total_consignment_value)
+        ledger_entry = models.FinancialLedger(
+            entry_no=f"LED-SUP-{consignment.grn_no.replace('/', '-')}",
+            party_type="SUPPLIER",
+            party_id=supplier.id,
+            party_name=supplier.name,
+            transaction_type="SUPPLIER_PAYOUT",
+            amount=float(consignment.total_consignment_value),
+            balance_after=float(supplier.payout_balance),
+            reference_id=consignment.grn_no,
+            payment_mode="RTGS_PENDING",
+            notes=f"Inward Consignment {consignment.consignment_no}: {net_cases} cases verified by GRN"
+        )
+        db.add(ledger_entry)
+
     db.commit()
     db.refresh(consignment)
     cache.clear()
@@ -289,4 +307,22 @@ def get_supplier_analytics(db: Session = Depends(get_db)):
         breakage_percentage=breakage_pct,
         active_licenses=total_suppliers
     )
+
+@router.post("/{supplier_id}/approve-kyc")
+def approve_supplier_kyc(supplier_id: int, db: Session = Depends(get_db)):
+    supplier = db.query(models.Supplier).filter(models.Supplier.id == supplier_id).first()
+    if not supplier:
+        raise HTTPException(status_code=404, detail="Supplier not found")
+    
+    supplier.kyc_status = "APPROVED"
+    supplier.status = "ACTIVE"
+    db.commit()
+    db.refresh(supplier)
+    cache.invalidate("suppliers")
+    return {
+        "status": "success",
+        "supplier_id": supplier.id,
+        "kyc_status": supplier.kyc_status,
+        "message": f"KYC and Excise license approved for {supplier.name}"
+    }
 

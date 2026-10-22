@@ -15,7 +15,7 @@ import {
   ChevronRight,
   ShieldAlert
 } from 'lucide-react';
-import { fetchDepots, fetchShops, fetchMetrics } from '../services/api';
+import { fetchDepots, fetchShops, fetchMetrics, extendShopQuota } from '../services/api';
 
 const ZONES = [
   { id: 'chennai', name: 'Chennai & Northern Zone', districts: ['Chennai', 'Tiruvallur', 'Kanchipuram', 'Chengalpattu', 'Ranipet'] },
@@ -55,6 +55,20 @@ export function RegionalManager() {
   const zoneFillPct = totalZoneCapacity > 0 ? Math.round((totalZoneCases / totalZoneCapacity) * 100) : 0;
 
   const lowStockShopsCount = zoneShops.filter((s) => (s.cases_ordered_this_month || 0) < 150).length;
+
+  const totalQuotaCases = zoneShops.reduce((acc, s) => acc + (s.monthly_quota_cases || 750), 0);
+  const totalOrderedCases = zoneShops.reduce((acc, s) => acc + (s.cases_ordered_this_month || 0), 0);
+  const quotaUtilPct = totalQuotaCases > 0 ? ((totalOrderedCases / totalQuotaCases) * 100).toFixed(1) : '0.0';
+
+  const handleExtendQuota = async (shop) => {
+    try {
+      await extendShopQuota(shop.id, 100);
+      const updatedShops = await fetchShops();
+      setShops(updatedShops || []);
+    } catch (err) {
+      console.error('Failed to extend quota:', err);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -130,7 +144,7 @@ export function RegionalManager() {
             Monthly Quota Utilization
           </span>
           <div className="text-3xl sm:text-4xl font-mono font-bold text-zinc-900 dark:text-white mt-2">
-            68.4%
+            {quotaUtilPct}%
           </div>
         </div>
       </div>
@@ -271,7 +285,7 @@ export function RegionalManager() {
                     </td>
                     <td className="py-3 px-3 text-right">
                       <button
-                        onClick={() => alert(`Quota extension of 100 cases authorized for ${shop.name}`)}
+                        onClick={() => handleExtendQuota(shop)}
                         className="px-2.5 py-1 text-[11px] font-medium rounded bg-orange-500/10 hover:bg-orange-500 text-orange-600 dark:text-orange-400 hover:text-white border border-orange-500/20 transition cursor-pointer"
                       >
                         Extend +100cs

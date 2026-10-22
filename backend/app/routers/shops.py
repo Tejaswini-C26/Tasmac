@@ -1,7 +1,9 @@
+from datetime import datetime, timedelta
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session, selectinload, joinedload
 from sqlalchemy import func
 from typing import List, Optional
+from pydantic import BaseModel
 
 from ..database import get_db
 from .. import models, schemas
@@ -154,3 +156,44 @@ def get_shop_inventory(shop_id: int, db: Session = Depends(get_db)):
 
     cache.set(cache_key, results, ttl=60)
     return results
+
+class QuotaExtensionRequest(BaseModel):
+    cases: Optional[int] = 100
+
+@router.post("/{shop_id}/extend-quota")
+def extend_shop_quota(shop_id: int, payload: Optional[QuotaExtensionRequest] = None, db: Session = Depends(get_db)):
+    shop = db.query(models.RetailShop).filter(models.RetailShop.id == shop_id).first()
+    if not shop:
+        raise HTTPException(status_code=404, detail="Shop not found")
+    
+    additional_cases = payload.cases if payload and payload.cases else 100
+    shop.monthly_quota_cases = (getattr(shop, "monthly_quota_cases", 750) or 750) + additional_cases
+    db.commit()
+    db.refresh(shop)
+    cache.invalidate("shops")
+    return {
+        "status": "success",
+        "shop_id": shop.id,
+        "new_monthly_quota_cases": shop.monthly_quota_cases,
+        "message": f"Quota for {shop.name} extended by +{additional_cases} cases"
+    }
+
+@router.post("/{shop_id}/renew-license")
+def renew_shop_license(shop_id: int, db: Session = Depends(get_db)):
+    shop = db.query(models.RetailShop).filter(models.RetailShop.id == shop_id).first()
+    if not shop:
+        raise HTTPException(status_code=404, detail="Shop not found")
+    
+    shop.license_status = "ACTIVE"
+    shop.license_expiry = datetime.utcnow() + timedelta(days=365)
+    db.commit()
+    db.refresh(shop)
+    cache.invalidate("shops")
+    return {
+        "status": "success",
+        "shop_id": shop.id,
+        "license_status": shop.license_status,
+        "license_expiry": shop.license_expiry.strftime("%Y-%m-%d"),
+        "message": f"Excise license for {shop.name} renewed for 1 year"
+    }
+

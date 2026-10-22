@@ -210,6 +210,64 @@ export async function createBottleReturn(payload) {
   return res.json();
 }
 
+// Compliance & Batch Recalls
+export async function fetchRecalls() {
+  const res = await fetch(`${API_BASE}/compliance/recalls`);
+  if (!res.ok) throw new Error('Failed to fetch batch recalls');
+  return res.json();
+}
+
+export async function createRecall(payload) {
+  const res = await fetch(`${API_BASE}/compliance/recalls`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || 'Failed to trigger batch recall');
+  }
+  return res.json();
+}
+
+export async function verifyHologram(serialNumber) {
+  const res = await fetch(`${API_BASE}/compliance/verify-hologram`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ serial_number: serialNumber })
+  });
+  if (!res.ok) throw new Error('Failed to verify hologram');
+  return res.json();
+}
+
+// Shop Quota & License Management
+export async function extendShopQuota(shopId, cases = 100) {
+  const res = await fetch(`${API_BASE}/shops/${shopId}/extend-quota`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ cases })
+  });
+  if (!res.ok) throw new Error('Failed to extend quota');
+  return res.json();
+}
+
+export async function renewShopLicense(shopId) {
+  const res = await fetch(`${API_BASE}/shops/${shopId}/renew-license`, {
+    method: 'POST'
+  });
+  if (!res.ok) throw new Error('Failed to renew license');
+  return res.json();
+}
+
+// Supplier KYC Governance
+export async function approveSupplierKyc(supplierId) {
+  const res = await fetch(`${API_BASE}/suppliers/${supplierId}/approve-kyc`, {
+    method: 'POST'
+  });
+  if (!res.ok) throw new Error('Failed to approve supplier KYC');
+  return res.json();
+}
+
 
 
 

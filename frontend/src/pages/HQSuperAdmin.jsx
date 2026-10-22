@@ -17,7 +17,7 @@ import {
   Store,
   Layers
 } from 'lucide-react';
-import { fetchSuppliers, fetchShops, fetchMetrics } from '../services/api';
+import { fetchSuppliers, fetchShops, fetchMetrics, renewShopLicense, approveSupplierKyc } from '../services/api';
 
 export function HQSuperAdmin() {
   const [metrics, setMetrics] = useState(null);
@@ -33,7 +33,7 @@ export function HQSuperAdmin() {
   const [bottleDepositRate, setBottleDepositRate] = useState(10.0);
   const [policySaved, setPolicySaved] = useState(false);
 
-  useEffect(() => {
+  const loadData = () => {
     Promise.all([fetchSuppliers(), fetchShops(), fetchMetrics()])
       .then(([supData, shopData, metricData]) => {
         setSuppliers(supData || []);
@@ -42,12 +42,34 @@ export function HQSuperAdmin() {
       })
       .catch((err) => console.error('Failed to load HQ admin data:', err))
       .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    loadData();
   }, []);
 
   const handleSavePolicy = (e) => {
     e.preventDefault();
     setPolicySaved(true);
     setTimeout(() => setPolicySaved(false), 3000);
+  };
+
+  const handleApproveKyc = async (supplierId) => {
+    try {
+      await approveSupplierKyc(supplierId);
+      loadData();
+    } catch (err) {
+      console.error('Failed to approve KYC:', err);
+    }
+  };
+
+  const handleRenewLicense = async (shopId) => {
+    try {
+      await renewShopLicense(shopId);
+      loadData();
+    } catch (err) {
+      console.error('Failed to renew license:', err);
+    }
   };
 
   const pendingSuppliers = suppliers.filter((s) => s.kyc_status === 'PENDING' || s.status === 'PENDING');
@@ -297,6 +319,7 @@ export function HQSuperAdmin() {
                   <th className="py-3 px-3">KYC Status</th>
                   <th className="py-3 px-3 text-right">Payout Balance</th>
                   <th className="py-3 px-3 text-center">Status</th>
+                  <th className="py-3 px-3 text-right">Action</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-zinc-200 dark:divide-white/[0.04]">
@@ -330,6 +353,18 @@ export function HQSuperAdmin() {
                         {s.status}
                       </span>
                     </td>
+                    <td className="py-3 px-3 text-right">
+                      {s.kyc_status === 'PENDING' ? (
+                        <button
+                          onClick={() => handleApproveKyc(s.id)}
+                          className="px-2.5 py-1 text-[11px] font-medium rounded bg-emerald-500/10 hover:bg-emerald-500 text-emerald-600 dark:text-emerald-400 hover:text-white border border-emerald-500/20 transition cursor-pointer"
+                        >
+                          Approve KYC
+                        </button>
+                      ) : (
+                        <span className="text-[11px] font-mono text-zinc-400">Verified</span>
+                      )}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -361,6 +396,7 @@ export function HQSuperAdmin() {
                   <th className="py-3 px-3 text-right">Credit Limit</th>
                   <th className="py-3 px-3 text-right">Monthly Quota</th>
                   <th className="py-3 px-3 text-center">License Status</th>
+                  <th className="py-3 px-3 text-right">Action</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-zinc-200 dark:divide-white/[0.04]">
@@ -388,6 +424,23 @@ export function HQSuperAdmin() {
                       <span className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 font-semibold">
                         {shop.license_status || 'ACTIVE'}
                       </span>
+                    </td>
+                    <td className="py-3 px-3 text-right">
+                      {shop.license_status !== 'ACTIVE' ? (
+                        <button
+                          onClick={() => handleRenewLicense(shop.id)}
+                          className="px-2.5 py-1 text-[11px] font-medium rounded bg-orange-500/10 hover:bg-orange-500 text-orange-600 dark:text-orange-400 hover:text-white border border-orange-500/20 transition cursor-pointer"
+                        >
+                          Renew License
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => handleRenewLicense(shop.id)}
+                          className="px-2 py-0.5 text-[10px] font-mono rounded text-zinc-500 hover:text-orange-500 hover:bg-orange-500/10 transition cursor-pointer"
+                        >
+                          Extend +1Yr
+                        </button>
+                      )}
                     </td>
                   </tr>
                 ))}

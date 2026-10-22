@@ -235,6 +235,21 @@ def create_order(payload: schemas.OrderCreate, db: Session = Depends(get_db)):
             )
         )
 
+    # Record Financial Ledger charge for shop
+    ledger_entry = models.FinancialLedger(
+        entry_no=f"LED-INV-{new_order.order_no.replace('ORD-', '')}",
+        party_type="RETAIL_SHOP",
+        party_id=shop.id,
+        party_name=shop.name,
+        transaction_type="INVOICE_CHARGE",
+        amount=float(new_order.total_payable),
+        balance_after=float(shop.current_credit_used or 0.0),
+        reference_id=new_order.order_no,
+        payment_mode="ON_CREDIT",
+        notes=f"Order {new_order.order_no} ({new_order.total_cases} cases) from {depot.name}"
+    )
+    db.add(ledger_entry)
+
     db.commit()
     db.refresh(new_order)
 

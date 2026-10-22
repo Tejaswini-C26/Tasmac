@@ -5,7 +5,7 @@ from fastapi.staticfiles import StaticFiles
 
 from .database import engine, Base, SessionLocal
 from .seed_data import seed_retail_supplier_database
-from .routers import brands, orders, depots, shops, suppliers, auth, finance
+from .routers import brands, orders, depots, shops, suppliers, auth, finance, compliance
 
 # Create database tables
 Base.metadata.create_all(bind=engine)
@@ -38,6 +38,7 @@ app.include_router(depots.router)
 app.include_router(shops.router)
 app.include_router(suppliers.router)
 app.include_router(finance.router)
+app.include_router(compliance.router)
 
 @app.on_event("startup")
 def startup_event():

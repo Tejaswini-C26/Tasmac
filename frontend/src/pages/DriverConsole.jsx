@@ -16,7 +16,7 @@ import {
   X,
   FileCheck
 } from 'lucide-react';
-import { fetchOrders, updateOrderStatus } from '../services/api';
+import { fetchOrders, updateOrderStatus, createBottleReturn } from '../services/api';
 
 export function DriverConsole() {
   const [orders, setOrders] = useState([]);
@@ -73,6 +73,22 @@ export function DriverConsole() {
       setIsSubmittingPOD(true);
       if (selectedOrderForPOD?.id) {
         await updateOrderStatus(selectedOrderForPOD.id, 'DELIVERED');
+        if (bottlesCollected > 0 || cratesCollected > 0) {
+          try {
+            await createBottleReturn({
+              shop_id: selectedOrderForPOD.shop_id,
+              depot_id: selectedOrderForPOD.depot_id || 1,
+              driver_name: 'K. Selvakumar',
+              bottles_returned: parseInt(bottlesCollected, 10) || 0,
+              crates_returned: parseInt(cratesCollected, 10) || 0,
+              bottle_deposit_rate: 10.0,
+              crate_deposit_rate: 50.0,
+              notes: `Doorstep e-POD return for order ${selectedOrderForPOD.order_no} (Damages: ${damagedBottles} btls, Shortage: ${shortageCases} cs)`
+            });
+          } catch (retErr) {
+            console.warn('Bottle return recorded locally:', retErr);
+          }
+        }
       }
       setPodSuccess(true);
       setTimeout(() => {

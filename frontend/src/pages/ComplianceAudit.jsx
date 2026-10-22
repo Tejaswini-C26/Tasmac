@@ -14,7 +14,7 @@ import {
   Lock,
   Download
 } from 'lucide-react';
-import { fetchSuppliers, fetchShops, fetchBrands } from '../services/api';
+import { fetchSuppliers, fetchShops, fetchBrands, fetchRecalls, createRecall, verifyHologram } from '../services/api';
 
 export function ComplianceAudit() {
   const [suppliers, setSuppliers] = useState([]);
@@ -28,67 +28,52 @@ export function ComplianceAudit() {
   const [verifyResult, setVerifyResult] = useState(null);
 
   // Batch Recall state
-  const [recalls, setRecalls] = useState([
-    {
-      recall_no: 'RCL-2026-001',
-      batch_no: 'TN-BATCH-2026-08',
-      brand_name: 'Old Monk The Legend Rum',
-      distillery: 'Mohan Meakin Distilleries',
-      severity: 'CRITICAL',
-      status: 'ACTIVE_QUARANTINE',
-      quarantined_cases: 1240,
-      reason: 'Sedimentation anomaly detected during Regional Excise Lab random assay.',
-      issued_date: '2026-10-18'
-    }
-  ]);
+  const [recalls, setRecalls] = useState([]);
   const [isRecallModalOpen, setIsRecallModalOpen] = useState(false);
   const [recallBatchNo, setRecallBatchNo] = useState('');
   const [recallReason, setRecallReason] = useState('');
 
   useEffect(() => {
-    Promise.all([fetchSuppliers(), fetchShops(), fetchBrands()])
-      .then(([sup, shp, brd]) => {
+    Promise.all([fetchSuppliers(), fetchShops(), fetchBrands(), fetchRecalls()])
+      .then(([sup, shp, brd, rec]) => {
         setSuppliers(sup || []);
         setShops(shp || []);
         setBrands(brd || []);
+        setRecalls(rec || []);
       })
       .catch((err) => console.error('Failed to load compliance data:', err))
       .finally(() => setLoading(false));
   }, []);
 
-  const handleVerifySerial = (e) => {
+  const handleVerifySerial = async (e) => {
     e.preventDefault();
     if (!serialQuery) return;
-    setVerifyResult({
-      is_authentic: true,
-      serial_number: serialQuery.trim().toUpperCase(),
-      brand_name: 'Royal Challenge Whisky (750ml)',
-      distillery: 'United Spirits Ltd. (Diageo)',
-      bottling_date: '14-Sep-2026',
-      excise_stamp: 'TN-EXC-HOL-9928114',
-      status: 'GENUINE_STATE_ISSUED',
-      duty_paid: 'VERIFIED_TREASURY'
-    });
+    try {
+      const res = await verifyHologram(serialQuery.trim().toUpperCase());
+      setVerifyResult(res);
+    } catch (err) {
+      console.error('Failed to verify hologram:', err);
+    }
   };
 
-  const handleAddRecall = (e) => {
+  const handleAddRecall = async (e) => {
     e.preventDefault();
     if (!recallBatchNo || !recallReason) return;
-    const newRecall = {
-      recall_no: `RCL-2026-00${recalls.length + 1}`,
-      batch_no: recallBatchNo,
-      brand_name: 'Statewide Quarantined Consignment',
-      distillery: 'Multiple Depot Feeders',
-      severity: 'CRITICAL',
-      status: 'ACTIVE_QUARANTINE',
-      quarantined_cases: 850,
-      reason: recallReason,
-      issued_date: new Date().toISOString().split('T')[0]
-    };
-    setRecalls([newRecall, ...recalls]);
-    setRecallBatchNo('');
-    setRecallReason('');
-    setIsRecallModalOpen(false);
+    try {
+      await createRecall({
+        batch_no: recallBatchNo,
+        reason: recallReason,
+        severity: 'CRITICAL',
+        quarantined_cases: 850
+      });
+      const data = await fetchRecalls();
+      setRecalls(data || []);
+      setRecallBatchNo('');
+      setRecallReason('');
+      setIsRecallModalOpen(false);
+    } catch (err) {
+      console.error('Failed to submit batch recall:', err);
+    }
   };
 
   return (
