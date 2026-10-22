@@ -212,31 +212,30 @@ export function AddBottle({ onBottleAdded }) {
   const activePack = packRates.find(p => p.size === selectedPreviewPack) || packRates[0] || {};
 
   return (
-    <div className="space-y-8 max-w-7xl mx-auto pb-12">
-
-      {/* Success Notification Modal / Banner */}
+    <div className="h-full flex flex-col overflow-hidden max-w-7xl mx-auto w-full space-y-3">
+      {/* Success Notification Modal / Banner (Pinned Top) */}
       {successData && (
-        <div className="p-6 rounded-xl bg-emerald-950/30 border border-emerald-500/40 text-emerald-200 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl">
+        <div className="shrink-0 p-4 sm:p-5 rounded-xl bg-emerald-950/30 border border-emerald-500/40 text-emerald-200 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0">
-              <Check className="w-6 h-6 stroke-[2.5]" />
+            <div className="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0">
+              <Check className="w-5 h-5 stroke-[2.5]" />
             </div>
             <div>
-              <h3 className="font-bold text-lg text-white">
+              <h3 className="font-bold text-base text-white">
                 {successData.name} Successfully Added!
               </h3>
-              <p className="text-xs text-emerald-300 mt-0.5">
-                Brand Code: <span className="font-mono font-bold text-white">{successData.brand_code}</span> &bull; {successData.pack_rates?.length || 0} pack sizes configured &bull; {successData.total_depot_stock?.toLocaleString()} cases allocated across depots.
+              <p className="text-xs text-emerald-300 mt-0.5 font-mono">
+                Brand Code: <span className="font-bold text-white">{successData.brand_code}</span> &bull; {successData.pack_rates?.length || 0} pack sizes &bull; {successData.total_depot_stock?.toLocaleString()} cases allocated.
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-3 w-full sm:w-auto">
+          <div className="flex items-center gap-3 w-full sm:w-auto shrink-0">
             <button
               onClick={() => {
                 setSuccessData(null);
                 setName('');
               }}
-              className="px-4 py-2 rounded-xl border border-zinc-700 bg-zinc-800 text-zinc-200 hover:text-white text-xs font-mono font-bold uppercase transition"
+              className="px-3.5 py-1.5 rounded-xl border border-zinc-700 bg-zinc-800 text-zinc-200 hover:text-white text-xs font-mono font-bold uppercase transition cursor-pointer"
             >
               Add Another
             </button>
@@ -244,7 +243,7 @@ export function AddBottle({ onBottleAdded }) {
               onClick={() => {
                 if (onBottleAdded) onBottleAdded();
               }}
-              className="px-5 py-2 rounded-xl bg-orange-600 hover:bg-orange-500 text-white text-xs font-mono font-bold uppercase tracking-wider transition flex items-center gap-2 shadow-lg shadow-orange-900/30"
+              className="px-4 py-1.5 rounded-xl bg-orange-600 hover:bg-orange-500 text-white text-xs font-mono font-bold uppercase tracking-wider transition flex items-center gap-1.5 shadow-lg shadow-orange-900/30 cursor-pointer"
             >
               <span>View in Catalog</span>
               <ArrowRight className="w-4 h-4" />
@@ -253,8 +252,9 @@ export function AddBottle({ onBottleAdded }) {
         </div>
       )}
 
-      {/* Main Grid: Form on Left, Live Card Preview on Right */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      {/* Main Grid: Form on Left, Live Card Preview on Right (Internally Scrollable) */}
+      <div className="flex-1 min-h-0 overflow-y-auto pr-1">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start pb-6">
         {/* Left Form (7 cols) */}
         <div className="lg:col-span-7 bg-white dark:bg-[#101010] border border-zinc-200 dark:border-white/10 rounded-md p-6 shadow-xl space-y-6">
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -651,6 +651,7 @@ export function AddBottle({ onBottleAdded }) {
             </p>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

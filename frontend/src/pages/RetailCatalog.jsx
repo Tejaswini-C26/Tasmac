@@ -196,17 +196,15 @@ export function RetailCatalog({ onAddToCart, cart, onNavigateToAddBottle, extern
 
 
   return (
-
-    <div className="space-y-6">
-
-      {/* Header Actions: Add Bottle & View Toggle */}
-
-      <div className="flex justify-end items-center gap-3 pb-2">
-
+    <div className="h-full flex flex-col overflow-hidden space-y-3">
+      {/* Pinned Top Controls */}
+      <div className="shrink-0 space-y-2.5">
+        {/* Header Actions: Add Bottle & View Toggle */}
+        <div className="flex justify-end items-center gap-3">
           {/* AI Smart Reorder Button */}
           <button
             onClick={() => setShowAIPredictions(!showAIPredictions)}
-            className={`px-3 py-2 rounded-xl text-xs font-mono font-bold uppercase tracking-wider transition flex items-center gap-1.5 cursor-pointer shadow-sm ${
+            className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold uppercase tracking-wider transition flex items-center gap-1.5 cursor-pointer shadow-sm ${
               showAIPredictions
                 ? 'bg-orange-600 text-white'
                 : 'bg-zinc-100 dark:bg-[#101010] border border-zinc-200 dark:border-white/10 text-orange-600 dark:text-orange-400 hover:border-orange-500'
@@ -218,208 +216,133 @@ export function RetailCatalog({ onAddToCart, cart, onNavigateToAddBottle, extern
           </button>
 
           {/* Add Bottle Button */}
-
           <button
-
             onClick={onNavigateToAddBottle}
-
-            className="px-3.5 py-2 rounded-xl bg-orange-600 hover:bg-orange-500 text-white text-xs font-mono font-bold uppercase tracking-wider transition flex items-center gap-1.5 shadow-md shadow-orange-950/30 cursor-pointer group"
-
+            className="px-3.5 py-1.5 rounded-xl bg-orange-600 hover:bg-orange-500 text-white text-xs font-mono font-bold uppercase tracking-wider transition flex items-center gap-1.5 shadow-md shadow-orange-950/30 cursor-pointer group"
             title="Add a new bottle to the wholesale catalog"
-
           >
-
             <PlusCircle className="w-4 h-4 stroke-[2] group-hover:rotate-90 transition-transform duration-200" />
-
             <span>Add Bottle</span>
-
           </button>
 
-
-
           {/* View Toggle */}
-
-          <div className="flex items-center gap-2 bg-zinc-100 dark:bg-[#101010] border border-zinc-200 dark:border-white/10 p-1 rounded-xl">
-
+          <div className="flex items-center gap-1 bg-zinc-100 dark:bg-[#101010] border border-zinc-200 dark:border-white/10 p-0.5 rounded-xl">
             <button
-
               onClick={() => setViewMode('grid')}
-
-              className={`p-2 rounded-lg text-xs font-medium flex items-center gap-1.5 transition cursor-pointer ${
-
+              className={`px-2.5 py-1 rounded-lg text-xs font-medium flex items-center gap-1.5 transition cursor-pointer ${
                 viewMode === 'grid'
-
-                  ? 'bg-orange-600 text-white shadow-sm'
-
-                  : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 hover:bg-black/5 dark:hover:bg-white/5'
-
+                  ? 'bg-orange-600 text-white shadow-sm font-semibold'
+                  : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
               }`}
-
             >
-
               <Grid className="w-3.5 h-3.5" />
-
               <span>Card Grid</span>
-
             </button>
-
             <button
-
               onClick={() => setViewMode('table')}
-
-              className={`p-2 rounded-lg text-xs font-medium flex items-center gap-1.5 transition cursor-pointer ${
-
+              className={`px-2.5 py-1 rounded-lg text-xs font-medium flex items-center gap-1.5 transition cursor-pointer ${
                 viewMode === 'table'
-
-                  ? 'bg-orange-600 text-white shadow-sm'
-
-                  : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 hover:bg-black/5 dark:hover:bg-white/5'
-
+                  ? 'bg-orange-600 text-white shadow-sm font-semibold'
+                  : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
               }`}
-
             >
-
               <ListIcon className="w-3.5 h-3.5" />
-
               <span>Dense Table</span>
-
             </button>
-
           </div>
+        </div>
 
-      </div>
-
-
-
-      {/* AI Demand Forecasting Banner */}
-      {showAIPredictions && (
-        <div className="p-4 rounded-xl border border-orange-500/30 bg-orange-500/5 space-y-3 animate-in fade-in-50">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-            <div className="flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-orange-500" />
-              <span className="font-bold text-xs uppercase font-mono text-zinc-900 dark:text-white">
-                AI Demand Forecasting & Predictive Restock Suggestions
-              </span>
-              <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-orange-500/20 text-orange-600 dark:text-orange-400 font-bold">
-                Statewide Run-Rate
+        {/* AI Demand Forecasting Banner */}
+        {showAIPredictions && (
+          <div className="p-3.5 rounded-xl border border-orange-500/30 bg-orange-500/5 space-y-2.5 animate-in fade-in-50">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-orange-500" />
+                <span className="font-bold text-xs uppercase font-mono text-zinc-900 dark:text-white">
+                  AI Demand Forecasting &amp; Predictive Restock Suggestions
+                </span>
+                <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-orange-500/20 text-orange-600 dark:text-orange-400 font-bold">
+                  Statewide Run-Rate
+                </span>
+              </div>
+              <span className="text-[11px] font-mono text-zinc-500">
+                Upcoming weekend festival quota spike (+26% avg)
               </span>
             </div>
-            <span className="text-[11px] font-mono text-zinc-500">
-              Upcoming weekend festival quota spike (+26% avg)
-            </span>
-          </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            {brands.slice(0, 3).map((b, idx) => {
-              const surgePct = [34, 28, 19][idx];
-              const suggestedCases = [20, 15, 12][idx];
-              const packRate = getBrandPackRates(b)[0];
-              return (
-                <div key={`ai-${b.id}`} className="p-3 rounded-lg border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] flex items-center justify-between gap-2 shadow-sm">
-                  <div className="min-w-0">
-                    <div className="text-xs font-bold text-zinc-900 dark:text-white truncate">{b.name}</div>
-                    <div className="text-[11px] font-mono text-emerald-600 dark:text-emerald-400 font-semibold">
-                      +{surgePct}% Forecasted Run-Rate
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {brands.slice(0, 3).map((b, idx) => {
+                const surgePct = [34, 28, 19][idx];
+                const suggestedCases = [20, 15, 12][idx];
+                const packRate = getBrandPackRates(b)[0];
+                return (
+                  <div key={`ai-${b.id}`} className="p-2.5 rounded-lg border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] flex items-center justify-between gap-2 shadow-sm">
+                    <div className="min-w-0">
+                      <div className="text-xs font-bold text-zinc-900 dark:text-white truncate">{b.name}</div>
+                      <div className="text-[11px] font-mono text-emerald-600 dark:text-emerald-400 font-semibold">
+                        +{surgePct}% Forecasted Run-Rate
+                      </div>
+                      <div className="text-[10px] text-zinc-500 font-mono mt-0.5">
+                        Suggested: {suggestedCases} cases
+                      </div>
                     </div>
-                    <div className="text-[10px] text-zinc-500 font-mono mt-0.5">
-                      Suggested: {suggestedCases} cases
-                    </div>
+                    <button
+                      onClick={() => {
+                        if (onAddToCart) onAddToCart(b, packRate, suggestedCases);
+                      }}
+                      className="px-2.5 py-1.5 rounded-lg bg-orange-600 hover:bg-orange-500 text-white font-mono text-[11px] font-bold transition flex items-center gap-1 shrink-0 cursor-pointer shadow-sm"
+                    >
+                      <Plus className="w-3 h-3" />
+                      <span>+{suggestedCases}cs</span>
+                    </button>
                   </div>
-                  <button
-                    onClick={() => {
-                      if (onAddToCart) onAddToCart(b, packRate, suggestedCases);
-                    }}
-                    className="px-2.5 py-1.5 rounded-lg bg-orange-600 hover:bg-orange-500 text-white font-mono text-[11px] font-bold transition flex items-center gap-1 shrink-0 cursor-pointer shadow-sm"
-                  >
-                    <Plus className="w-3 h-3" />
-                    <span>+{suggestedCases}cs</span>
-                  </button>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Filter and Search Bar (Pinned at top of catalog) */}
-
-      <div className="sticky top-0 z-20 bg-[#F8F7F6]/95 dark:bg-[#000000]/95 backdrop-blur-md py-3 -mt-2 space-y-3">
-
-        {/* Category Pills */}
-
+        {/* Category Filter Pills */}
         <div className="inline-flex items-center p-1 rounded-xl bg-white dark:bg-[#101010] border border-zinc-200 dark:border-white/10 gap-1 overflow-x-auto scrollbar-none max-w-full shadow-sm">
-
           {categories.map((c) => {
-
             const active = selectedCategory === c.key;
-
             return (
-
               <button
-
                 key={c.key}
-
                 onClick={() => setSelectedCategory(c.key)}
-
-                className={`px-4 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${
-
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${
                   active
-
                     ? 'bg-orange-500 text-white shadow-sm font-semibold'
-
                     : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
-
                 }`}
-
               >
-
                 {c.label}
-
               </button>
-
             );
-
           })}
-
         </div>
-
       </div>
 
 
 
       {/* Product Display Area */}
-
       {loading ? (
-
-        <div className="py-24 text-center space-y-3">
-
+        <div className="flex-1 flex flex-col items-center justify-center space-y-3">
           <div className="w-8 h-8 border-2 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto" />
-
-          <p className="text-xs text-zinc-400">Loading catalog from wholesale database...</p>
-
+          <p className="text-xs text-zinc-400 font-mono">Loading catalog from wholesale database...</p>
         </div>
-
       ) : brands.length === 0 ? (
-
-        <div className="py-20 text-center space-y-2 bg-white dark:bg-[#101010] border border-zinc-200 dark:border-white/10 rounded-md">
-
+        <div className="flex-1 flex flex-col items-center justify-center space-y-2 bg-white dark:bg-[#101010] border border-zinc-200 dark:border-white/10 rounded-md p-6">
           <Package className="w-10 h-10 mx-auto text-zinc-600" />
-
           <h3 className="text-sm font-semibold text-zinc-300">No brands found</h3>
-
           <p className="text-xs text-zinc-500 max-w-sm mx-auto">
-
             Try adjusting your search query or switching to another category.
-
           </p>
-
         </div>
-
       ) : viewMode === 'grid' ? (
-
-        /* Card Grid View (Full Page Width) */
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
+        /* Card Grid View (Scrollable inside container) */
+        <div className="flex-1 min-h-0 overflow-y-auto pr-1">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3.5 pb-4">
 
           {brands.map((brand) => {
 
@@ -670,39 +593,23 @@ export function RetailCatalog({ onAddToCart, cart, onNavigateToAddBottle, extern
                 </div>
 
               </div>
-
             );
-
           })}
-
+          </div>
         </div>
-
       ) : (
-
-        /* Dense Table View */
-
-        <div className="overflow-x-auto rounded-md border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010]">
-
+        /* Dense Table View (Internally scrollable with sticky header) */
+        <div className="flex-1 min-h-0 overflow-auto rounded-md border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm">
           <table className="w-full text-left text-xs text-zinc-300">
-
-            <thead className="bg-zinc-50 dark:bg-[#000000] text-zinc-800 dark:text-white uppercase text-xs font-mono font-semibold tracking-wider border-b border-zinc-200 dark:border-white/10">
-
+            <thead className="sticky top-0 z-10 bg-zinc-100 dark:bg-[#08090c] text-zinc-900 dark:text-white uppercase text-xs font-mono font-semibold tracking-wider border-b border-zinc-200 dark:border-white/10 shadow-xs">
               <tr>
-
-                <th className="py-3 px-4">Brand</th>
-
-                <th className="py-3 px-3">Govt Approval Code</th>
-
-                <th className="py-3 px-3">Manufacturer / Distillery</th>
-
-                <th className="py-3 px-3">Pack Sizes & Rates (Select Size)</th>
-
-                <th className="py-3 px-3">Alcohol % (% ABV)</th>
-
-                <th className="py-3 px-3">Statutory Gazette MRP</th>
-
-                <th className="py-3 px-4 text-right">Actions</th>
-
+                <th className="py-2.5 px-4">Brand</th>
+                <th className="py-2.5 px-3">Govt Approval Code</th>
+                <th className="py-2.5 px-3">Manufacturer / Distillery</th>
+                <th className="py-2.5 px-3">Pack Sizes &amp; Rates (Select Size)</th>
+                <th className="py-2.5 px-3">Alcohol % (% ABV)</th>
+                <th className="py-2.5 px-3">Statutory Gazette MRP</th>
+                <th className="py-2.5 px-4 text-right">Actions</th>
               </tr>
 
             </thead>

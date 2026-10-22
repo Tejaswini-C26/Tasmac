@@ -723,10 +723,10 @@ useEffect(() => {
           </div>
         </header>
 
-        {/* Scrollable Viewport (Zero scroll on login page) */}
-        <div className={`flex-1 min-h-0 ${currentTab === 'login' ? 'overflow-hidden flex flex-col' : 'overflow-y-auto'} print:h-auto print:overflow-visible`}>
+        {/* Web App Viewport (Zero outer scroll across all pages) */}
+        <div className="flex-1 min-h-0 flex flex-col overflow-hidden print:h-auto print:overflow-visible">
           {/* Main Content Area */}
-          <main className={`w-full ${currentTab === 'login' ? 'flex-1 h-full flex items-center justify-center p-1 sm:p-2' : 'px-4 sm:px-6 lg:px-8 py-6'} print:p-0 print:m-0`}>
+          <main className={`w-full ${currentTab === 'login' ? 'flex-1 h-full flex items-center justify-center p-1 sm:p-2' : 'flex-1 min-h-0 flex flex-col overflow-hidden px-4 sm:px-6 lg:px-8 py-3.5'} print:p-0 print:m-0`}>
             {currentTab === 'login' && (
               <LoginPage 
                 currentUser={currentUser}
@@ -778,57 +778,24 @@ useEffect(() => {
                 window.location.hash = '#catalog';
               }} />
             )}
-
-            {/* Flow Progression: Next Stage Button */}
-            {currentStage && (
-              <div className="mt-8 flex justify-end print:hidden">
-                {currentStageIndex < activeStages.length - 1 ? (
-                  <button
-                    onClick={() => {
-                      const nextStageId = activeStages[currentStageIndex + 1].id;
-                      setCurrentTab(nextStageId);
-                      window.location.hash = `#${nextStageId}`;
-                    }}
-                    className="px-5 py-2.5 rounded-lg bg-orange-600 hover:bg-orange-500 text-white font-mono text-xs sm:text-sm font-bold tracking-wider transition-all shadow-md shadow-orange-600/20 flex items-center gap-2 cursor-pointer group"
-                  >
-                    <span>{activeStages[currentStageIndex + 1].label}</span>
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => {
-                      const firstStageId = activeStages[0].id;
-                      setCurrentTab(firstStageId);
-                      window.location.hash = `#${firstStageId}`;
-                    }}
-                    className="px-5 py-2.5 rounded-lg bg-orange-600 hover:bg-orange-500 text-white font-mono text-xs sm:text-sm font-bold tracking-wider transition-all shadow-md shadow-orange-600/20 flex items-center gap-2 cursor-pointer group"
-                  >
-                    <span>{activeStages[0].label}</span>
-                    <RotateCcw className="w-4 h-4 group-hover:rotate-180 transition-transform" />
-                  </button>
-                )}
-              </div>
-            )}
           </main>
 
-          {/* Footer - Hidden in Print */}
-          <footer className="border-t border-zinc-200 dark:border-white/[0.06] bg-zinc-50 dark:bg-[#000000] py-6 text-xs text-zinc-500 print:hidden">
-            <div className="w-full px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span>State Wholesale Dispatch Network Online</span>
-                <span className="text-zinc-600">&bull;</span>
-                <span>Tamil Nadu State Marketing Corporation (TASMAC)</span>
-              </div>
-              <div className="flex items-center gap-4 text-xs font-mono">
-                <button 
-                  onClick={navigateToLanding}
-                  className="hover:text-orange-400 transition cursor-pointer flex items-center gap-1"
-                >
-                  <span>Public Landing Page</span>
-                  <ArrowUpRight className="w-3 h-3" />
-                </button>
-              </div>
+          {/* Compact Enterprise Status Bar Footer - Fixed at bottom */}
+          <footer className="shrink-0 h-8 border-t border-zinc-200 dark:border-white/[0.08] bg-zinc-50 dark:bg-[#000000] px-4 sm:px-6 lg:px-8 flex items-center justify-between text-[11px] text-zinc-500 font-sans select-none print:hidden">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="font-medium text-zinc-700 dark:text-zinc-300">State Wholesale Dispatch Network Online</span>
+              <span className="text-zinc-400">&bull;</span>
+              <span className="hidden sm:inline text-zinc-500">Tamil Nadu State Marketing Corporation (TASMAC)</span>
+            </div>
+            <div className="flex items-center gap-3 text-xs font-mono">
+              <button 
+                onClick={navigateToLanding}
+                className="hover:text-orange-500 transition cursor-pointer flex items-center gap-1 text-[11px]"
+              >
+                <span>Public Landing</span>
+                <ArrowUpRight className="w-3 h-3" />
+              </button>
             </div>
           </footer>
         </div>

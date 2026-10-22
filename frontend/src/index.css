@@ -1295,3 +1295,34 @@ html.light .bg-\[\#000000\]\/80,
 html.light .bg-\[\#080808\] {
   background-color: #f8f7f6 !important;
 }
+
+/* ============================================================
+   SLIDE-OVER SIDE DRAWER ANIMATIONS (WEB APP STYLE)
+   ============================================================ */
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0.8;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-left {
+  animation: slideInRight 0.24s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeInBackdrop {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeInBackdrop 0.18s ease-out forwards;
+}
