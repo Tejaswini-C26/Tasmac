@@ -62,8 +62,8 @@ def seed_default_users(db: Session):
             "role": "SUPER_ADMIN",
             "organization": "TASMAC Managing Directorate (CMDA Tower, Egmore)",
             "code": "HQ-ADMIN-001",
-            "default_stage": "analytics",
-            "allowed_stages": "suppliers,depots,inventory,catalog,orders,driver-console,compliance,analytics,finance",
+            "default_stage": "super-admin",
+            "allowed_stages": "super-admin,regional,suppliers,depots,inventory,catalog,orders,driver-console,compliance",
             "assigned_region": "All",
             "phone": "+91 44 2852 1101"
         },
@@ -76,8 +76,8 @@ def seed_default_users(db: Session):
             "role": "REGIONAL_MANAGER",
             "organization": "TASMAC Northern & Chennai Zonal Office",
             "code": "RGM-CHN-201",
-            "default_stage": "depots",
-            "allowed_stages": "depots,inventory,catalog,orders,compliance,analytics",
+            "default_stage": "regional",
+            "allowed_stages": "regional,depots,inventory,catalog,orders,compliance",
             "assigned_region": "Chennai",
             "phone": "+91 94440 22001"
         },
@@ -160,8 +160,8 @@ def seed_default_users(db: Session):
             "role": "SUPER_ADMIN",
             "organization": "TASMAC Head Office (CMDA Tower)",
             "code": "HQ-ADMIN-001",
-            "default_stage": "analytics",
-            "allowed_stages": "suppliers,depots,inventory,catalog,orders,driver-console,compliance,analytics,finance",
+            "default_stage": "super-admin",
+            "allowed_stages": "super-admin,regional,suppliers,depots,inventory,catalog,orders,driver-console,compliance",
             "assigned_region": "All",
             "phone": "+91 44 2852 1101"
         }
