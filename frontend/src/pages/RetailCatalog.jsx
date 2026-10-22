@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 
 import { 
 
-  Search, 
-
   Filter, 
 
   Grid, 
@@ -38,7 +36,7 @@ import { DepotStockModal } from '../components/DepotStockModal';
 
 
 
-export function RetailCatalog({ onAddToCart, cart, onNavigateToAddBottle }) {
+export function RetailCatalog({ onAddToCart, cart, onNavigateToAddBottle, externalSearchQuery = '' }) {
 
   const [brands, setBrands] = useState([]);
 
@@ -127,11 +125,13 @@ export function RetailCatalog({ onAddToCart, cart, onNavigateToAddBottle }) {
 
       setLoading(true);
 
+      const effectiveSearch = (externalSearchQuery || search).trim() || undefined;
+
       const data = await fetchBrands({
 
         category: selectedCategory,
 
-        search: search.trim() || undefined,
+        search: effectiveSearch,
 
       });
 
@@ -161,7 +161,7 @@ export function RetailCatalog({ onAddToCart, cart, onNavigateToAddBottle }) {
 
     return () => clearTimeout(timer);
 
-  }, [selectedCategory, search]);
+  }, [selectedCategory, search, externalSearchQuery]);
 
 
 
@@ -382,34 +382,6 @@ export function RetailCatalog({ onAddToCart, cart, onNavigateToAddBottle }) {
           })}
 
         </div>
-
-
-
-        {/* Search input */}
-
-        <form onSubmit={handleSearchSubmit} className="w-full">
-
-          <div className="relative w-full">
-
-            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-500" />
-
-            <input
-
-              type="text"
-
-              placeholder="Search by brand name (e.g. Kingfisher, Old Monk, Johnnie Walker, Mansion House) or code..."
-
-              value={search}
-
-              onChange={(e) => setSearch(e.target.value)}
-
-              className="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-[#101010] border border-zinc-200 dark:border-white/10 focus:border-orange-500 focus:outline-none rounded-xl text-xs text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-500 transition shadow-sm"
-
-            />
-
-          </div>
-
-        </form>
 
       </div>
 

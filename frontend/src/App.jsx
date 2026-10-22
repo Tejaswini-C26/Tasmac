@@ -745,6 +745,7 @@ useEffect(() => {
                 onAddToCart={handleAddToCart} 
                 cart={cart} 
                 onNavigateToAddBottle={() => setCurrentTab('add-bottle')}
+                externalSearchQuery={headerSearchQuery}
               />
             )}
             {currentTab === 'orders' && (

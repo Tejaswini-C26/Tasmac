@@ -5,7 +5,6 @@ import {
   TrendingUp, 
   Plus, 
   CheckCircle2, 
-  Search,
   ShoppingCart,
   RotateCcw,
   Store,
@@ -14,7 +13,7 @@ import {
 import { fetchShopInventory, fetchShops } from '../services/api';
 import { ShopSearchSelector } from '../components/ShopSearchSelector';
 
-export function ShopInventory({ selectedShop, onSelectShop, shops = [], onOpenMap, onQuickIndent }) {
+export function ShopInventory({ selectedShop, onSelectShop, shops = [], onOpenMap, onQuickIndent, externalSearchQuery = '' }) {
   const [inventory, setInventory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -77,9 +76,10 @@ export function ShopInventory({ selectedShop, onSelectShop, shops = [], onOpenMa
     }
   }, [selectedShop?.id]);
 
+  const effectiveSearch = (externalSearchQuery || search).trim().toLowerCase();
   const filteredItems = inventory.filter((item) => {
     if (onlyLowStock && !item.is_low_stock) return false;
-    if (search && !item.brand_name.toLowerCase().includes(search.toLowerCase()) && !item.brand_code?.toLowerCase().includes(search.toLowerCase())) {
+    if (effectiveSearch && !item.brand_name.toLowerCase().includes(effectiveSearch) && !item.brand_code?.toLowerCase().includes(effectiveSearch)) {
       return false;
     }
     return true;
@@ -181,17 +181,6 @@ export function ShopInventory({ selectedShop, onSelectShop, shops = [], onOpenMa
             <AlertTriangle className="w-3.5 h-3.5" />
             <span>Low Stock Reorder Alerts ({lowStockCount})</span>
           </button>
-        </div>
-
-        <div className="relative w-full sm:w-64">
-          <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-500" />
-          <input
-            type="text"
-            placeholder="Search shop inventory..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-8 pr-3 py-1.5 bg-white dark:bg-[#08090c] border border-zinc-200 dark:border-white/10 rounded-lg text-xs text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:border-orange-500 transition"
-          />
         </div>
       </div>
 
