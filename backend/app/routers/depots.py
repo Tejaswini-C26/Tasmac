@@ -77,3 +77,61 @@ def get_depot_inventory(depot_id: int, db: Session = Depends(get_db)):
     }
     cache.set(cache_key, res, ttl=60)
     return res
+
+@router.post("", response_model=schemas.DepotResponse)
+def create_depot(depot_in: schemas.DepotCreateRequest, db: Session = Depends(get_db)):
+    code_clean = depot_in.code.strip().upper()
+    existing = db.query(models.Depot).filter(models.Depot.code == code_clean).first()
+    if existing:
+        raise HTTPException(status_code=400, detail=f"Depot code '{code_clean}' already exists")
+
+    new_depot = models.Depot(
+        code=code_clean,
+        name=depot_in.name.strip(),
+        region=depot_in.region.strip(),
+        address=depot_in.address.strip(),
+        manager_name=depot_in.manager_name.strip(),
+        phone=depot_in.phone.strip(),
+        capacity_cases=depot_in.capacity_cases or 150000
+    )
+    db.add(new_depot)
+    db.commit()
+    db.refresh(new_depot)
+
+    # Initialize depot stocks for existing active brands so this depot is immediately functional
+    brands = db.query(models.Brand).filter(models.Brand.status == "ACTIVE").all()
+    if not brands:
+        brands = db.query(models.Brand).all()
+
+    if brands:
+        target_total = depot_in.initial_stock_cases if (depot_in.initial_stock_cases and depot_in.initial_stock_cases > 0) else 12000
+        per_brand_cases = max(20, target_total // len(brands))
+        for b in brands:
+            stock = models.DepotStock(
+                depot_id=new_depot.id,
+                brand_id=b.id,
+                available_cases=per_brand_cases,
+                reserved_cases=0,
+                damaged_cases=0
+            )
+            db.add(stock)
+        db.commit()
+        db.refresh(new_depot)
+
+    # Invalidate cached depots
+    cache.invalidate("depots")
+    cache.invalidate("admin")
+
+    total_stock = sum(s.available_cases for s in new_depot.stocks) if new_depot.stocks else 0
+    return schemas.DepotResponse(
+        id=new_depot.id,
+        code=new_depot.code,
+        name=new_depot.name,
+        region=new_depot.region,
+        address=new_depot.address,
+        manager_name=new_depot.manager_name,
+        phone=new_depot.phone,
+        capacity_cases=new_depot.capacity_cases,
+        total_stock_cases=total_stock
+    )
+

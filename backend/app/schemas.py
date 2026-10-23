@@ -174,6 +174,16 @@ class DepotResponse(BaseModel):
     class Config:
         from_attributes = True
 
+class DepotCreateRequest(BaseModel):
+    code: str
+    name: str
+    region: str
+    address: str
+    manager_name: str
+    phone: str
+    capacity_cases: Optional[int] = 150000
+    initial_stock_cases: Optional[int] = 12000
+
 class RetailShopResponse(BaseModel):
     id: int
     shop_code: str

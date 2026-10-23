@@ -23,6 +23,11 @@ class SimpleCache:
                 "expires_at": time.time() + ttl
             }
 
+    def delete(self, key: str):
+        with self._lock:
+            if key in self._cache:
+                del self._cache[key]
+
     def invalidate(self, prefix: str):
         with self._lock:
             keys_to_delete = [k for k in self._cache if k.startswith(prefix)]

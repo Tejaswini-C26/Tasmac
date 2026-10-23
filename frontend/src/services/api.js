@@ -65,6 +65,19 @@ export async function fetchDepotInventory(depotId) {
   return res.json();
 }
 
+export async function createDepot(depotPayload) {
+  const res = await fetch(`${API_BASE}/depots`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(depotPayload),
+  });
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData.detail || 'Failed to register wholesale depot');
+  }
+  return res.json();
+}
+
 export async function fetchShops() {
   const res = await fetch(`${API_BASE}/shops`);
   if (!res.ok) throw new Error('Failed to fetch shops');
