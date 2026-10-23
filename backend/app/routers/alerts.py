@@ -270,3 +270,4 @@ def dismiss_alert(alert_id: int, db: Session = Depends(get_db)):
     alert.status = "DISMISSED"
     db.commit()
     return {"status": "success", "message": "Alert dismissed"}
+

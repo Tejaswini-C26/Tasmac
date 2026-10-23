@@ -108,7 +108,7 @@ export function UserProfileDropdown({
   }
 
   return (
-    <div className="relative font-sans" ref={dropdownRef}>
+    <div className="relative font-sans z-50" ref={dropdownRef}>
       {/* Avatar Circle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
@@ -123,7 +123,7 @@ export function UserProfileDropdown({
       {/* Dropdown Menu Modal Container */}
       {isOpen && (
         <div 
-          className="absolute right-0 top-full mt-2 w-64 sm:w-72 rounded-lg bg-white dark:bg-[#101010] border border-zinc-200 dark:border-white/10 shadow-xl p-2 z-50 animate-fade-in text-left select-none"
+          className="absolute right-0 top-full mt-2 w-64 sm:w-72 rounded-lg bg-white dark:bg-[#101010] border border-zinc-200 dark:border-white/10 shadow-2xl p-2 z-[60] animate-fade-in text-left select-none"
           style={{ borderRadius: '8px' }}
         >
           
