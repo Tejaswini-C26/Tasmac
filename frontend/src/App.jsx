@@ -23,7 +23,7 @@ import {
   ChevronRight,
   ChevronLeft,
   ArrowRight,
-  RotateCcw,
+  RotateCw,
   LogOut,
   User,
   LogIn,

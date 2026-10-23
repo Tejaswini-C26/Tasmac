@@ -26,7 +26,8 @@ import {
 
   Info,
 
-  PlusCircle
+  PlusCircle,
+  RotateCw
 
 } from 'lucide-react';
 
@@ -272,6 +273,16 @@ export function RetailCatalog({ onAddToCart, cart, onNavigateToAddBottle, extern
                 <span>Dense Table</span>
               </button>
             </div>
+
+            {/* Refresh Catalog */}
+            <button
+              onClick={loadBrands}
+              disabled={loading}
+              title="Refresh Catalog"
+              className="p-2 rounded-lg border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] text-zinc-700 dark:text-zinc-300 hover:text-orange-600 dark:hover:text-orange-400 hover:border-orange-500/40 transition disabled:opacity-50 cursor-pointer"
+            >
+              <RotateCw className={`w-4 h-4 ${loading ? 'animate-spin text-orange-500' : ''}`} />
+            </button>
           </div>
         </div>
 

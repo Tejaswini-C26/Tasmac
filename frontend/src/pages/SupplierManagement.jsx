@@ -21,7 +21,8 @@ import {
   Check,
   ChevronDown,
   Beer,
-  Wine
+  Wine,
+  RotateCw
 } from 'lucide-react';
 import { 
   fetchSuppliers, 
@@ -454,14 +455,26 @@ export function SupplierManagement({ externalSearchQuery = '' }) {
           </button>
         </div>
 
-        {/* Action Button: Dispatch Inward Consignment (Opens Slide Drawer) */}
-        <button
-          onClick={() => setIsDispatchModalOpen(true)}
-          className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-mono text-xs uppercase font-bold tracking-wider shadow-lg shadow-orange-950/20 transition-all cursor-pointer shrink-0"
-        >
-          <Plus className="w-4 h-4" />
-          Dispatch Inward Consignment
-        </button>
+        {/* Actions Suite */}
+        <div className="flex items-center gap-2 shrink-0">
+          <button
+            onClick={loadData}
+            disabled={loading}
+            title="Refresh Consignments & Analytics"
+            className="p-2 rounded-lg border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] text-zinc-700 dark:text-zinc-300 hover:text-orange-600 dark:hover:text-orange-400 hover:border-orange-500/40 transition disabled:opacity-50 cursor-pointer"
+          >
+            <RotateCw className={`w-4 h-4 ${loading ? 'animate-spin text-orange-500' : ''}`} />
+          </button>
+
+          {/* Action Button: Dispatch Inward Consignment (Opens Slide Drawer) */}
+          <button
+            onClick={() => setIsDispatchModalOpen(true)}
+            className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-mono text-xs uppercase font-bold tracking-wider shadow-lg shadow-orange-950/20 transition-all cursor-pointer shrink-0"
+          >
+            <Plus className="w-4 h-4" />
+            Dispatch Inward Consignment
+          </button>
+        </div>
       </div>
 
       {/* TAB 1: Inward Consignments */}

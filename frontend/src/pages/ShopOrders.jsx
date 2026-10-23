@@ -13,7 +13,7 @@ import {
   Printer,
   ArrowRight,
   Check,
-  RotateCcw,
+  RotateCw,
   X,
   Store
 } from 'lucide-react';
@@ -248,9 +248,11 @@ export function ShopOrders({ selectedShop, onSelectShop, shops = [], onOpenMap }
 
             <button
               onClick={loadOrders}
-              className="py-1.5 px-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-300 hover:text-white text-xs font-medium transition cursor-pointer"
+              disabled={loading}
+              title="Refresh Dispatches"
+              className="p-2 rounded-lg border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] text-zinc-700 dark:text-zinc-300 hover:text-orange-600 dark:hover:text-orange-400 hover:border-orange-500/40 transition disabled:opacity-50 cursor-pointer"
             >
-              Refresh Dispatches
+              <RotateCw className={`w-4 h-4 ${loading ? 'animate-spin text-orange-500' : ''}`} />
             </button>
           </div>
         </div>

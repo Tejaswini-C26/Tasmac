@@ -16,7 +16,8 @@ import {
 
   CheckCircle2,
 
-  TrendingDown
+  TrendingDown,
+  RotateCw
 
 } from 'lucide-react';
 
@@ -31,6 +32,25 @@ export function DepotStock({ externalSearchQuery = '' }) {
   const [loadingInventory, setLoadingInventory] = useState(false);
   const [search, setSearch] = useState('');
   const [inspectingBrand, setInspectingBrand] = useState(null);
+
+  const handleRefresh = async () => {
+    setLoadingDepots(true);
+    setLoadingInventory(true);
+    try {
+      const data = await fetchDepots();
+      setDepots(data);
+      const activeId = selectedDepotId || (data.length > 0 ? data[0].id : null);
+      if (activeId) {
+        const inv = await fetchDepotInventory(activeId);
+        setDepotInventory(inv);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoadingDepots(false);
+      setLoadingInventory(false);
+    }
+  };
 
 
 
@@ -163,9 +183,19 @@ export function DepotStock({ externalSearchQuery = '' }) {
                 </p>
               </div>
             </div>
-            <span className="text-xs text-zinc-500 font-mono hidden sm:inline-block">
-              Click any brand row to view statewide depot breakdown &rarr;
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-zinc-500 font-mono hidden sm:inline-block">
+                Click any brand row to view statewide depot breakdown &rarr;
+              </span>
+              <button
+                onClick={handleRefresh}
+                disabled={loadingDepots || loadingInventory}
+                title="Refresh Depot Stock"
+                className="p-2 rounded-lg border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] text-zinc-700 dark:text-zinc-300 hover:text-orange-600 dark:hover:text-orange-400 hover:border-orange-500/40 transition disabled:opacity-50 cursor-pointer shrink-0"
+              >
+                <RotateCw className={`w-4 h-4 ${(loadingDepots || loadingInventory) ? 'animate-spin text-orange-500' : ''}`} />
+              </button>
+            </div>
           </div>
 
           {/* Brands Stock Table (Internally Scrollable with Sticky Header) */}

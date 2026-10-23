@@ -6,7 +6,7 @@ import {
   Plus, 
   CheckCircle2, 
   ShoppingCart, 
-  RotateCcw, 
+  RotateCw, 
   ArrowRight, 
   X 
 } from 'lucide-react';
@@ -210,7 +210,7 @@ export function ShopInventory({ selectedShop, onSelectShop, shops = [], onOpenMa
             title="Refresh Inventory"
             className="p-2 rounded-lg border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] text-zinc-700 dark:text-zinc-300 hover:text-orange-600 dark:hover:text-orange-400 hover:border-orange-500/40 transition disabled:opacity-50 cursor-pointer"
           >
-            <RotateCcw className={`w-4 h-4 ${loading ? 'animate-spin text-orange-500' : ''}`} />
+            <RotateCw className={`w-4 h-4 ${loading ? 'animate-spin text-orange-500' : ''}`} />
           </button>
         </div>
       </div>
@@ -218,7 +218,7 @@ export function ShopInventory({ selectedShop, onSelectShop, shops = [], onOpenMa
       {/* Table (Internally Scrollable with Sticky Header) */}
       {loading ? (
         <div className="flex-1 flex items-center justify-center text-xs text-zinc-500 dark:text-zinc-400 bg-white dark:bg-[#101010] border border-zinc-200 dark:border-white/10 rounded-md">
-          <RotateCcw className="w-5 h-5 mr-2 animate-spin text-orange-500" />
+          <RotateCw className="w-5 h-5 mr-2 animate-spin text-orange-500" />
           Syncing retail shop shelves &amp; inventory telemetry...
         </div>
       ) : error ? (
