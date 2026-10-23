@@ -51,6 +51,7 @@ import { DepotStock } from './pages/DepotStock';
 import { ShopInventory } from './pages/ShopInventory';
 import { AddBottle } from './pages/AddBottle';
 import { SupplierManagement } from './pages/SupplierManagement';
+import { AdminOverview } from './pages/AdminOverview';
 import { PublicLandingPage } from './pages/PublicLandingPage';
 import { OrderDrawer } from './components/OrderDrawer';
 import { ShopSearchSelector } from './components/ShopSearchSelector';
@@ -59,6 +60,7 @@ import { UserProfileDropdown } from './components/UserProfileDropdown';
 import { fetchShops, fetchDepots, fetchMetrics, fetchCurrentUser, fetchSystemAlerts, triggerReplenishment, dismissAlert } from './services/api';
 
 const ALL_PAGE_IDS = [
+  'overview',
   'suppliers',
   'consignments',
   'directory',
@@ -69,6 +71,89 @@ const ALL_PAGE_IDS = [
   'orders',
   'add-bottle',
   'login'
+];
+
+const ADMIN_STAGES = [
+  { 
+    id: 'overview', 
+    step: 1, 
+    badge: '00', 
+    label: 'Master Overview', 
+    shortLabel: 'Overview', 
+    title: 'Statewide Master Overview', 
+    icon: ShieldCheck, 
+    desc: 'Executive statewide telemetry, 3-tier supply chain KPIs & real-time governance.' 
+  },
+  { 
+    id: 'consignments', 
+    step: 2, 
+    badge: '01', 
+    label: 'Inward Consignments', 
+    shortLabel: 'Consignments', 
+    title: 'Stage 1: Inward Consignments', 
+    icon: Truck, 
+    desc: 'Distilleries dispatch bulk cases & generate automated GRN to stock wholesale depots.' 
+  },
+  { 
+    id: 'directory', 
+    step: 3, 
+    badge: '02', 
+    label: 'Distilleries Directory', 
+    shortLabel: 'Directory', 
+    title: 'Stage 2: Distilleries Directory', 
+    icon: Factory, 
+    desc: 'State-wide registered distilleries, licensed capacities & contact directory.' 
+  },
+  { 
+    id: 'scorecard', 
+    step: 4, 
+    badge: '03', 
+    label: 'Supplier Scorecard', 
+    shortLabel: 'Scorecard', 
+    title: 'Stage 3: Supplier Scorecard', 
+    icon: BadgePercent, 
+    desc: 'Supplier delivery SLAs, performance metrics, compliance & dispatch ratings.' 
+  },
+  { 
+    id: 'depots', 
+    step: 5, 
+    badge: '04', 
+    label: 'Wholesale Depots', 
+    shortLabel: 'Depots', 
+    title: 'Stage 4: Wholesale Depots', 
+    icon: Warehouse, 
+    desc: 'Regional state buffer warehouse capacity, available cases & inward arrivals.' 
+  },
+  { 
+    id: 'inventory', 
+    step: 6, 
+    badge: '05', 
+    label: 'Store Stockroom', 
+    shortLabel: 'Store Stock', 
+    title: 'Stage 5: Store Stockroom', 
+    icon: Store, 
+    desc: 'Retail store shelf inventory, daily sales velocity & replenishment alerts.' 
+  },
+  { 
+    id: 'catalog', 
+    step: 7, 
+    badge: '06', 
+    label: 'Wholesale Catalog', 
+    shortLabel: 'Catalog', 
+    title: 'Stage 6: Wholesale Catalog', 
+    icon: LayoutGrid, 
+    desc: 'Browse approved brands, check MRP & submit retail store replenishment indents.' 
+  },
+  { 
+    id: 'orders', 
+    step: 8, 
+    badge: '07', 
+    label: 'Orders & Transit', 
+    shortLabel: 'Orders', 
+    title: 'Stage 7: Orders & Transit', 
+    icon: Truck, 
+    desc: 'Sequential delivery tracking, dispatch timeline, animated truck & official transit e-Pass.' 
+  },
 ];
 
 const MANUFACTURING_STAGES = [
@@ -159,7 +244,8 @@ export function App() {
     if (ALL_PAGE_IDS.includes(rawHash)) {
       return rawHash;
     }
-    const savedMode = localStorage.getItem('tasmac_portal_mode') || 'manufacturing';
+    const savedMode = localStorage.getItem('tasmac_portal_mode') || 'admin';
+    if (savedMode === 'admin') return 'overview';
     if (savedMode === 'depot') return 'depots';
     return savedMode === 'manufacturing' ? 'consignments' : 'inventory';
   });
@@ -247,6 +333,8 @@ export function App() {
 
   const getPageHeading = () => {
     switch (currentTab) {
+      case 'overview':
+        return 'Executive Command Center';
       case 'suppliers':
       case 'consignments':
         return 'Inward Consignments';
@@ -300,7 +388,10 @@ export function App() {
     if (currentTab === 'login') {
       return;
     }
-    if (mode === 'manufacturing') {
+    if (mode === 'admin') {
+      setCurrentTab('overview');
+      window.location.hash = '#overview';
+    } else if (mode === 'manufacturing') {
       setCurrentTab('consignments');
       window.location.hash = '#consignments';
     } else if (mode === 'depot') {
@@ -318,10 +409,18 @@ export function App() {
       const rawHash = window.location.hash.toLowerCase().replace(/^#\/?/, '');
       if (rawHash === 'landing') {
         setViewMode('landing');
-      } else if (rawHash === 'login' || rawHash === 'mfg-login' || rawHash === 'retail-login' || rawHash === 'depot-login') {
+      } else if (rawHash === 'overview') {
+        setViewMode('portal');
+        setPortalMode('admin');
+        localStorage.setItem('tasmac_portal_mode', 'admin');
+        setCurrentTab('overview');
+      } else if (rawHash === 'login' || rawHash === 'mfg-login' || rawHash === 'retail-login' || rawHash === 'depot-login' || rawHash === 'admin-login') {
         setViewMode('portal');
         setCurrentTab('login');
-        if (rawHash === 'mfg-login') {
+        if (rawHash === 'admin-login') {
+          setPortalMode('admin');
+          localStorage.setItem('tasmac_portal_mode', 'admin');
+        } else if (rawHash === 'mfg-login') {
           setPortalMode('manufacturing');
           localStorage.setItem('tasmac_portal_mode', 'manufacturing');
         } else if (rawHash === 'retail-login') {
@@ -333,18 +432,24 @@ export function App() {
         }
       } else if (rawHash === 'suppliers' || rawHash === 'consignments' || rawHash === 'directory' || rawHash === 'scorecard') {
         setViewMode('portal');
-        setPortalMode('manufacturing');
-        localStorage.setItem('tasmac_portal_mode', 'manufacturing');
+        if (portalMode !== 'admin') {
+          setPortalMode('manufacturing');
+          localStorage.setItem('tasmac_portal_mode', 'manufacturing');
+        }
         setCurrentTab(rawHash === 'suppliers' ? 'consignments' : rawHash);
       } else if (rawHash === 'depots') {
         setViewMode('portal');
-        setPortalMode('depot');
-        localStorage.setItem('tasmac_portal_mode', 'depot');
+        if (portalMode !== 'admin') {
+          setPortalMode('depot');
+          localStorage.setItem('tasmac_portal_mode', 'depot');
+        }
         setCurrentTab('depots');
       } else if (rawHash === 'inventory' || rawHash === 'catalog' || rawHash === 'orders' || rawHash === 'add-bottle') {
         setViewMode('portal');
-        setPortalMode('retail');
-        localStorage.setItem('tasmac_portal_mode', 'retail');
+        if (portalMode !== 'admin') {
+          setPortalMode('retail');
+          localStorage.setItem('tasmac_portal_mode', 'retail');
+        }
         setCurrentTab(rawHash);
       } else {
         setViewMode('portal');
@@ -393,6 +498,7 @@ useEffect(() => {
   const handleLoginSuccess = (user, token, preferredPortal) => {
     setCurrentUser(user);
     const targetMode = preferredPortal || (
+      user?.role?.toUpperCase().includes('ADMIN') || user?.username === 'admin' ? 'admin' :
       user?.role?.toUpperCase().includes('DEPOT') ? 'depot' :
       user?.role?.includes('Distillery') || user?.role?.toUpperCase().includes('MANUFACTURING') ? 'manufacturing' : 
       'retail'
@@ -402,7 +508,12 @@ useEffect(() => {
     if (user?.default_stage) {
       navigateToPortal(user.default_stage);
     } else {
-      navigateToPortal(targetMode === 'manufacturing' ? 'consignments' : targetMode === 'depot' ? 'depots' : 'inventory');
+      navigateToPortal(
+        targetMode === 'admin' ? 'overview' : 
+        targetMode === 'manufacturing' ? 'consignments' : 
+        targetMode === 'depot' ? 'depots' : 
+        'inventory'
+      );
     }
   };
 
@@ -441,6 +552,18 @@ useEffect(() => {
   const isAdmin = currentUser?.role?.toUpperCase().includes('ADMIN') || currentUser?.username === 'admin';
 
   const getRolePages = () => {
+    if (portalMode === 'admin') {
+      return [
+        { id: 'overview', label: 'Master Overview', icon: ShieldCheck, mode: 'admin' },
+        { id: 'consignments', label: 'Inward Consignments', icon: Truck, mode: 'admin' },
+        { id: 'directory', label: 'Distilleries Directory', icon: Factory, mode: 'admin' },
+        { id: 'scorecard', label: 'Supplier Scorecard', icon: BadgePercent, mode: 'admin' },
+        { id: 'depots', label: 'Wholesale Depots', icon: Warehouse, mode: 'admin' },
+        { id: 'inventory', label: 'Store Stockroom', icon: Store, mode: 'admin' },
+        { id: 'catalog', label: 'Wholesale Catalog', icon: LayoutGrid, mode: 'admin' },
+        { id: 'orders', label: 'Orders & Transit', icon: Truck, mode: 'admin' },
+      ];
+    }
     if (portalMode === 'manufacturing') {
       return [
         { id: 'consignments', label: 'Inward Consignments', icon: Truck, mode: 'manufacturing' },
@@ -461,22 +584,25 @@ useEffect(() => {
       ];
     }
     return [
-      { id: 'consignments', label: 'Inward Consignments', icon: Truck, mode: 'manufacturing' },
-      { id: 'directory', label: 'Distilleries Directory', icon: Factory, mode: 'manufacturing' },
-      { id: 'scorecard', label: 'Supplier Scorecard', icon: BadgePercent, mode: 'manufacturing' },
-      { id: 'depots', label: 'Wholesale Depots', icon: Warehouse, mode: 'depot' },
-      { id: 'inventory', label: 'Store Stockroom', icon: Store, mode: 'retail' },
-      { id: 'catalog', label: 'Wholesale Catalog', icon: LayoutGrid, mode: 'retail' },
-      { id: 'orders', label: 'Orders & Transit', icon: Truck, mode: 'retail' },
+      { id: 'overview', label: 'Master Overview', icon: ShieldCheck, mode: 'admin' },
+      { id: 'consignments', label: 'Inward Consignments', icon: Truck, mode: 'admin' },
+      { id: 'directory', label: 'Distilleries Directory', icon: Factory, mode: 'admin' },
+      { id: 'scorecard', label: 'Supplier Scorecard', icon: BadgePercent, mode: 'admin' },
+      { id: 'depots', label: 'Wholesale Depots', icon: Warehouse, mode: 'admin' },
+      { id: 'inventory', label: 'Store Stockroom', icon: Store, mode: 'admin' },
+      { id: 'catalog', label: 'Wholesale Catalog', icon: LayoutGrid, mode: 'admin' },
+      { id: 'orders', label: 'Orders & Transit', icon: Truck, mode: 'admin' },
     ];
   };
 
   const activePages = getRolePages();
-  const activeStages = portalMode === 'manufacturing' 
-    ? MANUFACTURING_STAGES 
-    : portalMode === 'depot' 
-      ? DEPOT_STAGES 
-      : RETAIL_STAGES;
+  const activeStages = portalMode === 'admin'
+    ? ADMIN_STAGES
+    : portalMode === 'manufacturing' 
+      ? MANUFACTURING_STAGES 
+      : portalMode === 'depot' 
+        ? DEPOT_STAGES 
+        : RETAIL_STAGES;
   const currentStageIndex = activeStages.findIndex((s) => s.id === currentTab);
   const currentStage = currentStageIndex >= 0 ? activeStages[currentStageIndex] : null;
 
@@ -891,6 +1017,15 @@ useEffect(() => {
         <div className="flex-1 min-h-0 flex flex-col overflow-hidden print:h-auto print:overflow-visible">
           {/* Main Content Area */}
           <main className={`w-full ${currentTab === 'login' ? 'flex-1 h-full flex items-center justify-center p-1 sm:p-2' : 'flex-1 min-h-0 flex flex-col overflow-hidden px-4 sm:px-6 lg:px-8 py-3.5'} print:p-0 print:m-0`}>
+            {currentTab === 'overview' && (
+              <AdminOverview 
+                onNavigateToPage={(pageId) => {
+                  setCurrentTab(pageId);
+                  window.location.hash = `#${pageId}`;
+                }}
+                externalSearchQuery={headerSearchQuery}
+              />
+            )}
             {currentTab === 'login' && (
               <LoginPage 
                 currentUser={currentUser}

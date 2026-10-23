@@ -28,12 +28,12 @@ const PORTAL_OPTIONS = [
   {
     id: 'admin',
     title: 'Admin (Master Control)',
-    subtitle: 'Full Access: Both Manufacturing & Retail',
+    subtitle: 'Overall Data: Manufacturing, Depots & Retail',
     icon: ShieldCheck,
     defaultEmail: 'admin@tasmac.tn.gov',
     defaultPassword: 'tasmac123',
-    portalMode: 'manufacturing',
-    stage: 'suppliers',
+    portalMode: 'admin',
+    stage: 'overview',
   },
   {
     id: 'manufacturing',
@@ -43,7 +43,7 @@ const PORTAL_OPTIONS = [
     defaultEmail: 'supplier@tasmac.tn.gov',
     defaultPassword: 'tasmac123',
     portalMode: 'manufacturing',
-    stage: 'suppliers',
+    stage: 'consignments',
   },
   {
     id: 'depot',
@@ -69,12 +69,12 @@ const PORTAL_OPTIONS = [
 
 const ALL_DEMO_ACCOUNTS = [
   {
-    portal: 'manufacturing',
+    portal: 'admin',
     role: 'Admin (Master Control)',
     email: 'admin@tasmac.tn.gov',
     username: 'admin',
     password: 'tasmac123',
-    stage: 'suppliers',
+    stage: 'overview',
     org: 'TASMAC Head Office (CMDA Tower)',
     icon: ShieldCheck,
   },
@@ -84,7 +84,7 @@ const ALL_DEMO_ACCOUNTS = [
     email: 'supplier@tasmac.tn.gov',
     username: 'supplier_owner',
     password: 'tasmac123',
-    stage: 'suppliers',
+    stage: 'consignments',
     org: 'United Breweries & Mohan Distilleries Consortium',
     icon: Factory,
   },
@@ -206,6 +206,7 @@ export function LoginPage({
 
       const selectedOptObj = PORTAL_OPTIONS.find((p) => p.id === selectedOption);
       const effectiveMode = selectedOptObj ? selectedOptObj.portalMode : (
+        response.user?.role?.toUpperCase().includes('ADMIN') || response.user?.username === 'admin' ? 'admin' :
         response.user?.role?.toUpperCase().includes('DEPOT') ? 'depot' :
         response.user?.role?.includes('Distillery') || response.user?.role?.toUpperCase().includes('MANUFACTURING') ? 'manufacturing' : 
         'retail'

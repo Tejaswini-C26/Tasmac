@@ -26,8 +26,8 @@ export const APP_ROLES = [
     full_name: 'TASMAC Master Admin',
     organization: 'TASMAC Managing Directorate (CMDA)',
     code: 'HQ-ADMIN-001',
-    default_stage: 'consignments',
-    portalMode: 'manufacturing',
+    default_stage: 'overview',
+    portalMode: 'admin',
     icon: ShieldCheck,
     initials: 'AD'
   },
@@ -97,6 +97,7 @@ export function UserProfileDropdown({
     currentUser?.email === r.email || 
     currentUser?.role === r.roleKey ||
     currentUser?.role?.toUpperCase() === r.roleKey ||
+    (r.roleKey === 'ADMIN' && (currentUser?.role?.toUpperCase().includes('ADMIN') || currentUser?.username === 'admin')) ||
     (r.roleKey === 'DEPOT' && (currentUser?.role?.toUpperCase().includes('DEPOT') || currentUser?.username === 'depot' || currentUser?.username === 'depot_manager'))
   ) || APP_ROLES[0];
 
