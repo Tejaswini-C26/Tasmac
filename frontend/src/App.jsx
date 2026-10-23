@@ -44,6 +44,7 @@ import {
   Beer,
   Wine,
   Boxes,
+  PlusCircle,
   X
 } from 'lucide-react';
 
@@ -217,7 +218,7 @@ const DEPOT_STAGES = [
     desc: 'Commission a new regional TASMAC wholesale depot with 3 warehouse sheds & buffer stock.' 
   },
 ];
-const _DEPOT_STAGES_UNUSED = [
+const _DEPOT_STAGES_UNUSED = false && [
   { 
     id: 'depots', 
     step: 1, 
