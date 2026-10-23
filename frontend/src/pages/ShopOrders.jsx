@@ -301,7 +301,7 @@ export function ShopOrders({ selectedShop, onSelectShop, shops = [], onOpenMap }
 
                 {/* Order Top Bar */}
 
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-3 border-b border-white/[0.06]">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
 
                   <div className="flex items-center gap-3">
 
