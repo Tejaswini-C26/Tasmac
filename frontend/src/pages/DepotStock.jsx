@@ -107,22 +107,6 @@ export function DepotStock({
 
   const effectiveSearch = (externalSearchQuery || search).trim().toLowerCase();
   const filteredItems = (depotInventory?.items || []).filter((item) => {
-    // Warehouse category filter
-    if (activeWarehouse && activeWarehouse.categories && activeWarehouse.categories.length > 0) {
-      const itemCat = (item.category || '').toUpperCase();
-      const match = activeWarehouse.categories.some(cat => {
-        if (cat === 'BEER') return itemCat === 'BEER';
-        if (cat === 'WINE') return itemCat === 'WINE';
-        if (cat === 'WHISKY') return itemCat === 'WHISKY';
-        if (cat === 'RUM') return itemCat === 'RUM';
-        if (cat === 'VODKA') return itemCat === 'VODKA';
-        if (cat === 'BRANDY') return itemCat === 'BRANDY';
-        if (cat === 'GIN') return itemCat === 'GIN';
-        return true;
-      });
-      if (!match) return false;
-    }
-
     if (!effectiveSearch) return true;
     return item.brand_name.toLowerCase().includes(effectiveSearch) ||
            item.category.toLowerCase().includes(effectiveSearch);
@@ -254,7 +238,7 @@ export function DepotStock({
                       </h3>
                     </div>
                     <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5 truncate font-normal" title={wh.desc}>
-                      {stats.brandCount} Brands &bull; {wh.desc}
+                      {stats.brandCount} Bottle Brands &bull; {stats.liveBottles.toLocaleString()} Bottles
                     </p>
                   </div>
 
@@ -263,6 +247,12 @@ export function DepotStock({
                       <span className="text-zinc-500 dark:text-zinc-400 text-[11px]">Live Buffer:</span>
                       <span className="font-mono font-bold text-zinc-900 dark:text-white text-xs">
                         {stats.liveCases.toLocaleString()} cs
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-baseline text-[11px] font-mono text-zinc-500 dark:text-zinc-400">
+                      <span>Bottle Stock:</span>
+                      <span className="font-bold text-orange-600 dark:text-orange-400">
+                        {stats.liveBottles.toLocaleString()} btls
                       </span>
                     </div>
                     <div className="w-full bg-zinc-200 dark:bg-[#000000] h-1.5 rounded-full overflow-hidden">
@@ -319,7 +309,7 @@ export function DepotStock({
                 </h2>
                 <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
                   Region: <span className="text-zinc-700 dark:text-zinc-200 font-medium">{depotInventory.region}</span> &bull; 
-                  Live Stock: <span className="text-orange-500 font-mono font-bold">{depotInventory.total_cases?.toLocaleString()} cs</span> &bull;
+                  Live Stock: <span className="text-orange-500 font-mono font-bold">{depotInventory.total_cases?.toLocaleString()} cs</span> <span className="font-mono font-semibold text-zinc-600 dark:text-zinc-300">({(depotInventory.total_bottles || (depotInventory.total_cases * 12)).toLocaleString()} btls)</span> &bull;
                   Max Cap: <span className="font-mono text-zinc-600 dark:text-zinc-300">{depotInventory.capacity_cases?.toLocaleString()} cs</span>
                 </p>
               </div>
@@ -335,6 +325,7 @@ export function DepotStock({
                   <th className="py-2.5 px-3">Category</th>
                   <th className="py-2.5 px-3">Pack Size</th>
                   <th className="py-2.5 px-3 text-right">Available Cases</th>
+                  <th className="py-2.5 px-3 text-right">Bottle Stock</th>
                   <th className="py-2.5 px-3 text-right">Wholesale Case Rate</th>
                   <th className="py-2.5 px-3 text-right">Gazette MRP</th>
                   <th className="py-2.5 px-4 text-center">Status</th>
@@ -378,9 +369,34 @@ export function DepotStock({
                         {item.pack_size}
                       </td>
 
-                      <td className="py-2 px-3 text-right font-mono font-bold text-zinc-900 dark:text-white">
-                        {item.available_cases?.toLocaleString()} cs
-                      </td>
+                      {(() => {
+                        const totalDepotCap = activeDepotConfig?.capacity_cases || 150000;
+                        const whRatio = activeWarehouse && totalDepotCap > 0 
+                          ? (activeWarehouse.capacity_cases / totalDepotCap) 
+                          : 1.0;
+                        const displayCases = activeWarehouse 
+                          ? Math.max(10, Math.round((Number(item.available_cases) || 0) * whRatio))
+                          : (Number(item.available_cases) || 0);
+                        const btlsPerCase = item.bottles_per_case || ((item.category === 'BEER' && (item.pack_size || '').includes('500ml')) ? 24 : 12);
+                        const displayBottles = displayCases * btlsPerCase;
+
+                        return (
+                          <>
+                            <td className="py-2 px-3 text-right font-mono font-bold text-zinc-900 dark:text-white">
+                              {displayCases.toLocaleString()} cs
+                            </td>
+
+                            <td className="py-2 px-3 text-right font-mono">
+                              <div className="font-bold text-orange-600 dark:text-orange-400">
+                                {displayBottles.toLocaleString()} btls
+                              </div>
+                              <div className="text-[10px] text-zinc-400 font-normal">
+                                ({btlsPerCase} btls/cs)
+                              </div>
+                            </td>
+                          </>
+                        );
+                      })()}
 
                       <td className="py-2 px-3 text-right font-mono text-zinc-600 dark:text-zinc-300">
                         ₹{item.wholesale_price?.toLocaleString()}

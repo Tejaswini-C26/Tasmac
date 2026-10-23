@@ -55,24 +55,32 @@ def get_depot_inventory(depot_id: int, db: Session = Depends(get_db)):
     for s in stocks:
         brand = s.brand
         latest_price = brand.prices[0] if brand.prices else None
+        btl_per_case = brand.bottles_per_case or (24 if "BEER" in (brand.category or "") and "500ml" in (brand.pack_size or "") else 12)
+        cases = s.available_cases or 0
         inventory.append({
             "brand_id": brand.id,
             "brand_name": brand.name,
             "category": brand.category,
             "sub_category": brand.sub_category,
             "pack_size": brand.pack_size,
+            "bottles_per_case": btl_per_case,
             "image_url": brand.image_url,
-            "available_cases": s.available_cases,
+            "available_cases": cases,
+            "available_bottles": cases * btl_per_case,
             "wholesale_price": latest_price.wholesale_issue_price if latest_price else 0,
             "mrp": latest_price.mrp_per_bottle if latest_price else 0
         })
+
+    total_cases = sum(s.available_cases for s in stocks)
+    total_bottles = sum((s.available_cases or 0) * (s.brand.bottles_per_case or 12) for s in stocks)
 
     res = {
         "depot_id": depot.id,
         "name": depot.name,
         "region": depot.region,
         "capacity_cases": depot.capacity_cases,
-        "total_cases": sum(s.available_cases for s in stocks),
+        "total_cases": total_cases,
+        "total_bottles": total_bottles,
         "items": inventory
     }
     cache.set(cache_key, res, ttl=60)

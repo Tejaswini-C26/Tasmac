@@ -286,3 +286,4 @@ export function AddWarehouseModal({ isOpen, onClose, depot, onWarehouseAdded }) 
     </div>
   );
 }
+
