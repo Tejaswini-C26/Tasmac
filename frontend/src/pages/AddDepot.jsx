@@ -12,6 +12,7 @@ import {
   Boxes, 
   Beer, 
   Wine, 
+  Flame,
   ArrowRight, 
   ArrowLeft, 
   RefreshCw, 
@@ -52,9 +53,11 @@ const DEPOT_PRESETS = [
     address: 'Plot 12, Phase-II SIDCO Industrial Complex, Gangaikondan, Tirunelveli - 627352',
     capacity_cases: 140000,
     initial_stock_cases: 12500,
-    shed1Name: 'Gangaikondan IMFL Spirits Vault',
+    shed1Name: 'Gangaikondan IMFL Whisky Vault',
     shed2Name: 'Gangaikondan Beer Storage Bay',
-    shed3Name: 'Gangaikondan Wine & Premium Reserve'
+    shed3Name: 'Gangaikondan Vodka & White Spirits',
+    shed4Name: 'Gangaikondan Cane Rum Vault',
+    shed5Name: 'Gangaikondan Wine & Premium Reserve'
   },
   {
     name: 'Vellore Regional Wholesale Depot',
@@ -65,9 +68,11 @@ const DEPOT_PRESETS = [
     address: 'NH-48 Bypass, Ranipet SIPCOT Logistics Corridor, Vellore - 632403',
     capacity_cases: 125000,
     initial_stock_cases: 11000,
-    shed1Name: 'Ranipet Spirits Buffer Vault',
+    shed1Name: 'Ranipet Whisky Buffer Vault',
     shed2Name: 'Ranipet Fast-Moving Beer Bay',
-    shed3Name: 'Ranipet Premium Single Malt Cellar'
+    shed3Name: 'Ranipet Vodka & Botanical Spirits',
+    shed4Name: 'Ranipet Dark Rum Storage',
+    shed5Name: 'Ranipet Premium Single Malt Cellar'
   },
   {
     name: 'Thanjavur Delta Wholesale Depot',
@@ -78,9 +83,11 @@ const DEPOT_PRESETS = [
     address: 'Old Tiruvaiyaru Road, Delta Grain & Beverage Hub, Thanjavur - 613004',
     capacity_cases: 110000,
     initial_stock_cases: 9500,
-    shed1Name: 'Delta Central Spirits Warehouse',
+    shed1Name: 'Delta Central Whisky Warehouse',
     shed2Name: 'Delta Beer Staging Facility',
-    shed3Name: 'Delta Reserve Wine & Elite Vault'
+    shed3Name: 'Delta Vodka & White Spirits Vault',
+    shed4Name: 'Delta Spiced Cane Rum Shed',
+    shed5Name: 'Delta Reserve Wine & Elite Vault'
   },
   {
     name: 'Erode West Logistics Supply Depot',
@@ -91,9 +98,11 @@ const DEPOT_PRESETS = [
     address: 'Perundurai SIPCOT Growth Center, Erode - 638052',
     capacity_cases: 135000,
     initial_stock_cases: 12000,
-    shed1Name: 'Perundurai IMFL High-Strength Vault',
+    shed1Name: 'Perundurai IMFL Whisky Vault',
     shed2Name: 'Perundurai Palletized Beer Bay',
-    shed3Name: 'Perundurai Wine & Reserve Cellar'
+    shed3Name: 'Perundurai Vodka & Grain Spirits',
+    shed4Name: 'Perundurai Rum Staging Bay',
+    shed5Name: 'Perundurai Wine & Reserve Cellar'
   }
 ];
 
@@ -108,14 +117,18 @@ export function AddDepot({ onDepotAdded, onCancel }) {
   const [capacityCases, setCapacityCases] = useState(140000);
   const [initialStockCases, setInitialStockCases] = useState(12500);
 
-  // 3 Warehouse Shed Configurations
-  const [shed1Ratio, setShed1Ratio] = useState(55); // Spirits
+  // 5 Specialized Warehouse Shed Configurations
+  const [shed1Ratio, setShed1Ratio] = useState(42); // Whisky
   const [shed2Ratio, setShed2Ratio] = useState(30); // Beer
-  const [shed3Ratio, setShed3Ratio] = useState(15); // Wine/Premium
+  const [shed3Ratio, setShed3Ratio] = useState(13); // Vodka & Gin
+  const [shed4Ratio, setShed4Ratio] = useState(9);  // Rum
+  const [shed5Ratio, setShed5Ratio] = useState(6);  // Wine & Premium
 
-  const [shed1Name, setShed1Name] = useState('Gangaikondan IMFL Spirits Vault');
+  const [shed1Name, setShed1Name] = useState('Gangaikondan IMFL Whisky Vault');
   const [shed2Name, setShed2Name] = useState('Gangaikondan Beer Storage Bay');
-  const [shed3Name, setShed3Name] = useState('Gangaikondan Wine & Premium Reserve');
+  const [shed3Name, setShed3Name] = useState('Gangaikondan Vodka & White Spirits');
+  const [shed4Name, setShed4Name] = useState('Gangaikondan Cane Rum Vault');
+  const [shed5Name, setShed5Name] = useState('Gangaikondan Wine & Premium Reserve');
 
   // UI state
   const [loading, setLoading] = useState(false);
@@ -135,18 +148,21 @@ export function AddDepot({ onDepotAdded, onCancel }) {
     setShed1Name(preset.shed1Name);
     setShed2Name(preset.shed2Name);
     setShed3Name(preset.shed3Name);
+    setShed4Name(preset.shed4Name || 'Regional Cane Rum Vault');
+    setShed5Name(preset.shed5Name || 'Regional Wine & Premium Reserve');
     setError(null);
   };
 
-  // Auto-generate code when user edits name or region if still matching pattern
   const handleNameChange = (val) => {
     setName(val);
   };
 
-  // Calculations for 3 warehouse sheds
+  // Calculations for 5 warehouse sheds
   const shed1Cases = Math.round((capacityCases * shed1Ratio) / 100);
   const shed2Cases = Math.round((capacityCases * shed2Ratio) / 100);
-  const shed3Cases = capacityCases - shed1Cases - shed2Cases;
+  const shed3Cases = Math.round((capacityCases * shed3Ratio) / 100);
+  const shed4Cases = Math.round((capacityCases * shed4Ratio) / 100);
+  const shed5Cases = capacityCases - shed1Cases - shed2Cases - shed3Cases - shed4Cases;
 
   // Handle Form Submission
   const handleSubmit = async (e) => {
@@ -227,11 +243,11 @@ export function AddDepot({ onDepotAdded, onCancel }) {
                 Add Wholesale Depot
               </h1>
               <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/20">
-                STATE BUFFER FACILITY
+                5-SHED BUFFER FACILITY
               </span>
             </div>
             <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
-              Commission a new regional TASMAC buffer depot with 3 specialized warehouse sheds & initial stock
+              Commission a new regional TASMAC buffer depot with 5 specialized warehouse sheds & initial stock
             </p>
           </div>
         </div>
@@ -445,7 +461,7 @@ export function AddDepot({ onDepotAdded, onCancel }) {
                       Initial Inward Stock Allocation
                     </label>
                     <p className="text-[11px] text-zinc-500">
-                      Dispatched across active state IMFL & Beer brands upon registration
+                      Dispatched across active state IMFL, Beer & Wine brands upon registration
                     </p>
                   </div>
                   <div className="flex items-center gap-1.5">
@@ -464,28 +480,28 @@ export function AddDepot({ onDepotAdded, onCancel }) {
               </div>
             </div>
 
-            {/* Section 4: 3 Specialized Warehouse Sheds */}
+            {/* Section 4: 5 Specialized Warehouse Sheds */}
             <div className="bg-white dark:bg-[#101010] rounded-xl border border-zinc-200 dark:border-white/10 p-4 shadow-sm space-y-3.5">
               <div className="flex items-center justify-between pb-2 border-b border-zinc-100 dark:border-white/5">
                 <div className="flex items-center gap-2">
                   <Boxes className="w-4 h-4 text-orange-500" />
                   <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-900 dark:text-white">
-                    4. Three (3) Specialized Warehouse Sheds
+                    4. Five (5) Specialized Warehouse Sheds
                   </h3>
                 </div>
-                <span className="text-[11px] font-mono text-zinc-400">
-                  Fixed 3-Zone Architecture
+                <span className="text-[11px] font-mono text-orange-500 font-bold">
+                  Full 5-Zone Architecture
                 </span>
               </div>
 
               <div className="space-y-3">
-                {/* Shed 1: IMFL Spirits */}
+                {/* Shed 1: IMFL Whisky Vault */}
                 <div className="p-3 rounded-lg bg-zinc-50 dark:bg-black/40 border border-zinc-200 dark:border-white/5 space-y-2">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-orange-500" />
+                      <Boxes className="w-3.5 h-3.5 text-orange-500" />
                       <span className="text-xs font-bold text-zinc-900 dark:text-white">
-                        WH Shed 1: IMFL Spirits Vault
+                        WH Shed 1: IMFL Whisky Vault
                       </span>
                       <span className="px-1.5 py-0.5 rounded text-[9px] font-mono bg-orange-500/10 text-orange-500">
                         {shed1Ratio}% Allocation
@@ -504,14 +520,11 @@ export function AddDepot({ onDepotAdded, onCancel }) {
                   />
                   <div className="flex items-center gap-2 text-[10px] text-zinc-500 font-mono">
                     <span>Stock Categories:</span>
-                    <span className="px-1.5 py-0.5 rounded bg-zinc-200 dark:bg-white/10 text-zinc-700 dark:text-zinc-300">WHISKY</span>
-                    <span className="px-1.5 py-0.5 rounded bg-zinc-200 dark:bg-white/10 text-zinc-700 dark:text-zinc-300">RUM</span>
-                    <span className="px-1.5 py-0.5 rounded bg-zinc-200 dark:bg-white/10 text-zinc-700 dark:text-zinc-300">VODKA</span>
-                    <span className="px-1.5 py-0.5 rounded bg-zinc-200 dark:bg-white/10 text-zinc-700 dark:text-zinc-300">BRANDY</span>
+                    <span className="px-1.5 py-0.5 rounded bg-zinc-200 dark:bg-white/10 text-zinc-700 dark:text-zinc-300">WHISKY (11 Brands)</span>
                   </div>
                 </div>
 
-                {/* Shed 2: Beer Bay */}
+                {/* Shed 2: Beer Storage Bay */}
                 <div className="p-3 rounded-lg bg-zinc-50 dark:bg-black/40 border border-zinc-200 dark:border-white/5 space-y-2">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
@@ -536,24 +549,23 @@ export function AddDepot({ onDepotAdded, onCancel }) {
                   />
                   <div className="flex items-center gap-2 text-[10px] text-zinc-500 font-mono">
                     <span>Stock Categories:</span>
-                    <span className="px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400">BEER</span>
-                    <span className="px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400">DRAUGHT & CIDER</span>
+                    <span className="px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400">BEER & DRAUGHT (5 Brands)</span>
                   </div>
                 </div>
 
-                {/* Shed 3: Wine / Premium */}
+                {/* Shed 3: Vodka & White Spirits */}
                 <div className="p-3 rounded-lg bg-zinc-50 dark:bg-black/40 border border-zinc-200 dark:border-white/5 space-y-2">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <Wine className="w-3.5 h-3.5 text-purple-500" />
+                      <Sparkles className="w-3.5 h-3.5 text-sky-500" />
                       <span className="text-xs font-bold text-zinc-900 dark:text-white">
-                        WH Shed 3: Wine & Premium Reserve
+                        WH Shed 3: Vodka & White Spirits
                       </span>
-                      <span className="px-1.5 py-0.5 rounded text-[9px] font-mono bg-purple-500/10 text-purple-500">
+                      <span className="px-1.5 py-0.5 rounded text-[9px] font-mono bg-sky-500/10 text-sky-500">
                         {shed3Ratio}% Allocation
                       </span>
                     </div>
-                    <span className="text-xs font-mono font-bold text-purple-500">
+                    <span className="text-xs font-mono font-bold text-sky-500">
                       {shed3Cases.toLocaleString()} cs
                     </span>
                   </div>
@@ -566,8 +578,65 @@ export function AddDepot({ onDepotAdded, onCancel }) {
                   />
                   <div className="flex items-center gap-2 text-[10px] text-zinc-500 font-mono">
                     <span>Stock Categories:</span>
-                    <span className="px-1.5 py-0.5 rounded bg-purple-500/10 text-purple-600 dark:text-purple-400">WINE</span>
-                    <span className="px-1.5 py-0.5 rounded bg-purple-500/10 text-purple-600 dark:text-purple-400">SINGLE MALT & GIN</span>
+                    <span className="px-1.5 py-0.5 rounded bg-sky-500/10 text-sky-600 dark:text-sky-400">VODKA & GIN (4 Brands)</span>
+                  </div>
+                </div>
+
+                {/* Shed 4: Rum & Dark Spirits */}
+                <div className="p-3 rounded-lg bg-zinc-50 dark:bg-black/40 border border-zinc-200 dark:border-white/5 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Flame className="w-3.5 h-3.5 text-red-500" />
+                      <span className="text-xs font-bold text-zinc-900 dark:text-white">
+                        WH Shed 4: Rum & Cane Spirits
+                      </span>
+                      <span className="px-1.5 py-0.5 rounded text-[9px] font-mono bg-red-500/10 text-red-500">
+                        {shed4Ratio}% Allocation
+                      </span>
+                    </div>
+                    <span className="text-xs font-mono font-bold text-red-500">
+                      {shed4Cases.toLocaleString()} cs
+                    </span>
+                  </div>
+                  <input
+                    type="text"
+                    value={shed4Name}
+                    onChange={(e) => setShed4Name(e.target.value)}
+                    placeholder="Shed 4 Name"
+                    className="w-full px-2.5 py-1.5 text-xs rounded bg-white dark:bg-[#121212] border border-zinc-200 dark:border-white/10 text-zinc-900 dark:text-white"
+                  />
+                  <div className="flex items-center gap-2 text-[10px] text-zinc-500 font-mono">
+                    <span>Stock Categories:</span>
+                    <span className="px-1.5 py-0.5 rounded bg-red-500/10 text-red-600 dark:text-red-400">RUM & SPICED (2 Brands)</span>
+                  </div>
+                </div>
+
+                {/* Shed 5: Wine & Premium Reserve */}
+                <div className="p-3 rounded-lg bg-zinc-50 dark:bg-black/40 border border-zinc-200 dark:border-white/5 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Wine className="w-3.5 h-3.5 text-purple-500" />
+                      <span className="text-xs font-bold text-zinc-900 dark:text-white">
+                        WH Shed 5: Wine & Premium Reserve
+                      </span>
+                      <span className="px-1.5 py-0.5 rounded text-[9px] font-mono bg-purple-500/10 text-purple-500">
+                        {shed5Ratio}% Allocation
+                      </span>
+                    </div>
+                    <span className="text-xs font-mono font-bold text-purple-500">
+                      {shed5Cases.toLocaleString()} cs
+                    </span>
+                  </div>
+                  <input
+                    type="text"
+                    value={shed5Name}
+                    onChange={(e) => setShed5Name(e.target.value)}
+                    placeholder="Shed 5 Name"
+                    className="w-full px-2.5 py-1.5 text-xs rounded bg-white dark:bg-[#121212] border border-zinc-200 dark:border-white/10 text-zinc-900 dark:text-white"
+                  />
+                  <div className="flex items-center gap-2 text-[10px] text-zinc-500 font-mono">
+                    <span>Stock Categories:</span>
+                    <span className="px-1.5 py-0.5 rounded bg-purple-500/10 text-purple-600 dark:text-purple-400">WINE & BRANDY (2 Brands)</span>
                   </div>
                 </div>
               </div>
@@ -617,7 +686,7 @@ export function AddDepot({ onDepotAdded, onCancel }) {
                   <div>
                     <span className="text-[10px] font-mono uppercase font-bold tracking-widest text-orange-600 dark:text-orange-400 flex items-center gap-1.5">
                       <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
-                      FACILITY BLUEPRINT
+                      FACILITY BLUEPRINT (5 SHEDS)
                     </span>
                     <h2 className="text-sm font-bold text-zinc-900 dark:text-white mt-1 leading-snug">
                       {name || 'State Wholesale Depot'}
@@ -644,33 +713,37 @@ export function AddDepot({ onDepotAdded, onCancel }) {
                     </span>
                   </div>
                   <div className="w-full bg-zinc-200 dark:bg-zinc-800 h-2 rounded-full overflow-hidden flex">
-                    <div style={{ width: `${shed1Ratio}%` }} className="bg-orange-500 h-full" title="Spirits" />
+                    <div style={{ width: `${shed1Ratio}%` }} className="bg-orange-500 h-full" title="Whisky" />
                     <div style={{ width: `${shed2Ratio}%` }} className="bg-amber-500 h-full" title="Beer" />
-                    <div style={{ width: `${shed3Ratio}%` }} className="bg-purple-500 h-full" title="Wine/Reserve" />
+                    <div style={{ width: `${shed3Ratio}%` }} className="bg-sky-500 h-full" title="Vodka/Gin" />
+                    <div style={{ width: `${shed4Ratio}%` }} className="bg-red-500 h-full" title="Rum" />
+                    <div style={{ width: `${shed5Ratio}%` }} className="bg-purple-500 h-full" title="Wine/Reserve" />
                   </div>
-                  <div className="flex justify-between text-[10px] font-mono text-zinc-500">
-                    <span className="text-orange-500">● IMFL: {shed1Ratio}%</span>
+                  <div className="flex justify-between text-[9px] font-mono text-zinc-500 flex-wrap gap-1">
+                    <span className="text-orange-500">● Whisky: {shed1Ratio}%</span>
                     <span className="text-amber-500">● Beer: {shed2Ratio}%</span>
-                    <span className="text-purple-500">● Wine: {shed3Ratio}%</span>
+                    <span className="text-sky-500">● Vodka: {shed3Ratio}%</span>
+                    <span className="text-red-500">● Rum: {shed4Ratio}%</span>
+                    <span className="text-purple-500">● Wine: {shed5Ratio}%</span>
                   </div>
                 </div>
 
-                {/* 3 Warehouses Blueprint View */}
-                <div className="space-y-2">
+                {/* 5 Warehouses Blueprint View */}
+                <div className="space-y-1.5">
                   <span className="text-[11px] font-mono uppercase font-semibold text-zinc-400 block">
-                    Assigned Warehouse Sheds (3):
+                    Assigned Warehouse Sheds (5):
                   </span>
 
                   {/* Shed 1 Preview */}
-                  <div className="p-2.5 rounded-lg bg-orange-500/5 border border-orange-500/20 flex items-center justify-between text-xs">
+                  <div className="p-2 rounded-lg bg-orange-500/5 border border-orange-500/20 flex items-center justify-between text-xs">
                     <div className="flex items-center gap-2 min-w-0">
-                      <Boxes className="w-4 h-4 text-orange-500 shrink-0" />
+                      <Boxes className="w-3.5 h-3.5 text-orange-500 shrink-0" />
                       <div className="min-w-0">
                         <p className="font-semibold text-zinc-900 dark:text-zinc-100 truncate">
                           {shed1Name}
                         </p>
                         <p className="text-[10px] text-zinc-500 font-mono">
-                          Spirits Vault &bull; 4 Brand Categories
+                          Whisky Vault &bull; 11 Brands
                         </p>
                       </div>
                     </div>
@@ -680,15 +753,15 @@ export function AddDepot({ onDepotAdded, onCancel }) {
                   </div>
 
                   {/* Shed 2 Preview */}
-                  <div className="p-2.5 rounded-lg bg-amber-500/5 border border-amber-500/20 flex items-center justify-between text-xs">
+                  <div className="p-2 rounded-lg bg-amber-500/5 border border-amber-500/20 flex items-center justify-between text-xs">
                     <div className="flex items-center gap-2 min-w-0">
-                      <Beer className="w-4 h-4 text-amber-500 shrink-0" />
+                      <Beer className="w-3.5 h-3.5 text-amber-500 shrink-0" />
                       <div className="min-w-0">
                         <p className="font-semibold text-zinc-900 dark:text-zinc-100 truncate">
                           {shed2Name}
                         </p>
                         <p className="text-[10px] text-zinc-500 font-mono">
-                          Palletized Bay &bull; Fast-Moving Beer
+                          Palletized Bay &bull; 5 Lager Brands
                         </p>
                       </div>
                     </div>
@@ -698,20 +771,56 @@ export function AddDepot({ onDepotAdded, onCancel }) {
                   </div>
 
                   {/* Shed 3 Preview */}
-                  <div className="p-2.5 rounded-lg bg-purple-500/5 border border-purple-500/20 flex items-center justify-between text-xs">
+                  <div className="p-2 rounded-lg bg-sky-500/5 border border-sky-500/20 flex items-center justify-between text-xs">
                     <div className="flex items-center gap-2 min-w-0">
-                      <Wine className="w-4 h-4 text-purple-500 shrink-0" />
+                      <Sparkles className="w-3.5 h-3.5 text-sky-500 shrink-0" />
                       <div className="min-w-0">
                         <p className="font-semibold text-zinc-900 dark:text-zinc-100 truncate">
                           {shed3Name}
                         </p>
                         <p className="text-[10px] text-zinc-500 font-mono">
-                          Bonded Cellar &bull; Wines & Scotch
+                          Vodka & Gin Vault &bull; 4 Brands
+                        </p>
+                      </div>
+                    </div>
+                    <span className="font-mono font-bold text-sky-600 dark:text-sky-400 shrink-0">
+                      {shed3Cases.toLocaleString()} cs
+                    </span>
+                  </div>
+
+                  {/* Shed 4 Preview */}
+                  <div className="p-2 rounded-lg bg-red-500/5 border border-red-500/20 flex items-center justify-between text-xs">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <Flame className="w-3.5 h-3.5 text-red-500 shrink-0" />
+                      <div className="min-w-0">
+                        <p className="font-semibold text-zinc-900 dark:text-zinc-100 truncate">
+                          {shed4Name}
+                        </p>
+                        <p className="text-[10px] text-zinc-500 font-mono">
+                          Dark Rum Shed &bull; 2 Brands
+                        </p>
+                      </div>
+                    </div>
+                    <span className="font-mono font-bold text-red-600 dark:text-red-400 shrink-0">
+                      {shed4Cases.toLocaleString()} cs
+                    </span>
+                  </div>
+
+                  {/* Shed 5 Preview */}
+                  <div className="p-2 rounded-lg bg-purple-500/5 border border-purple-500/20 flex items-center justify-between text-xs">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <Wine className="w-3.5 h-3.5 text-purple-500 shrink-0" />
+                      <div className="min-w-0">
+                        <p className="font-semibold text-zinc-900 dark:text-zinc-100 truncate">
+                          {shed5Name}
+                        </p>
+                        <p className="text-[10px] text-zinc-500 font-mono">
+                          Wine Cellar &bull; 2 Brands
                         </p>
                       </div>
                     </div>
                     <span className="font-mono font-bold text-purple-600 dark:text-purple-400 shrink-0">
-                      {shed3Cases.toLocaleString()} cs
+                      {shed5Cases.toLocaleString()} cs
                     </span>
                   </div>
                 </div>
@@ -735,7 +844,7 @@ export function AddDepot({ onDepotAdded, onCancel }) {
                 {/* Compliance Checklist Badge */}
                 <div className="p-2.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs flex items-center gap-2 font-mono">
                   <ShieldCheck className="w-4 h-4 shrink-0" />
-                  <span className="text-[11px]">TASMAC Excise Buffer Standard Ready</span>
+                  <span className="text-[11px]">TASMAC 5-Shed Excise Buffer Standard Ready</span>
                 </div>
               </div>
             </div>
@@ -775,7 +884,7 @@ export function AddDepot({ onDepotAdded, onCancel }) {
               </div>
               <div className="flex justify-between">
                 <span className="text-zinc-500">Warehouse Sheds:</span>
-                <span className="text-zinc-900 dark:text-zinc-100">3 Specialized Sheds</span>
+                <span className="text-orange-500 font-bold">5 Specialized Sheds</span>
               </div>
             </div>
 
@@ -797,4 +906,3 @@ export function AddDepot({ onDepotAdded, onCancel }) {
     </div>
   );
 }
-

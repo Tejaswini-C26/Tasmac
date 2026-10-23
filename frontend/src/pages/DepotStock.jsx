@@ -15,7 +15,9 @@ import {
   Boxes,
   Beer,
   Wine,
-  AlertCircle
+  AlertCircle,
+  Sparkles,
+  Flame
 } from 'lucide-react';
 import { fetchDepots, fetchDepotInventory } from '../services/api';
 import { DepotStockModal } from '../components/DepotStockModal';
@@ -289,7 +291,7 @@ export function DepotStock({
 
                 {activeDepotConfig.warehouses.map((wh) => {
                   const isWhActive = selectedWarehouseId === wh.id;
-                  const WhIcon = wh.categories.includes('BEER') ? Beer : wh.categories.includes('WINE') ? Wine : Boxes;
+                  const WhIcon = wh.categories.includes('BEER') ? Beer : wh.categories.includes('WINE') ? Wine : wh.categories.includes('VODKA') ? Sparkles : wh.categories.includes('RUM') ? Flame : Boxes;
 
                   return (
                     <button
