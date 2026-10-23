@@ -156,35 +156,13 @@ export function OrderDeliveryTracker({ order }) {
       <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent hidden dark:block" />
 
       {/* Telemetry Header Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-zinc-100 dark:border-white/[0.06] text-xs">
-        <div className="flex items-center gap-2.5">
-          <span className="relative flex h-2.5 w-2.5 items-center justify-center">
-            <span className="inline-flex rounded-full h-2 w-2 bg-emerald-500 shadow-[0_0_6px_#10b981]" />
-          </span>
-          <span className="font-mono text-[11px] font-bold tracking-wider uppercase text-zinc-800 dark:text-zinc-200">
-            {status === 'DELIVERED' ? 'Delivery Completed & Restocked' : 'Live Fleet Telemetry'}
-          </span>
-          <span className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-white/[0.04] border border-zinc-200 dark:border-white/10 text-[10px] font-mono text-zinc-600 dark:text-zinc-400">
-            <FileCheck className="w-3 h-3 text-emerald-500 dark:text-emerald-400" />
-            <span>e-TP #{order.transit_pass_no || '76389'}</span>
-          </span>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <div className="text-right hidden md:block">
-            <span className="text-[10px] font-mono uppercase text-zinc-400 dark:text-zinc-500">Carrier Unit: </span>
-            <span className="text-xs font-mono font-bold text-zinc-800 dark:text-zinc-200">{vehicleNo}</span>
-          </div>
-          <button
-            type="button"
-            onClick={() => setShowDetails(!showDetails)}
-            className="py-1 px-3 rounded-lg bg-zinc-100 hover:bg-zinc-200 dark:bg-white/5 dark:hover:bg-white/10 border border-zinc-200 dark:border-white/10 text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white text-xs font-mono flex items-center gap-1.5 transition cursor-pointer"
-          >
-            <Activity className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400" />
-            <span>{showDetails ? 'Hide Details' : 'Telemetry HUD'}</span>
-            <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${showDetails ? 'rotate-180 text-orange-500' : 'text-zinc-400 dark:text-zinc-400'}`} />
-          </button>
-        </div>
+      <div className="flex items-center gap-2.5 pb-3 border-b border-zinc-100 dark:border-white/[0.06] text-xs">
+        <span className="relative flex h-2.5 w-2.5 items-center justify-center">
+          <span className="inline-flex rounded-full h-2 w-2 bg-emerald-500 shadow-[0_0_6px_#10b981]" />
+        </span>
+        <span className="font-mono text-[11px] font-bold tracking-wider uppercase text-zinc-800 dark:text-zinc-200">
+          {status === 'DELIVERED' ? 'Delivery Completed & Restocked' : 'Live Fleet Telemetry'}
+        </span>
       </div>
 
       {/* Stepper Track Area */}

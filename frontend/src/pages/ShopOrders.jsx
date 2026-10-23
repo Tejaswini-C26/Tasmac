@@ -20,7 +20,6 @@ import {
 
 import { fetchOrders, updateOrderStatus } from '../services/api';
 
-import { StatusBadge } from '../components/StatusBadge';
 
 import { OrderDeliveryTracker } from '../components/OrderDeliveryTracker';
 
@@ -312,17 +311,11 @@ export function ShopOrders({ selectedShop, onSelectShop, shops = [], onOpenMap }
 
                     <div>
 
-                      <div className="flex items-center gap-2">
+                      <span className="font-mono font-bold text-sm text-zinc-900 dark:text-white">
 
-                        <span className="font-mono font-bold text-sm text-white">
+                        {order.order_no}
 
-                          {order.order_no}
-
-                        </span>
-
-                        <StatusBadge status={order.status} />
-
-                      </div>
+                      </span>
 
                       <p className="text-xs text-zinc-400 mt-0.5">
 
@@ -531,46 +524,6 @@ export function ShopOrders({ selectedShop, onSelectShop, shops = [], onOpenMap }
                   {/* Actions Area (Hidden in Print) */}
 
                   <div className="flex items-center flex-wrap gap-2 print:hidden">
-
-                    {/* Status Dropdown / Quick Switcher */}
-
-                    <div className="flex items-center gap-1.5">
-
-                      <span className="text-[11px] text-zinc-500 font-mono">Status:</span>
-
-                      <select
-
-                        value={order.status}
-
-                        onClick={(e) => e.stopPropagation()}
-
-                        onChange={(e) => {
-
-                          e.stopPropagation();
-
-                          handleStatusChange(order.id, e.target.value);
-
-                        }}
-
-                        disabled={isUpdating}
-
-                        className="py-1 px-2.5 rounded-lg bg-[#08090c] border border-white/10 text-xs text-zinc-200 font-mono cursor-pointer hover:border-white/20 focus:outline-none focus:border-orange-500 transition disabled:opacity-50"
-
-                      >
-
-                        <option value="CONFIRMED">CONFIRMED</option>
-
-                        <option value="DISPATCHED">DISPATCHED</option>
-
-                        <option value="IN_TRANSIT">IN TRANSIT</option>
-
-                        <option value="DELIVERED">DELIVERED</option>
-
-                      </select>
-
-                    </div>
-
-
 
                     {/* Sequential Lifecycle Progression Action Button */}
 
