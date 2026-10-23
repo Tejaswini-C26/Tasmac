@@ -149,38 +149,26 @@ export function OrderDeliveryTracker({ order }) {
   ];
 
   return (
-    <div className="w-full bg-white dark:bg-[#000000] rounded-xl p-4 sm:p-5 border border-zinc-200 dark:border-white/10 shadow-sm dark:shadow-[0_8px_32px_rgba(0,0,0,0.7)] space-y-4 my-2 print:hidden relative overflow-hidden transition-colors">
-      {/* Ambient Backlight Glow (Dark mode only) */}
-      
+    <div className="w-full bg-white dark:bg-[#000000] rounded-xl px-4 py-3 sm:px-5 sm:py-3.5 border border-zinc-200 dark:border-white/10 shadow-sm dark:shadow-[0_8px_32px_rgba(0,0,0,0.7)] my-1.5 print:hidden relative overflow-hidden transition-colors">
       {/* Top Edge Metallic Highlight (Dark mode only) */}
       <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent hidden dark:block" />
 
-      {/* Telemetry Header Bar */}
-      <div className="flex items-center gap-2.5 pb-3 border-b border-zinc-100 dark:border-white/[0.06] text-xs">
-        <span className="relative flex h-2.5 w-2.5 items-center justify-center">
-          <span className="inline-flex rounded-full h-2 w-2 bg-emerald-500 shadow-[0_0_6px_#10b981]" />
-        </span>
-        <span className="font-mono text-[11px] font-bold tracking-wider uppercase text-zinc-800 dark:text-zinc-200">
-          {status === 'DELIVERED' ? 'Delivery Completed & Restocked' : 'Live Fleet Telemetry'}
-        </span>
-      </div>
-
       {/* Stepper Track Area */}
-      <div className="relative pt-16 pb-4 select-none px-4">
+      <div className="relative pt-12 pb-2 select-none px-4">
         {/* Inactive Rail Background Line spanning exactly from center of Node 0 to center of Node 3 (56px from each edge) */}
         <div 
-          className="absolute top-[80px] left-[56px] right-[56px] h-1.5 bg-zinc-200 dark:bg-[#181a24] rounded-full z-0 border border-zinc-300/50 dark:border-white/[0.04]" 
+          className="absolute top-[64px] left-[56px] right-[56px] h-1.5 bg-zinc-200 dark:bg-[#181a24] rounded-full z-0 border border-zinc-300/50 dark:border-white/[0.04]" 
         />
 
         {/* Completed Emerald Progress Line */}
         <div 
-          className="absolute top-[80px] left-[56px] h-1.5 bg-gradient-to-r from-emerald-500 via-emerald-400 to-teal-400 rounded-full z-0 shadow-[0_0_8px_rgba(16,185,129,0.4)]"
+          className="absolute top-[64px] left-[56px] h-1.5 bg-gradient-to-r from-emerald-500 via-emerald-400 to-teal-400 rounded-full z-0 shadow-[0_0_8px_rgba(16,185,129,0.4)]"
           style={{ width: `calc((100% - 112px) * ${progressFraction})` }}
         />
 
         {/* Floating Tooltip HUD Card above the Carrier */}
         <div 
-          className={`absolute top-[22px] z-30 pointer-events-auto ${tooltipTranslate}`}
+          className={`absolute top-[6px] z-30 pointer-events-auto ${tooltipTranslate}`}
           style={{ 
             left: `calc(56px + (100% - 112px) * ${progressFraction})` 
           }}

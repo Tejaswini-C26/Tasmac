@@ -289,7 +289,7 @@ export function ShopOrders({ selectedShop, onSelectShop, shops = [], onOpenMap }
 
                 key={order.id}
 
-                className={`forge-card rounded-md p-5 border border-zinc-200 dark:border-white/10 hover:border-white/[0.16] space-y-4 print:break-inside-avoid print:border-zinc-300 print:mb-0 print:bg-white print:p-5 print:shadow-none ${
+                className={`forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 hover:border-white/[0.16] space-y-3 print:break-inside-avoid print:border-zinc-300 print:mb-0 print:bg-white print:p-4 print:shadow-none ${
 
                   isHiddenInPrint ? 'print:hidden' : ''
 
