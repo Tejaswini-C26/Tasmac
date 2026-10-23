@@ -154,8 +154,13 @@ function CustomModalSelect({ value, onChange, options, placeholder = 'Select...'
   );
 }
 
-export function SupplierManagement({ externalSearchQuery = '' }) {
-  const [activeTab, setActiveTab] = useState('consignments'); // 'consignments' | 'directory' | 'scorecard'
+export function SupplierManagement({ externalSearchQuery = '', activeTab: propActiveTab, onTabChange }) {
+  const [internalActiveTab, setInternalActiveTab] = useState('consignments'); // 'consignments' | 'directory' | 'scorecard'
+  const activeTab = propActiveTab !== undefined ? propActiveTab : internalActiveTab;
+  const setActiveTab = (tabKey) => {
+    setInternalActiveTab(tabKey);
+    if (onTabChange) onTabChange(tabKey);
+  };
   const [animateShares, setAnimateShares] = useState(false);
   const [suppliers, setSuppliers] = useState([]);
   const [consignments, setConsignments] = useState([]);

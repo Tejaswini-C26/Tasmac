@@ -26,7 +26,7 @@ export const APP_ROLES = [
     full_name: 'TASMAC Master Admin',
     organization: 'TASMAC Managing Directorate (CMDA)',
     code: 'HQ-ADMIN-001',
-    default_stage: 'suppliers',
+    default_stage: 'consignments',
     portalMode: 'manufacturing',
     icon: ShieldCheck,
     initials: 'AD'
@@ -38,7 +38,7 @@ export const APP_ROLES = [
     full_name: 'Manufacturing Supplier',
     organization: 'United Breweries & Mohan Distilleries Consortium',
     code: 'SUP-1001',
-    default_stage: 'suppliers',
+    default_stage: 'consignments',
     portalMode: 'manufacturing',
     icon: Factory,
     initials: 'MF'

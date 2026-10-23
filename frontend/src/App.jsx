@@ -40,6 +40,7 @@ import {
   Maximize2,
   Minimize2,
   Bell,
+  BadgePercent,
   X
 } from 'lucide-react';
 
@@ -59,6 +60,9 @@ import { fetchShops, fetchDepots, fetchMetrics, fetchCurrentUser, fetchSystemAle
 
 const ALL_PAGE_IDS = [
   'suppliers',
+  'consignments',
+  'directory',
+  'scorecard',
   'depots',
   'inventory',
   'catalog',
@@ -69,14 +73,34 @@ const ALL_PAGE_IDS = [
 
 const MANUFACTURING_STAGES = [
   { 
-    id: 'suppliers', 
+    id: 'consignments', 
     step: 1, 
     badge: '01', 
-    label: 'Supplier Inward', 
-    shortLabel: 'Inward', 
-    title: 'Stage 1: Supplier Inward', 
+    label: 'Inward Consignments', 
+    shortLabel: 'Consignments', 
+    title: 'Stage 1: Inward Consignments', 
+    icon: Truck, 
+    desc: 'Distilleries dispatch bulk cases & generate automated GRN to stock wholesale depots.' 
+  },
+  { 
+    id: 'directory', 
+    step: 2, 
+    badge: '02', 
+    label: 'Distilleries Directory', 
+    shortLabel: 'Directory', 
+    title: 'Stage 2: Distilleries Directory', 
     icon: Factory, 
-    desc: 'Distilleries dispatch bulk cases & generate GRN to stock wholesale depots.' 
+    desc: 'State-wide registered distilleries, licensed capacities & contact directory.' 
+  },
+  { 
+    id: 'scorecard', 
+    step: 3, 
+    badge: '03', 
+    label: 'Supplier Scorecard', 
+    shortLabel: 'Scorecard', 
+    title: 'Stage 3: Supplier Scorecard', 
+    icon: BadgePercent, 
+    desc: 'Supplier delivery SLAs, performance metrics, compliance & dispatch ratings.' 
   },
 ];
 
@@ -137,7 +161,7 @@ export function App() {
     }
     const savedMode = localStorage.getItem('tasmac_portal_mode') || 'manufacturing';
     if (savedMode === 'depot') return 'depots';
-    return savedMode === 'manufacturing' ? 'suppliers' : 'inventory';
+    return savedMode === 'manufacturing' ? 'consignments' : 'inventory';
   });
   const [viewMode, setViewMode] = useState(() => {
     const rawHash = window.location.hash.toLowerCase().replace(/^#\/?/, '');
@@ -224,7 +248,12 @@ export function App() {
   const getPageHeading = () => {
     switch (currentTab) {
       case 'suppliers':
-        return 'Supplier Management';
+      case 'consignments':
+        return 'Inward Consignments';
+      case 'directory':
+        return 'Distilleries Directory';
+      case 'scorecard':
+        return 'Supplier Scorecard';
       case 'depots':
         return 'Wholesale Depots';
       case 'inventory':
@@ -272,8 +301,8 @@ export function App() {
       return;
     }
     if (mode === 'manufacturing') {
-      setCurrentTab('suppliers');
-      window.location.hash = '#suppliers';
+      setCurrentTab('consignments');
+      window.location.hash = '#consignments';
     } else if (mode === 'depot') {
       setCurrentTab('depots');
       window.location.hash = '#depots';
@@ -302,11 +331,11 @@ export function App() {
           setPortalMode('depot');
           localStorage.setItem('tasmac_portal_mode', 'depot');
         }
-      } else if (rawHash === 'suppliers') {
+      } else if (rawHash === 'suppliers' || rawHash === 'consignments' || rawHash === 'directory' || rawHash === 'scorecard') {
         setViewMode('portal');
         setPortalMode('manufacturing');
         localStorage.setItem('tasmac_portal_mode', 'manufacturing');
-        setCurrentTab('suppliers');
+        setCurrentTab(rawHash === 'suppliers' ? 'consignments' : rawHash);
       } else if (rawHash === 'depots') {
         setViewMode('portal');
         setPortalMode('depot');
@@ -331,7 +360,7 @@ export function App() {
     window.location.hash = '#landing';
   };
 
-  const navigateToPortal = (tabId = 'suppliers') => {
+  const navigateToPortal = (tabId = 'consignments') => {
     setViewMode('portal');
     setCurrentTab(tabId);
     window.location.hash = `#${tabId}`;
@@ -373,7 +402,7 @@ useEffect(() => {
     if (user?.default_stage) {
       navigateToPortal(user.default_stage);
     } else {
-      navigateToPortal(targetMode === 'manufacturing' ? 'suppliers' : targetMode === 'depot' ? 'depots' : 'inventory');
+      navigateToPortal(targetMode === 'manufacturing' ? 'consignments' : targetMode === 'depot' ? 'depots' : 'inventory');
     }
   };
 
@@ -412,13 +441,11 @@ useEffect(() => {
   const isAdmin = currentUser?.role?.toUpperCase().includes('ADMIN') || currentUser?.username === 'admin';
 
   const getRolePages = () => {
-    if (isAdmin || currentUser?.role === 'ADMIN') {
+    if (portalMode === 'manufacturing') {
       return [
-        { id: 'suppliers', label: 'Supplier Inward', icon: Factory, mode: 'manufacturing' },
-        { id: 'depots', label: 'Wholesale Depots', icon: Warehouse, mode: 'depot' },
-        { id: 'inventory', label: 'Store Stockroom', icon: Store, mode: 'retail' },
-        { id: 'catalog', label: 'Wholesale Catalog', icon: LayoutGrid, mode: 'retail' },
-        { id: 'orders', label: 'Orders & Transit', icon: Truck, mode: 'retail' },
+        { id: 'consignments', label: 'Inward Consignments', icon: Truck, mode: 'manufacturing' },
+        { id: 'directory', label: 'Distilleries Directory', icon: Factory, mode: 'manufacturing' },
+        { id: 'scorecard', label: 'Supplier Scorecard', icon: BadgePercent, mode: 'manufacturing' },
       ];
     }
     if (portalMode === 'depot') {
@@ -426,12 +453,18 @@ useEffect(() => {
         { id: 'depots', label: 'Wholesale Depots', icon: Warehouse, mode: 'depot' },
       ];
     }
-    if (portalMode === 'manufacturing') {
+    if (portalMode === 'retail') {
       return [
-        { id: 'suppliers', label: 'Supplier Inward', icon: Factory, mode: 'manufacturing' },
+        { id: 'inventory', label: 'Store Stockroom', icon: Store, mode: 'retail' },
+        { id: 'catalog', label: 'Wholesale Catalog', icon: LayoutGrid, mode: 'retail' },
+        { id: 'orders', label: 'Orders & Transit', icon: Truck, mode: 'retail' },
       ];
     }
     return [
+      { id: 'consignments', label: 'Inward Consignments', icon: Truck, mode: 'manufacturing' },
+      { id: 'directory', label: 'Distilleries Directory', icon: Factory, mode: 'manufacturing' },
+      { id: 'scorecard', label: 'Supplier Scorecard', icon: BadgePercent, mode: 'manufacturing' },
+      { id: 'depots', label: 'Wholesale Depots', icon: Warehouse, mode: 'depot' },
       { id: 'inventory', label: 'Store Stockroom', icon: Store, mode: 'retail' },
       { id: 'catalog', label: 'Wholesale Catalog', icon: LayoutGrid, mode: 'retail' },
       { id: 'orders', label: 'Orders & Transit', icon: Truck, mode: 'retail' },
@@ -580,7 +613,7 @@ useEffect(() => {
   if (viewMode === 'landing') {
     return (
       <PublicLandingPage 
-        onEnterPortal={() => navigateToPortal(portalMode === 'manufacturing' ? 'suppliers' : portalMode === 'depot' ? 'depots' : 'inventory')}
+        onEnterPortal={() => navigateToPortal(portalMode === 'manufacturing' ? 'consignments' : portalMode === 'depot' ? 'depots' : 'inventory')}
         onOpenLogin={(mode) => navigateToLogin(mode || portalMode)}
         onNavigateToStage={(stage) => navigateToPortal(stage)}
         installPrompt={installPrompt}
@@ -616,7 +649,7 @@ useEffect(() => {
           <nav className="flex-1 py-3 px-1 space-y-1 font-mono">
             {activePages.map((item) => {
               const Icon = item.icon;
-              const isActive = currentTab === item.id;
+              const isActive = currentTab === item.id || (item.id === 'consignments' && currentTab === 'suppliers');
               return (
                 <button
                   key={item.id}
@@ -686,7 +719,7 @@ useEffect(() => {
                   <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-500 pointer-events-none" />
                   <input
                     type="text"
-                    placeholder={currentTab === 'suppliers' ? 'Search consignments...' : 'Search...'}
+                    placeholder={(currentTab === 'suppliers' || currentTab === 'consignments' || currentTab === 'directory' || currentTab === 'scorecard') ? 'Search consignments, distilleries...' : currentTab === 'depots' ? 'Search depots & inventory...' : 'Search...'}
                     value={headerSearchQuery}
                     onChange={(e) => setHeaderSearchQuery(e.target.value)}
                     className="w-full pl-8 pr-7 py-1.5 bg-zinc-50 dark:bg-[#000000] border border-zinc-200 dark:border-white/10 rounded-lg text-xs text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:border-orange-500 transition-colors"
@@ -900,8 +933,15 @@ useEffect(() => {
                 externalSearchQuery={headerSearchQuery}
               />
             )}
-            {currentTab === 'suppliers' && (
-              <SupplierManagement externalSearchQuery={headerSearchQuery} />
+            {(currentTab === 'suppliers' || currentTab === 'consignments' || currentTab === 'directory' || currentTab === 'scorecard') && (
+              <SupplierManagement 
+                externalSearchQuery={headerSearchQuery} 
+                activeTab={currentTab === 'directory' ? 'directory' : currentTab === 'scorecard' ? 'scorecard' : 'consignments'}
+                onTabChange={(tabKey) => {
+                  setCurrentTab(tabKey);
+                  window.location.hash = `#${tabKey}`;
+                }}
+              />
             )}
             {currentTab === 'add-bottle' && (
               <AddBottle onBottleAdded={() => {
