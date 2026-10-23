@@ -511,9 +511,6 @@ export function SupplierManagement({ externalSearchQuery = '', activeTab: propAc
                 );
               })}
             </div>
-            <span className="text-xs text-zinc-500 font-mono hidden sm:inline-block">
-              Click any consignment to open side inspection drawer &rarr;
-            </span>
           </div>
 
           {/* Consignments Table (Internally Scrollable with Sticky Header) */}
