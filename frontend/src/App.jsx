@@ -54,7 +54,6 @@ import { ShopOrders } from './pages/ShopOrders';
 import { DepotStock } from './pages/DepotStock';
 import { ShopInventory } from './pages/ShopInventory';
 import { AddBottle } from './pages/AddBottle';
-import { AddDepot } from './pages/AddDepot';
 import { SupplierManagement } from './pages/SupplierManagement';
 import { AdminOverview } from './pages/AdminOverview';
 import { DEPOT_CONFIGS, getEffectiveDepotConfigs } from './services/depotConfigs';
@@ -72,7 +71,6 @@ const ALL_PAGE_IDS = [
   'directory',
   'scorecard',
   'depots',
-  'add-depot',
   'inventory',
   'catalog',
   'orders',
@@ -197,28 +195,6 @@ const MANUFACTURING_STAGES = [
 ];
 
 const DEPOT_STAGES = [
-  { 
-    id: 'depots', 
-    step: 1, 
-    badge: '01', 
-    label: 'Wholesale Depots', 
-    shortLabel: 'Depots', 
-    title: 'Stage 1: Wholesale Depots', 
-    icon: Warehouse, 
-    desc: 'Regional state buffer warehouse capacity, available cases & inward arrivals.' 
-  },
-  { 
-    id: 'add-depot', 
-    step: 2, 
-    badge: '02', 
-    label: 'Add Wholesale Depot', 
-    shortLabel: 'Add Depot', 
-    title: 'Stage 2: Add Wholesale Depot', 
-    icon: PlusCircle, 
-    desc: 'Commission a new regional TASMAC wholesale depot with 3 warehouse sheds & buffer stock.' 
-  },
-];
-const _DEPOT_STAGES_UNUSED = false && [
   { 
     id: 'depots', 
     step: 1, 
@@ -374,8 +350,6 @@ export function App() {
         return 'Distilleries Directory';
       case 'scorecard':
         return 'Supplier Scorecard';
-      case 'add-depot':
-        return 'Add Wholesale Depot';
       case 'depots': {
         const effectiveDepots = getEffectiveDepotConfigs(depots);
         const dObj = effectiveDepots.find(d => d.id === selectedDepotId);
@@ -480,11 +454,8 @@ export function App() {
         setCurrentTab(rawHash === 'suppliers' ? 'consignments' : rawHash);
       } else if (rawHash === 'add-depot') {
         setViewMode('portal');
-        if (portalMode !== 'admin') {
-          setPortalMode('depot');
-          localStorage.setItem('tasmac_portal_mode', 'depot');
-        }
-        setCurrentTab('add-depot');
+        setCurrentTab('depots');
+        window.location.hash = '#depots';
       } else if (rawHash.startsWith('depot')) {
         setViewMode('portal');
         if (portalMode !== 'admin') {
@@ -835,36 +806,6 @@ useEffect(() => {
           <nav className="flex-1 py-3 px-1 space-y-1 font-mono overflow-y-auto">
             {portalMode === 'depot' ? (
               <div className="space-y-1.5">
-                {/* Add Wholesale Depot Shortcut */}
-                <button
-                  type="button"
-                  onClick={() => {
-                    setCurrentTab('add-depot');
-                    window.location.hash = '#add-depot';
-                  }}
-                  className={`w-full h-10 rounded-lg flex items-center transition-colors duration-150 cursor-pointer font-mono text-xs uppercase font-bold tracking-wider relative group ${
-                    currentTab === 'add-depot'
-                      ? 'bg-orange-500/15 text-orange-600 dark:text-orange-400 border border-orange-500/40 shadow-xs'
-                      : 'text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/5 border border-dashed border-orange-500/30'
-                  }`}
-                >
-                  <div className="w-10 h-10 flex items-center justify-center shrink-0">
-                    <PlusCircle size={16} strokeWidth={2} className={`w-4 h-4 shrink-0 transition-colors ${currentTab === 'add-depot' ? 'text-orange-500' : 'text-orange-500/80 group-hover:text-orange-500'}`} />
-                  </div>
-                  <span
-                    className={`whitespace-nowrap overflow-hidden transition-opacity duration-200 truncate flex-1 text-left ${
-                      isSidebarExpanded ? 'opacity-100 pr-1 text-orange-600 dark:text-orange-400 font-bold' : 'opacity-0 max-w-0 pointer-events-none'
-                    }`}
-                  >
-                    + Add Depot
-                  </span>
-                  {!isSidebarExpanded && (
-                    <div className="absolute left-full ml-2.5 px-3 py-1.5 rounded-lg bg-white dark:bg-[#101010] border border-orange-500/30 dark:border-orange-500/40 text-orange-600 dark:text-orange-400 font-mono text-xs font-bold shadow-lg dark:shadow-[0_8px_30px_rgba(0,0,0,0.8)] whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-150 z-50 flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
-                      <span>Add Wholesale Depot</span>
-                    </div>
-                  )}
-                </button>
 
                 {getEffectiveDepotConfigs(depots).map((depot) => {
                   const isDepotActive = currentTab === 'depots' && selectedDepotId === depot.id;
@@ -1238,28 +1179,8 @@ useEffect(() => {
                 onOpenMap={() => setIsMapModalOpen(true)}
               />
             )}
-            {currentTab === 'add-depot' && (
-              <AddDepot 
-                onDepotAdded={(newDepot) => {
-                  fetchDepots().then(data => {
-                    setDepots(data);
-                    if (newDepot?.id) setSelectedDepotId(newDepot.id);
-                  });
-                  setCurrentTab('depots');
-                  window.location.hash = newDepot?.id ? '#depot-' + newDepot.id : '#depots';
-                }}
-                onCancel={() => {
-                  setCurrentTab('depots');
-                  window.location.hash = '#depots';
-                }}
-              />
-            )}
             {currentTab === 'depots' && (
               <DepotStock 
-                onNavigateToAddDepot={() => {
-                  setCurrentTab('add-depot');
-                  window.location.hash = '#add-depot';
-                }}
                 externalSearchQuery={headerSearchQuery}
                 selectedDepotId={selectedDepotId}
                 selectedWarehouseId={selectedWarehouseId}
