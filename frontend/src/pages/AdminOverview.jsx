@@ -1,24 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import {
+import { 
   Factory, 
   Warehouse, 
   Store, 
   Truck, 
-  Package, 
   TrendingUp, 
   AlertTriangle, 
-  CheckCircle2,
   ArrowRight, 
   Layers, 
   Clock, 
-  FileCheck, 
   Boxes, 
   Activity,
-  ChevronRight,
   Sparkles,
-  BarChart3,
-  Landmark,
-  ExternalLink
+  BarChart3
 } from 'lucide-react';
 import { 
   fetchMetrics, 
@@ -93,98 +87,133 @@ export function AdminOverview({ onNavigateToPage, externalSearchQuery = '' }) {
     }
   };
 
-  const totalWholesaleCases = metrics?.total_wholesale_cases || 78374;
+  // Data Calculations
+  const totalWholesaleCases = metrics?.total_wholesale_cases || 73319;
   const totalInwardCases = supplierAnalytics?.total_inward_cases || 5300;
   const totalShopsCount = shops.length || metrics?.total_shops || 13;
   const totalDepotsCount = depots.length || metrics?.total_depots || 5;
   const totalSuppliersCount = supplierAnalytics?.total_suppliers || 12;
   const totalSalesVal = metrics?.total_sales_value || 586153.0;
+  const totalOrdersCount = orders.length || metrics?.total_orders || 2;
+  const totalDepotCapacity = depots.reduce((sum, d) => sum + (Number(d.capacity_cases) || 0), 0) || 740000;
+  const depotCodesList = depots.map(d => (d.code || '').replace('DEP-', '')).join(', ') || 'CHN, CBE, MDU, SLM, TRY';
+  const inTransitCount = orders.filter(o => o.status === 'IN_TRANSIT' || o.status === 'DISPATCHED').length;
+  const totalBreakagePct = supplierAnalytics?.breakage_percentage != null ? Number(supplierAnalytics.breakage_percentage).toFixed(2) : '0.01';
+
+  // Sort depots by total stock descending based on live data
+  const sortedDepots = [...depots].sort((a, b) => (Number(b.total_stock_cases) || 0) - (Number(a.total_stock_cases) || 0));
 
   return (
     <div className="h-full flex flex-col overflow-y-auto space-y-4 pr-1 text-zinc-900 dark:text-zinc-100 select-none pb-6">
       
-      {/* 2. Statewide Core KPI Tiles (6-card responsive matrix) */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-        {/* KPI 1: Total Depots Stock */}
-        <div className="p-3.5 rounded-xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-xs flex flex-col justify-between">
-          <div className="text-zinc-500 text-xs font-medium">
-            <span>Depot Buffer Stock</span>
-          </div>
-          <div className="mt-2">
-            <div className="text-lg sm:text-xl font-mono font-bold text-zinc-900 dark:text-white">
-              {totalWholesaleCases.toLocaleString()} <span className="text-xs font-normal text-zinc-500">cs</span>
+      {/* 1. Statewide Core KPI Tiles - Matching Master KPI Card Design */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3">
+        
+        {/* Card 1: Inward Inflow */}
+        <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all flex items-end justify-between gap-3">
+          <div>
+            <span className="text-xs font-semibold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
+              Inward Inflow
+            </span>
+            <div className="text-2xl sm:text-3xl font-mono font-semibold text-zinc-900 dark:text-white mt-1">
+              {totalInwardCases.toLocaleString()} <span className="text-xs font-normal text-zinc-500 font-sans">cs</span>
             </div>
-            <p className="text-[11px] text-zinc-400 mt-0.5">Across 5 regional depots</p>
+          </div>
+          <div className="text-right pb-1 shrink-0">
+            <span className="text-xs text-zinc-500 dark:text-zinc-400 block font-normal">
+              {consignments.length || 4} consignments
+            </span>
           </div>
         </div>
 
-        {/* KPI 2: Commercial Sales Turnover */}
-        <div className="p-3.5 rounded-xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-xs flex flex-col justify-between">
-          <div className="text-zinc-500 text-xs font-medium">
-            <span>Sales Revenue</span>
-          </div>
-          <div className="mt-2">
-            <div className="text-lg sm:text-xl font-mono font-bold text-emerald-600 dark:text-emerald-400">
-              ₹{(totalSalesVal / 100000).toFixed(2)}L
-            </div>
-            <p className="text-[11px] text-zinc-400 mt-0.5">Total indent turnover</p>
-          </div>
-        </div>
-
-        {/* KPI 3: Operational Nodes */}
-        <div className="p-3.5 rounded-xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-xs flex flex-col justify-between">
-          <div className="text-zinc-500 text-xs font-medium">
-            <span>Network Nodes</span>
-          </div>
-          <div className="mt-2">
-            <div className="text-lg sm:text-xl font-mono font-bold text-zinc-900 dark:text-white">
-              {totalSuppliersCount + totalDepotsCount + totalShopsCount}
-            </div>
-            <p className="text-[11px] text-zinc-400 mt-0.5">12 Dist. + 5 Depots + {totalShopsCount} Vends</p>
-          </div>
-        </div>
-
-        {/* KPI 4: Inward Consignments */}
-        <div className="p-3.5 rounded-xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-xs flex flex-col justify-between">
-          <div className="text-zinc-500 text-xs font-medium">
-            <span>Inward Inflow</span>
-          </div>
-          <div className="mt-2">
-            <div className="text-lg sm:text-xl font-mono font-bold text-zinc-900 dark:text-white">
-              {totalInwardCases.toLocaleString()} <span className="text-xs font-normal text-zinc-500">cs</span>
-            </div>
-            <p className="text-[11px] text-zinc-400 mt-0.5">{consignments.length || 13} bulk consignments</p>
-          </div>
-        </div>
-
-        {/* KPI 5: OTIF SLA Rating */}
-        <div className="p-3.5 rounded-xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-xs flex flex-col justify-between">
-          <div className="text-zinc-500 text-xs font-medium">
-            <span>Delivery OTIF</span>
-          </div>
-          <div className="mt-2">
-            <div className="text-lg sm:text-xl font-mono font-bold text-teal-600 dark:text-teal-400">
+        {/* Card 2: Delivery OTIF */}
+        <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all flex items-end justify-between gap-3">
+          <div>
+            <span className="text-xs font-semibold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
+              Delivery OTIF
+            </span>
+            <div className="text-2xl sm:text-3xl font-mono font-semibold text-teal-600 dark:text-teal-400 mt-1">
               {supplierAnalytics?.otif_percentage || 97.2}%
             </div>
-            <p className="text-[11px] text-zinc-400 mt-0.5">0.01% Breakage SLA</p>
+          </div>
+          <div className="text-right pb-1 shrink-0">
+            <span className="text-xs text-zinc-500 dark:text-zinc-400 block font-normal">
+              {totalBreakagePct}% Breakage SLA
+            </span>
           </div>
         </div>
 
-        {/* KPI 6: Active System Alerts */}
-        <div className="p-3.5 rounded-xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-xs flex flex-col justify-between">
-          <div className="text-zinc-500 text-xs font-medium">
-            <span>Active Alerts</span>
-          </div>
-          <div className="mt-2">
-            <div className={`text-lg sm:text-xl font-mono font-bold ${alerts.length > 0 ? 'text-amber-500' : 'text-emerald-500'}`}>
-              {alerts.length}
+        {/* Card 3: Depot Buffer Stock */}
+        <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all flex items-end justify-between gap-3">
+          <div>
+            <span className="text-xs font-semibold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
+              Depot Buffer Stock
+            </span>
+            <div className="text-2xl sm:text-3xl font-mono font-semibold text-zinc-900 dark:text-white mt-1">
+              {totalWholesaleCases.toLocaleString()} <span className="text-xs font-normal text-zinc-500 font-sans">cs</span>
             </div>
-            <p className="text-[11px] text-zinc-400 mt-0.5">Low-stock requisitions</p>
+          </div>
+          <div className="text-right pb-1 shrink-0">
+            <span className="text-xs text-zinc-500 dark:text-zinc-400 block font-normal">
+              Across {totalDepotsCount} depots
+            </span>
           </div>
         </div>
+
+        {/* Card 4: Buffer Capacity */}
+        <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all flex items-end justify-between gap-3">
+          <div>
+            <span className="text-xs font-semibold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
+              Buffer Capacity
+            </span>
+            <div className="text-2xl sm:text-3xl font-mono font-semibold text-zinc-900 dark:text-white mt-1">
+              {totalDepotCapacity.toLocaleString()} <span className="text-xs font-normal text-zinc-500 font-sans">cs</span>
+            </div>
+          </div>
+          <div className="text-right pb-1 shrink-0">
+            <span className="text-xs text-zinc-500 dark:text-zinc-400 block font-normal">
+              {totalDepotCapacity > 0 ? Math.round((totalWholesaleCases / totalDepotCapacity) * 100) : 0}% state buffer
+            </span>
+          </div>
+        </div>
+
+        {/* Card 5: Replenishment Indents */}
+        <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all flex items-end justify-between gap-3">
+          <div>
+            <span className="text-xs font-semibold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
+              Replenishment Indents
+            </span>
+            <div className="text-2xl sm:text-3xl font-mono font-semibold text-orange-600 dark:text-orange-400 mt-1">
+              {totalOrdersCount}
+            </div>
+          </div>
+          <div className="text-right pb-1 shrink-0">
+            <span className="text-xs text-zinc-500 dark:text-zinc-400 block font-normal">
+              {totalShopsCount} retail vends
+            </span>
+          </div>
+        </div>
+
+        {/* Card 6: Sales Revenue */}
+        <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all flex items-end justify-between gap-3">
+          <div>
+            <span className="text-xs font-semibold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
+              Sales Revenue
+            </span>
+            <div className="text-2xl sm:text-3xl font-mono font-semibold text-emerald-600 dark:text-emerald-400 mt-1">
+              ₹{(totalSalesVal / 100000).toFixed(2)}L
+            </div>
+          </div>
+          <div className="text-right pb-1 shrink-0">
+            <span className="text-xs text-zinc-500 dark:text-zinc-400 block font-normal">
+              Total indent turnover
+            </span>
+          </div>
+        </div>
+
       </div>
 
-      {/* 3. Three-Tier Architectural Command Cards (Manufacturing, Depots, Retail) */}
+      {/* 2. Three-Tier Architectural Command Cards (Manufacturing -> Depots -> Retail) */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         
         {/* TIER 1: Manufacturing Distilleries */}
@@ -201,18 +230,18 @@ export function AdminOverview({ onNavigateToPage, externalSearchQuery = '' }) {
                 </div>
               </div>
               <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-zinc-100 dark:bg-white/5 text-zinc-600 dark:text-zinc-400">
-                12 Units
+                {totalSuppliersCount} Units
               </span>
             </div>
 
             <div className="mt-3.5 space-y-2 text-xs">
               <div className="flex justify-between py-1 border-b border-zinc-100 dark:border-white/5">
                 <span className="text-zinc-500">Registered Distilleries:</span>
-                <span className="font-semibold text-zinc-800 dark:text-zinc-200">12 Consortia</span>
+                <span className="font-semibold text-zinc-800 dark:text-zinc-200">{totalSuppliersCount} Consortia</span>
               </div>
               <div className="flex justify-between py-1 border-b border-zinc-100 dark:border-white/5">
                 <span className="text-zinc-500">Inward Consignments:</span>
-                <span className="font-mono font-semibold text-orange-500">{consignments.length || 13} Dispatches</span>
+                <span className="font-mono font-semibold text-zinc-800 dark:text-zinc-200">{consignments.length || 4} Dispatches</span>
               </div>
               <div className="flex justify-between py-1 border-b border-zinc-100 dark:border-white/5">
                 <span className="text-zinc-500">Bulk Inward Cases:</span>
@@ -220,7 +249,7 @@ export function AdminOverview({ onNavigateToPage, externalSearchQuery = '' }) {
               </div>
               <div className="flex justify-between py-1">
                 <span className="text-zinc-500">Excise Gate Passes:</span>
-                <span className="font-mono font-semibold text-emerald-500">100% Verified GRN</span>
+                <span className="font-mono font-semibold text-zinc-800 dark:text-zinc-200">{supplierAnalytics?.otif_percentage || 100}% Verified GRN</span>
               </div>
             </div>
           </div>
@@ -264,26 +293,26 @@ export function AdminOverview({ onNavigateToPage, externalSearchQuery = '' }) {
                 </div>
               </div>
               <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-zinc-100 dark:bg-white/5 text-zinc-600 dark:text-zinc-400">
-                5 Depots
+                {totalDepotsCount} Depots
               </span>
             </div>
 
             <div className="mt-3.5 space-y-2 text-xs">
               <div className="flex justify-between py-1 border-b border-zinc-100 dark:border-white/5">
                 <span className="text-zinc-500">Live Buffer Inventory:</span>
-                <span className="font-mono font-semibold text-orange-500">{totalWholesaleCases.toLocaleString()} cs</span>
+                <span className="font-mono font-semibold text-zinc-800 dark:text-zinc-200">{totalWholesaleCases.toLocaleString()} cs</span>
               </div>
               <div className="flex justify-between py-1 border-b border-zinc-100 dark:border-white/5">
                 <span className="text-zinc-500">Total Buffer Capacity:</span>
-                <span className="font-mono font-semibold text-zinc-800 dark:text-zinc-200">760,000 cs</span>
+                <span className="font-mono font-semibold text-zinc-800 dark:text-zinc-200">{totalDepotCapacity.toLocaleString()} cs</span>
               </div>
               <div className="flex justify-between py-1 border-b border-zinc-100 dark:border-white/5">
                 <span className="text-zinc-500">Regional Depots:</span>
-                <span className="font-semibold text-zinc-800 dark:text-zinc-200">CHN, CBE, MDU, SLM, TRY</span>
+                <span className="font-semibold text-zinc-800 dark:text-zinc-200 truncate ml-2 text-right">{depotCodesList}</span>
               </div>
               <div className="flex justify-between py-1">
                 <span className="text-zinc-500">Depot Health:</span>
-                <span className="font-mono font-semibold text-emerald-500">Optimal Buffer Spread</span>
+                <span className="font-mono font-semibold text-zinc-800 dark:text-zinc-200">Optimal Buffer Spread</span>
               </div>
             </div>
           </div>
@@ -324,15 +353,17 @@ export function AdminOverview({ onNavigateToPage, externalSearchQuery = '' }) {
               </div>
               <div className="flex justify-between py-1 border-b border-zinc-100 dark:border-white/5">
                 <span className="text-zinc-500">Replenishment Indents:</span>
-                <span className="font-mono font-semibold text-orange-500">{orders.length || 7} Orders</span>
+                <span className="font-mono font-semibold text-zinc-800 dark:text-zinc-200">{totalOrdersCount} Orders</span>
               </div>
               <div className="flex justify-between py-1 border-b border-zinc-100 dark:border-white/5">
                 <span className="text-zinc-500">Approved Brand SKUs:</span>
                 <span className="font-mono font-semibold text-zinc-800 dark:text-zinc-200">{metrics?.total_brands || 25} Brands</span>
               </div>
               <div className="flex justify-between py-1">
-                <span className="text-zinc-500">Logistics e-Passes:</span>
-                <span className="font-mono font-semibold text-emerald-500">Live GPS & QR Seals</span>
+                <span className="text-zinc-500">Logistics Transit:</span>
+                <span className="font-mono font-semibold text-zinc-800 dark:text-zinc-200">
+                  {inTransitCount > 0 ? `${inTransitCount} Dispatches In Transit` : 'Live GPS & QR Seals'}
+                </span>
               </div>
             </div>
           </div>
@@ -363,7 +394,7 @@ export function AdminOverview({ onNavigateToPage, externalSearchQuery = '' }) {
         </div>
       </div>
 
-      {/* 4. Regional Wholesale Depots Capacity Breakdown */}
+      {/* 3. Statewide Regional Depots Capacity & Allocation (Sorted by Live Stock Data) */}
       <div className="p-4 sm:p-5 rounded-xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-xs space-y-3.5">
         <div className="flex items-center justify-between pb-2 border-b border-zinc-100 dark:border-white/5">
           <div className="flex items-center gap-2">
@@ -382,29 +413,25 @@ export function AdminOverview({ onNavigateToPage, externalSearchQuery = '' }) {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-          {depots.map((depot) => {
-            const usagePct = depot.capacity_cases > 0 ? Math.round((depot.total_stock_cases / depot.capacity_cases) * 100) : 0;
+          {sortedDepots.map((depot) => {
+            const usagePct = depot.capacity_cases > 0 ? Math.round(((depot.total_stock_cases || 0) / depot.capacity_cases) * 100) : 0;
+            const cleanName = (depot.shortName || depot.name || '').replace(/\s*Wholesale Depot/gi, '').trim();
+
             return (
               <div 
                 key={depot.id}
                 onClick={() => onNavigateToPage('depots')}
                 className="p-3 rounded-lg border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-white/[0.02] hover:border-orange-500/40 transition cursor-pointer group"
               >
-                <div className="flex items-center justify-between">
-                  <span className="font-mono text-[10px] font-bold text-orange-600 dark:text-orange-400 px-1.5 py-0.5 rounded bg-orange-500/10">
-                    {depot.code}
-                  </span>
-                  <span className="text-[10px] font-mono text-zinc-500">{usagePct}%</span>
-                </div>
-                <h4 className="text-xs font-bold text-zinc-900 dark:text-zinc-100 mt-2 truncate group-hover:text-orange-500 transition-colors">
-                  {(depot.shortName || depot.name).replace(/\s*Supply\s+Depot/gi, '').trim()}
+                <h4 className="text-xs font-bold text-zinc-900 dark:text-zinc-100 truncate group-hover:text-orange-500 transition-colors">
+                  {cleanName}
                 </h4>
                 <p className="text-[11px] text-zinc-500 mt-0.5">Region: {depot.region}</p>
 
                 <div className="mt-2.5 pt-2 border-t border-zinc-200 dark:border-white/10 space-y-1">
                   <div className="flex justify-between text-[11px]">
                     <span className="text-zinc-500">Live Stock:</span>
-                    <span className="font-mono font-bold text-zinc-900 dark:text-zinc-100">{depot.total_stock_cases?.toLocaleString()} cs</span>
+                    <span className="font-mono font-bold text-zinc-900 dark:text-zinc-100">{(depot.total_stock_cases || 0).toLocaleString()} cs</span>
                   </div>
                   <div className="w-full bg-zinc-200 dark:bg-black h-1.5 rounded-full overflow-hidden">
                     <div 
@@ -413,7 +440,7 @@ export function AdminOverview({ onNavigateToPage, externalSearchQuery = '' }) {
                     />
                   </div>
                   <div className="flex justify-between text-[10px] text-zinc-400">
-                    <span>Cap: {depot.capacity_cases?.toLocaleString()}</span>
+                    <span>Cap: {(depot.capacity_cases || 0).toLocaleString()}</span>
                     <span>Buffer Safe</span>
                   </div>
                 </div>
@@ -423,7 +450,7 @@ export function AdminOverview({ onNavigateToPage, externalSearchQuery = '' }) {
         </div>
       </div>
 
-      {/* 5. Live State Network Alerts & Critical Pipeline Activity */}
+      {/* 4. Live State Network Alerts & Quick Launchpad */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         
         {/* Real-time Supply Alerts Feed */}

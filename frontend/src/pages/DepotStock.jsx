@@ -12,12 +12,7 @@ import {
   Factory,
   PlusCircle,
   Warehouse,
-  Boxes,
-  Beer,
-  Wine,
-  AlertCircle,
-  Sparkles,
-  Flame
+  AlertCircle
 } from 'lucide-react';
 import { fetchDepots, fetchDepotInventory } from '../services/api';
 import { DepotStockModal } from '../components/DepotStockModal';
@@ -112,14 +107,6 @@ export function DepotStock({
            item.category.toLowerCase().includes(effectiveSearch);
   });
 
-  const getWarehouseIcon = (categories = []) => {
-    if (categories.includes('BEER')) return Beer;
-    if (categories.includes('WINE') || categories.includes('BRANDY')) return Wine;
-    if (categories.includes('VODKA') || categories.includes('GIN')) return Sparkles;
-    if (categories.includes('RUM')) return Flame;
-    return Boxes;
-  };
-
   const getWarehouseStats = (wh, inventoryItems = []) => {
     const totalDepotCap = activeDepotConfig?.capacity_cases || 150000;
     const whRatio = totalDepotCap > 0 ? (wh.capacity_cases / totalDepotCap) : 0.2;
@@ -189,9 +176,7 @@ export function DepotStock({
               const displayName = wh.shortName?.replace(/^WH\s*(\d+)[:\s].*$/i, 'Warehouse $1') || wh.shortName || wh.name || `Warehouse ${idx + 1}`;
               const stats = getWarehouseStats(wh, depotInventory?.items || []);
               const isSelected = selectedWarehouseId === wh.id;
-              const WhIcon = getWarehouseIcon(wh.categories);
-
-              return (
+return (
                 <button
                   key={wh.id}
                   type="button"
@@ -207,12 +192,9 @@ export function DepotStock({
                   }`}
                 >
                   <div>
-                    <div className="flex items-center gap-1.5">
-                      <WhIcon className={`w-3.5 h-3.5 shrink-0 ${isSelected ? 'text-orange-500' : 'text-zinc-500 dark:text-zinc-400 group-hover:text-orange-500'}`} />
-                      <h3 className="text-xs font-bold text-zinc-900 dark:text-white truncate" title={displayName}>
-                        {displayName}
-                      </h3>
-                    </div>
+                    <h3 className="text-xs font-bold text-zinc-900 dark:text-white truncate" title={displayName}>
+                      {displayName}
+                    </h3>
                   </div>
 
                   <div className="mt-2 pt-2 border-t border-zinc-100 dark:border-white/10 space-y-1">

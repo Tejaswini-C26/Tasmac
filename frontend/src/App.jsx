@@ -56,7 +56,7 @@ import { ShopInventory } from './pages/ShopInventory';
 import { AddBottle } from './pages/AddBottle';
 import { SupplierManagement } from './pages/SupplierManagement';
 import { AdminOverview } from './pages/AdminOverview';
-import { DEPOT_CONFIGS, getEffectiveDepotConfigs } from './services/depotConfigs';
+import { DEPOT_CONFIGS, getEffectiveDepotConfigs, getDepotRegionIcon } from './services/depotConfigs';
 import { PublicLandingPage } from './pages/PublicLandingPage';
 import { OrderDrawer } from './components/OrderDrawer';
 import { ShopSearchSelector } from './components/ShopSearchSelector';
@@ -813,6 +813,7 @@ useEffect(() => {
                 {getEffectiveDepotConfigs(depots).map((depot) => {
                   const isDepotActive = currentTab === 'depots' && selectedDepotId === depot.id;
                   const isExpanded = expandedDepotId === depot.id;
+                  const DepotIcon = depot.icon || getDepotRegionIcon(depot);
 
                   return (
                     <div key={depot.id} className="space-y-0.5">
@@ -834,11 +835,8 @@ useEffect(() => {
                             : 'text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/5 border border-transparent'
                         }`}
                       >
-                        <div className="w-10 h-10 flex items-center justify-center shrink-0 relative">
-                          <Warehouse size={16} strokeWidth={1.75} className={`w-4 h-4 shrink-0 transition-colors ${isDepotActive ? 'text-orange-500' : 'text-zinc-500 dark:text-zinc-400 group-hover:text-black dark:group-hover:text-white'}`} />
-                          <span className="absolute -bottom-0.5 right-1 text-[8px] font-mono font-bold text-zinc-400 dark:text-zinc-500">
-                            {depot.initials}
-                          </span>
+                        <div className="w-10 h-10 flex items-center justify-center shrink-0">
+                          <DepotIcon size={18} strokeWidth={1.75} className={`w-4.5 h-4.5 shrink-0 transition-colors ${isDepotActive ? 'text-orange-500' : 'text-zinc-500 dark:text-zinc-400 group-hover:text-black dark:group-hover:text-white'}`} />
                         </div>
 
                         <span

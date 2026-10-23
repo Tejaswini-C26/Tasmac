@@ -1,7 +1,10 @@
+import { Building2, Mountain, Landmark, Shield, Castle, Warehouse } from 'lucide-react';
+
 export const DEPOT_CONFIGS = [
   {
     id: 1,
     code: 'DEP-CHN',
+    icon: Building2,
     name: 'Chennai Central',
     shortName: 'Chennai Central',
     region: 'Chennai',
@@ -61,6 +64,7 @@ export const DEPOT_CONFIGS = [
   {
     id: 2,
     code: 'DEP-CBE',
+    icon: Mountain,
     name: 'Coimbatore Regional',
     shortName: 'Coimbatore Regional',
     region: 'Coimbatore',
@@ -120,6 +124,7 @@ export const DEPOT_CONFIGS = [
   {
     id: 3,
     code: 'DEP-MDU',
+    icon: Landmark,
     name: 'Madurai Wholesale',
     shortName: 'Madurai Wholesale',
     region: 'Madurai',
@@ -179,6 +184,7 @@ export const DEPOT_CONFIGS = [
   {
     id: 4,
     code: 'DEP-SLM',
+    icon: Shield,
     name: 'Salem Central',
     shortName: 'Salem Central',
     region: 'Salem',
@@ -238,6 +244,7 @@ export const DEPOT_CONFIGS = [
   {
     id: 5,
     code: 'DEP-TRY',
+    icon: Castle,
     name: 'Trichy Regional',
     shortName: 'Trichy Regional',
     region: 'Trichy',
@@ -439,13 +446,32 @@ export function getEffectiveDepotConfigs(backendDepots = []) {
         ...existing,
         ...depot,
         name: cleanName,
+        icon: existing.icon || getDepotRegionIcon(depot),
         warehouses: [...(existing.warehouses || []), ...extraWhs]
       };
     }
     const built = buildDepotConfig(depot);
     return {
       ...built,
+      icon: getDepotRegionIcon(depot),
       warehouses: [...(built.warehouses || []), ...extraWhs]
     };
   });
+}
+
+
+export function getDepotRegionIcon(depot) {
+  if (!depot) return Warehouse;
+  if (depot.icon) return depot.icon;
+  const code = (depot.code || '').toUpperCase().trim();
+  const region = (depot.region || '').toUpperCase().trim();
+  const name = (depot.name || '').toUpperCase().trim();
+
+  if (code.includes('CHN') || region.includes('CHENNAI') || name.includes('CHENNAI')) return Building2;
+  if (code.includes('CBE') || region.includes('COIMBATORE') || name.includes('COIMBATORE')) return Mountain;
+  if (code.includes('MDU') || region.includes('MADURAI') || name.includes('MADURAI')) return Landmark;
+  if (code.includes('SLM') || region.includes('SALEM') || name.includes('SALEM')) return Shield;
+  if (code.includes('TRY') || region.includes('TRICHY') || region.includes('TIRUCHI') || name.includes('TRICHY')) return Castle;
+
+  return Warehouse;
 }
