@@ -46,6 +46,16 @@ const PORTAL_OPTIONS = [
     stage: 'suppliers',
   },
   {
+    id: 'depot',
+    title: 'Wholesale Depot Manager',
+    subtitle: 'Regional Buffer Warehouses, Capacity & Stock Allocation',
+    icon: Warehouse,
+    defaultEmail: 'depot@tasmac.tn.gov',
+    defaultPassword: 'tasmac123',
+    portalMode: 'depot',
+    stage: 'depots',
+  },
+  {
     id: 'retail',
     title: 'Retail Shops Supplier',
     subtitle: 'Retail Stores, Catalog & Indent Replenishment',
@@ -77,6 +87,16 @@ const ALL_DEMO_ACCOUNTS = [
     stage: 'suppliers',
     org: 'United Breweries & Mohan Distilleries Consortium',
     icon: Factory,
+  },
+  {
+    portal: 'depot',
+    role: 'Wholesale Depot Manager',
+    email: 'depot@tasmac.tn.gov',
+    username: 'depot_manager',
+    password: 'tasmac123',
+    stage: 'depots',
+    org: 'TASMAC Regional Wholesale Depot (Chennai Central)',
+    icon: Warehouse,
   },
   {
     portal: 'retail',
@@ -185,7 +205,11 @@ export function LoginPage({
       });
 
       const selectedOptObj = PORTAL_OPTIONS.find((p) => p.id === selectedOption);
-      const effectiveMode = selectedOptObj ? selectedOptObj.portalMode : (response.user?.role?.includes('Distillery') || response.user?.role?.includes('Depot') ? 'manufacturing' : 'retail');
+      const effectiveMode = selectedOptObj ? selectedOptObj.portalMode : (
+        response.user?.role?.toUpperCase().includes('DEPOT') ? 'depot' :
+        response.user?.role?.includes('Distillery') || response.user?.role?.toUpperCase().includes('MANUFACTURING') ? 'manufacturing' : 
+        'retail'
+      );
 
       localStorage.setItem('tasmac_auth_token', response.access_token);
       localStorage.setItem('tasmac_auth_user', JSON.stringify(response.user));

@@ -78,13 +78,16 @@ const MANUFACTURING_STAGES = [
     icon: Factory, 
     desc: 'Distilleries dispatch bulk cases & generate GRN to stock wholesale depots.' 
   },
+];
+
+const DEPOT_STAGES = [
   { 
     id: 'depots', 
-    step: 2, 
-    badge: '02', 
+    step: 1, 
+    badge: '01', 
     label: 'Wholesale Depots', 
     shortLabel: 'Depots', 
-    title: 'Stage 2: Wholesale Depots', 
+    title: 'Stage 1: Wholesale Depots', 
     icon: Warehouse, 
     desc: 'Regional state buffer warehouse capacity, available cases & inward arrivals.' 
   },
@@ -133,6 +136,7 @@ export function App() {
       return rawHash;
     }
     const savedMode = localStorage.getItem('tasmac_portal_mode') || 'manufacturing';
+    if (savedMode === 'depot') return 'depots';
     return savedMode === 'manufacturing' ? 'suppliers' : 'inventory';
   });
   const [viewMode, setViewMode] = useState(() => {
@@ -270,6 +274,9 @@ export function App() {
     if (mode === 'manufacturing') {
       setCurrentTab('suppliers');
       window.location.hash = '#suppliers';
+    } else if (mode === 'depot') {
+      setCurrentTab('depots');
+      window.location.hash = '#depots';
     } else {
       setCurrentTab('inventory');
       window.location.hash = '#inventory';
@@ -282,7 +289,7 @@ export function App() {
       const rawHash = window.location.hash.toLowerCase().replace(/^#\/?/, '');
       if (rawHash === 'landing') {
         setViewMode('landing');
-      } else if (rawHash === 'login' || rawHash === 'mfg-login' || rawHash === 'retail-login') {
+      } else if (rawHash === 'login' || rawHash === 'mfg-login' || rawHash === 'retail-login' || rawHash === 'depot-login') {
         setViewMode('portal');
         setCurrentTab('login');
         if (rawHash === 'mfg-login') {
@@ -291,12 +298,20 @@ export function App() {
         } else if (rawHash === 'retail-login') {
           setPortalMode('retail');
           localStorage.setItem('tasmac_portal_mode', 'retail');
+        } else if (rawHash === 'depot-login') {
+          setPortalMode('depot');
+          localStorage.setItem('tasmac_portal_mode', 'depot');
         }
-      } else if (rawHash === 'suppliers' || rawHash === 'depots') {
+      } else if (rawHash === 'suppliers') {
         setViewMode('portal');
         setPortalMode('manufacturing');
         localStorage.setItem('tasmac_portal_mode', 'manufacturing');
-        setCurrentTab(rawHash);
+        setCurrentTab('suppliers');
+      } else if (rawHash === 'depots') {
+        setViewMode('portal');
+        setPortalMode('depot');
+        localStorage.setItem('tasmac_portal_mode', 'depot');
+        setCurrentTab('depots');
       } else if (rawHash === 'inventory' || rawHash === 'catalog' || rawHash === 'orders' || rawHash === 'add-bottle') {
         setViewMode('portal');
         setPortalMode('retail');
@@ -348,13 +363,17 @@ useEffect(() => {
 
   const handleLoginSuccess = (user, token, preferredPortal) => {
     setCurrentUser(user);
-    const targetMode = preferredPortal || (user?.role?.includes('Distillery') || user?.role?.includes('Depot') ? 'manufacturing' : 'retail');
+    const targetMode = preferredPortal || (
+      user?.role?.toUpperCase().includes('DEPOT') ? 'depot' :
+      user?.role?.includes('Distillery') || user?.role?.toUpperCase().includes('MANUFACTURING') ? 'manufacturing' : 
+      'retail'
+    );
     setPortalMode(targetMode);
     localStorage.setItem('tasmac_portal_mode', targetMode);
     if (user?.default_stage) {
       navigateToPortal(user.default_stage);
     } else {
-      navigateToPortal(targetMode === 'manufacturing' ? 'suppliers' : 'inventory');
+      navigateToPortal(targetMode === 'manufacturing' ? 'suppliers' : targetMode === 'depot' ? 'depots' : 'inventory');
     }
   };
 
@@ -393,20 +412,38 @@ useEffect(() => {
   const isAdmin = currentUser?.role?.toUpperCase().includes('ADMIN') || currentUser?.username === 'admin';
 
   const getRolePages = () => {
-    return portalMode === 'manufacturing'
-      ? [
-          { id: 'suppliers', label: 'Supplier Inward', icon: Factory, mode: 'manufacturing' },
-          { id: 'depots', label: 'Wholesale Depots', icon: Warehouse, mode: 'manufacturing' },
-        ]
-      : [
-          { id: 'inventory', label: 'Store Stockroom', icon: Store, mode: 'retail' },
-          { id: 'catalog', label: 'Wholesale Catalog', icon: LayoutGrid, mode: 'retail' },
-          { id: 'orders', label: 'Orders & Transit', icon: Truck, mode: 'retail' },
-        ];
+    if (isAdmin || currentUser?.role === 'ADMIN') {
+      return [
+        { id: 'suppliers', label: 'Supplier Inward', icon: Factory, mode: 'manufacturing' },
+        { id: 'depots', label: 'Wholesale Depots', icon: Warehouse, mode: 'depot' },
+        { id: 'inventory', label: 'Store Stockroom', icon: Store, mode: 'retail' },
+        { id: 'catalog', label: 'Wholesale Catalog', icon: LayoutGrid, mode: 'retail' },
+        { id: 'orders', label: 'Orders & Transit', icon: Truck, mode: 'retail' },
+      ];
+    }
+    if (portalMode === 'depot') {
+      return [
+        { id: 'depots', label: 'Wholesale Depots', icon: Warehouse, mode: 'depot' },
+      ];
+    }
+    if (portalMode === 'manufacturing') {
+      return [
+        { id: 'suppliers', label: 'Supplier Inward', icon: Factory, mode: 'manufacturing' },
+      ];
+    }
+    return [
+      { id: 'inventory', label: 'Store Stockroom', icon: Store, mode: 'retail' },
+      { id: 'catalog', label: 'Wholesale Catalog', icon: LayoutGrid, mode: 'retail' },
+      { id: 'orders', label: 'Orders & Transit', icon: Truck, mode: 'retail' },
+    ];
   };
 
   const activePages = getRolePages();
-  const activeStages = portalMode === 'manufacturing' ? MANUFACTURING_STAGES : RETAIL_STAGES;
+  const activeStages = portalMode === 'manufacturing' 
+    ? MANUFACTURING_STAGES 
+    : portalMode === 'depot' 
+      ? DEPOT_STAGES 
+      : RETAIL_STAGES;
   const currentStageIndex = activeStages.findIndex((s) => s.id === currentTab);
   const currentStage = currentStageIndex >= 0 ? activeStages[currentStageIndex] : null;
 
@@ -543,7 +580,7 @@ useEffect(() => {
   if (viewMode === 'landing') {
     return (
       <PublicLandingPage 
-        onEnterPortal={() => navigateToPortal(portalMode === 'manufacturing' ? 'suppliers' : 'inventory')}
+        onEnterPortal={() => navigateToPortal(portalMode === 'manufacturing' ? 'suppliers' : portalMode === 'depot' ? 'depots' : 'inventory')}
         onOpenLogin={(mode) => navigateToLogin(mode || portalMode)}
         onNavigateToStage={(stage) => navigateToPortal(stage)}
         installPrompt={installPrompt}

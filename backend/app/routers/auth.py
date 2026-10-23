@@ -81,7 +81,21 @@ def seed_default_users(db: Session):
             "assigned_region": "Statewide",
             "phone": "+91 98400 12345"
         },
-        # 2. Retail Shops Supplier
+        # 2. Wholesale Depot Manager
+        {
+            "username": "depot_manager",
+            "email": "depot@tasmac.tn.gov",
+            "full_name": "Wholesale Depot Manager",
+            "password": "tasmac123",
+            "role": "DEPOT_MANAGER",
+            "organization": "TASMAC Regional Wholesale Depot (Chennai Central)",
+            "code": "DEP-CHN",
+            "default_stage": "depots",
+            "allowed_stages": "depots,suppliers,orders",
+            "assigned_region": "Chennai",
+            "phone": "+91 44 2815 3322"
+        },
+        # 3. Retail Shops Supplier
         {
             "username": "shop_owner",
             "email": "shop@tasmac.tn.gov",
@@ -108,6 +122,19 @@ def seed_default_users(db: Session):
             "allowed_stages": "suppliers,depots",
             "assigned_region": "Statewide",
             "phone": "+91 98400 12345"
+        },
+        {
+            "username": "depot",
+            "email": "depot_admin@tasmac.tn.gov",
+            "full_name": "Wholesale Depot Manager",
+            "password": "tasmac123",
+            "role": "DEPOT_MANAGER",
+            "organization": "TASMAC Regional Wholesale Depot (Chennai Central)",
+            "code": "DEP-CHN",
+            "default_stage": "depots",
+            "allowed_stages": "depots,suppliers,orders",
+            "assigned_region": "Chennai",
+            "phone": "+91 44 2815 3322"
         },
         {
             "username": "retail",

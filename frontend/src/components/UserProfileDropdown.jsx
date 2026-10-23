@@ -44,6 +44,18 @@ export const APP_ROLES = [
     initials: 'MF'
   },
   {
+    roleKey: 'DEPOT',
+    label: 'Wholesale Depot View',
+    email: 'depot@tasmac.tn.gov',
+    full_name: 'Wholesale Depot Manager',
+    organization: 'TASMAC Regional Wholesale Depot (Chennai Central)',
+    code: 'DEP-CHN',
+    default_stage: 'depots',
+    portalMode: 'depot',
+    icon: Warehouse,
+    initials: 'WD'
+  },
+  {
     roleKey: 'RETAIL',
     label: 'Retail View',
     email: 'shop@tasmac.tn.gov',
@@ -84,7 +96,8 @@ export function UserProfileDropdown({
   const activeRoleObj = APP_ROLES.find((r) => 
     currentUser?.email === r.email || 
     currentUser?.role === r.roleKey ||
-    currentUser?.role?.toUpperCase() === r.roleKey
+    currentUser?.role?.toUpperCase() === r.roleKey ||
+    (r.roleKey === 'DEPOT' && (currentUser?.role?.toUpperCase().includes('DEPOT') || currentUser?.username === 'depot' || currentUser?.username === 'depot_manager'))
   ) || APP_ROLES[0];
 
   // Compute initials
