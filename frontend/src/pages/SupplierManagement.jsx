@@ -420,48 +420,9 @@ export function SupplierManagement({ externalSearchQuery = '', activeTab: propAc
         </div>
       </div>
 
-      {/* Tabs Navigation & Action Button (Pinned) */}
-      <div className="shrink-0 flex flex-wrap items-center justify-between gap-3">
-        <div className="inline-flex items-center p-1 rounded-xl bg-zinc-100 dark:bg-[#0c0d12] border border-zinc-200 dark:border-white/10 gap-1 overflow-x-auto max-w-full">
-          <button
-            onClick={() => setActiveTab('consignments')}
-            className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-2 cursor-pointer whitespace-nowrap ${
-              activeTab === 'consignments'
-                ? 'bg-orange-500 text-white shadow-sm font-bold'
-                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white font-bold'
-            }`}
-          >
-            <Truck className="w-4 h-4" />
-            Inward Consignments ({consignments.length})
-          </button>
-
-          <button
-            onClick={() => setActiveTab('directory')}
-            className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-2 cursor-pointer whitespace-nowrap ${
-              activeTab === 'directory'
-                ? 'bg-orange-500 text-white shadow-sm font-bold'
-                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white font-bold'
-            }`}
-          >
-            <Factory className="w-4 h-4" />
-            Distilleries Directory ({suppliers.length})
-          </button>
-
-          <button
-            onClick={() => setActiveTab('scorecard')}
-            className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-2 cursor-pointer whitespace-nowrap ${
-              activeTab === 'scorecard'
-                ? 'bg-orange-500 text-white shadow-sm font-bold'
-                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white font-bold'
-            }`}
-          >
-            <BadgePercent className="w-4 h-4" />
-            Supplier Scorecard
-          </button>
-        </div>
-
-        {/* Actions Suite */}
-        <div className="flex items-center gap-2 shrink-0">
+      {/* Actions Suite for non-consignments tabs */}
+      {activeTab !== 'consignments' && (
+        <div className="shrink-0 flex items-center justify-end gap-2">
           <button
             onClick={loadData}
             disabled={loading}
@@ -470,23 +431,14 @@ export function SupplierManagement({ externalSearchQuery = '', activeTab: propAc
           >
             <RotateCw className={`w-4 h-4 ${loading ? 'animate-spin text-orange-500' : ''}`} />
           </button>
-
-          {/* Action Button: Dispatch Inward Consignment (Opens Slide Drawer) */}
-          <button
-            onClick={() => setIsDispatchModalOpen(true)}
-            className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-mono text-xs uppercase font-bold tracking-wider shadow-lg shadow-orange-950/20 transition-all cursor-pointer shrink-0"
-          >
-            <Plus className="w-4 h-4" />
-            Dispatch Inward Consignment
-          </button>
         </div>
-      </div>
+      )}
 
       {/* TAB 1: Inward Consignments */}
       {activeTab === 'consignments' && (
         <div className="flex-1 min-h-0 flex flex-col overflow-hidden space-y-2.5">
-          {/* Filters (Pinned) */}
-          <div className="shrink-0 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          {/* Filters & Actions in a Single Straight Row */}
+          <div className="shrink-0 flex items-center justify-between gap-3">
             <div className="inline-flex items-center p-1 rounded-xl bg-zinc-100 dark:bg-[#0c0d12] border border-zinc-200 dark:border-white/10 gap-1 overflow-x-auto max-w-full">
               {[
                 { key: 'ALL', label: 'All' },
@@ -510,6 +462,25 @@ export function SupplierManagement({ externalSearchQuery = '', activeTab: propAc
                   </button>
                 );
               })}
+            </div>
+
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                onClick={loadData}
+                disabled={loading}
+                title="Refresh Consignments & Analytics"
+                className="p-2 rounded-lg border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] text-zinc-700 dark:text-zinc-300 hover:text-orange-600 dark:hover:text-orange-400 hover:border-orange-500/40 transition disabled:opacity-50 cursor-pointer"
+              >
+                <RotateCw className={`w-4 h-4 ${loading ? 'animate-spin text-orange-500' : ''}`} />
+              </button>
+
+              <button
+                onClick={() => setIsDispatchModalOpen(true)}
+                className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-mono text-xs uppercase font-bold tracking-wider shadow-lg shadow-orange-950/20 transition-all cursor-pointer shrink-0"
+              >
+                <Plus className="w-4 h-4" />
+                Dispatch Inward Consignment
+              </button>
             </div>
           </div>
 
