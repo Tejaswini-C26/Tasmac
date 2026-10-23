@@ -859,7 +859,7 @@ useEffect(() => {
                         {!isSidebarExpanded && (
                           <div className="absolute left-full ml-2.5 px-3 py-1.5 rounded-lg bg-white dark:bg-[#101010] border border-orange-500/30 dark:border-orange-500/40 text-orange-600 dark:text-orange-400 font-mono text-xs font-bold shadow-lg dark:shadow-[0_8px_30px_rgba(0,0,0,0.8)] whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-150 z-50 flex items-center gap-2">
                             <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
-                            <span>{depot.name} (5 Warehouses)</span>
+                            <span>{(depot.name || '').replace(/\s*Supply\s+Depot/gi, '').trim()} (5 Warehouses)</span>
                           </div>
                         )}
                       </button>

@@ -117,7 +117,7 @@ export function AddWarehouseModal({ isOpen, onClose, depot, onWarehouseAdded }) 
                 </span>
               </h3>
               <p className="text-xs text-zinc-500 dark:text-zinc-400 font-mono">
-                {depot.name} &bull; {depot.region}
+                {(depot.name || '').replace(/\s*Supply\s+Depot/gi, '').trim()} &bull; {depot.region}
               </p>
             </div>
           </div>

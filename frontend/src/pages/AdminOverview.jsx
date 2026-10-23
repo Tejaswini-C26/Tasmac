@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  ShieldCheck, 
+import {
   Factory, 
   Warehouse, 
   Store, 
@@ -8,8 +7,7 @@ import {
   Package, 
   TrendingUp, 
   AlertTriangle, 
-  CheckCircle2, 
-  RotateCw, 
+  CheckCircle2,
   ArrowRight, 
   Layers, 
   Clock, 
@@ -105,59 +103,12 @@ export function AdminOverview({ onNavigateToPage, externalSearchQuery = '' }) {
   return (
     <div className="h-full flex flex-col overflow-y-auto space-y-4 pr-1 text-zinc-900 dark:text-zinc-100 select-none pb-6">
       
-      {/* 1. Master Control Top Command Bar */}
-      <div className="shrink-0 p-4 sm:p-5 rounded-xl bg-gradient-to-r from-orange-500/10 via-amber-500/5 to-transparent border border-orange-500/20 flex flex-col md:flex-row md:items-center md:justify-between gap-4 shadow-sm bg-white dark:bg-[#101010]">
-        <div className="flex items-center gap-3.5">
-          <div className="w-12 h-12 rounded-xl bg-orange-500 flex items-center justify-center text-white shadow-md shadow-orange-500/20 shrink-0">
-            <ShieldCheck className="w-6 h-6 stroke-[2.2]" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase tracking-wider bg-orange-500/15 text-orange-600 dark:text-orange-400 border border-orange-500/30">
-                HQ Master Control
-              </span>
-              <span className="flex items-center gap-1 text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                Statewide Real-time Telemetry
-              </span>
-            </div>
-            <h1 className="text-lg sm:text-xl font-extrabold tracking-tight mt-0.5">
-              Tamil Nadu State Marketing Corporation &bull; Executive Command Center
-            </h1>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
-              Unified governance across Manufacturing Distilleries, Regional Wholesale Depots & Statewide Retail Vends
-            </p>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-2.5 shrink-0 self-end md:self-center">
-          <button
-            onClick={loadAllData}
-            disabled={loading}
-            title="Refresh All Enterprise Metrics"
-            className="p-2.5 rounded-lg border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-zinc-900 hover:border-orange-500/40 text-zinc-700 dark:text-zinc-300 transition cursor-pointer disabled:opacity-50"
-          >
-            <RotateCw className={`w-4 h-4 ${loading ? 'animate-spin text-orange-500' : ''}`} />
-          </button>
-
-          <button
-            onClick={handleTriggerAutoReplenish}
-            disabled={replenishing}
-            className="px-3.5 py-2 rounded-lg bg-orange-600 hover:bg-orange-500 active:bg-orange-700 text-white font-mono text-xs font-bold transition flex items-center gap-2 shadow-sm cursor-pointer disabled:opacity-50"
-          >
-            <Sparkles className={`w-3.5 h-3.5 ${replenishing ? 'animate-spin' : ''}`} />
-            <span>{replenishing ? 'Syncing Pipeline...' : 'Auto-Replenish All Nodes'}</span>
-          </button>
-        </div>
-      </div>
-
       {/* 2. Statewide Core KPI Tiles (6-card responsive matrix) */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
         {/* KPI 1: Total Depots Stock */}
         <div className="p-3.5 rounded-xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-xs flex flex-col justify-between">
-          <div className="flex items-center justify-between text-zinc-500 text-xs">
+          <div className="text-zinc-500 text-xs font-medium">
             <span>Depot Buffer Stock</span>
-            <Warehouse className="w-4 h-4 text-orange-500" />
           </div>
           <div className="mt-2">
             <div className="text-lg sm:text-xl font-mono font-bold text-zinc-900 dark:text-white">
@@ -169,9 +120,8 @@ export function AdminOverview({ onNavigateToPage, externalSearchQuery = '' }) {
 
         {/* KPI 2: Commercial Sales Turnover */}
         <div className="p-3.5 rounded-xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-xs flex flex-col justify-between">
-          <div className="flex items-center justify-between text-zinc-500 text-xs">
+          <div className="text-zinc-500 text-xs font-medium">
             <span>Sales Revenue</span>
-            <TrendingUp className="w-4 h-4 text-emerald-500" />
           </div>
           <div className="mt-2">
             <div className="text-lg sm:text-xl font-mono font-bold text-emerald-600 dark:text-emerald-400">
@@ -183,9 +133,8 @@ export function AdminOverview({ onNavigateToPage, externalSearchQuery = '' }) {
 
         {/* KPI 3: Operational Nodes */}
         <div className="p-3.5 rounded-xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-xs flex flex-col justify-between">
-          <div className="flex items-center justify-between text-zinc-500 text-xs">
+          <div className="text-zinc-500 text-xs font-medium">
             <span>Network Nodes</span>
-            <Boxes className="w-4 h-4 text-blue-500" />
           </div>
           <div className="mt-2">
             <div className="text-lg sm:text-xl font-mono font-bold text-zinc-900 dark:text-white">
@@ -197,9 +146,8 @@ export function AdminOverview({ onNavigateToPage, externalSearchQuery = '' }) {
 
         {/* KPI 4: Inward Consignments */}
         <div className="p-3.5 rounded-xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-xs flex flex-col justify-between">
-          <div className="flex items-center justify-between text-zinc-500 text-xs">
+          <div className="text-zinc-500 text-xs font-medium">
             <span>Inward Inflow</span>
-            <Factory className="w-4 h-4 text-amber-500" />
           </div>
           <div className="mt-2">
             <div className="text-lg sm:text-xl font-mono font-bold text-zinc-900 dark:text-white">
@@ -211,9 +159,8 @@ export function AdminOverview({ onNavigateToPage, externalSearchQuery = '' }) {
 
         {/* KPI 5: OTIF SLA Rating */}
         <div className="p-3.5 rounded-xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-xs flex flex-col justify-between">
-          <div className="flex items-center justify-between text-zinc-500 text-xs">
+          <div className="text-zinc-500 text-xs font-medium">
             <span>Delivery OTIF</span>
-            <Activity className="w-4 h-4 text-teal-500" />
           </div>
           <div className="mt-2">
             <div className="text-lg sm:text-xl font-mono font-bold text-teal-600 dark:text-teal-400">
@@ -225,9 +172,8 @@ export function AdminOverview({ onNavigateToPage, externalSearchQuery = '' }) {
 
         {/* KPI 6: Active System Alerts */}
         <div className="p-3.5 rounded-xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-xs flex flex-col justify-between">
-          <div className="flex items-center justify-between text-zinc-500 text-xs">
+          <div className="text-zinc-500 text-xs font-medium">
             <span>Active Alerts</span>
-            <AlertTriangle className={`w-4 h-4 ${alerts.length > 0 ? 'text-amber-500' : 'text-emerald-500'}`} />
           </div>
           <div className="mt-2">
             <div className={`text-lg sm:text-xl font-mono font-bold ${alerts.length > 0 ? 'text-amber-500' : 'text-emerald-500'}`}>
@@ -451,7 +397,7 @@ export function AdminOverview({ onNavigateToPage, externalSearchQuery = '' }) {
                   <span className="text-[10px] font-mono text-zinc-500">{usagePct}%</span>
                 </div>
                 <h4 className="text-xs font-bold text-zinc-900 dark:text-zinc-100 mt-2 truncate group-hover:text-orange-500 transition-colors">
-                  {depot.name}
+                  {(depot.shortName || depot.name).replace(/\s*Supply\s+Depot/gi, '').trim()}
                 </h4>
                 <p className="text-[11px] text-zinc-500 mt-0.5">Region: {depot.region}</p>
 

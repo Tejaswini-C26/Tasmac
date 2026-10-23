@@ -144,11 +144,11 @@ def seed_retail_supplier_database(db: Session):
 
     # 2. WHOLESALE DEPOTS
     depots_data = [
-        models.Depot(code="DEP-CHN", name="Chennai Central Wholesale Depot", region="Chennai", address="Plot 45, Ambattur Industrial Estate, Chennai - 600058", manager_name="K. Palanivel (Depot Manager)", phone="+91 44 2625 1101", capacity_cases=200000),
-        models.Depot(code="DEP-CBE", name="Coimbatore Regional Supply Depot", region="Coimbatore", address="Avinashi Road, Peelamedu, Coimbatore - 641004", manager_name="S. Muthukumar", phone="+91 422 257 8890", capacity_cases=150000),
-        models.Depot(code="DEP-MDU", name="Madurai Wholesale Supply Depot", region="Madurai", address="NH-7 Byepass, Kappalur SIDCO, Madurai - 625008", manager_name="V. Selvaraj", phone="+91 452 248 3344", capacity_cases=140000),
-        models.Depot(code="DEP-SLM", name="Salem Central Supply Depot", region="Salem", address="Bangalore Main Road, Kandampatty, Salem - 636005", manager_name="R. Anbalagan", phone="+91 427 238 9911", capacity_cases=120000),
-        models.Depot(code="DEP-TRY", name="Trichy Regional Supply Depot", region="Trichy", address="Thuvakudi Industrial Complex, Trichy - 620015", manager_name="G. Srinivasan", phone="+91 431 250 4422", capacity_cases=130000),
+        models.Depot(code="DEP-CHN", name="Chennai Central", region="Chennai", address="Plot 45, Ambattur Industrial Estate, Chennai - 600058", manager_name="K. Palanivel (Depot Manager)", phone="+91 44 2625 1101", capacity_cases=200000),
+        models.Depot(code="DEP-CBE", name="Coimbatore Regional", region="Coimbatore", address="Avinashi Road, Peelamedu, Coimbatore - 641004", manager_name="S. Muthukumar", phone="+91 422 257 8890", capacity_cases=150000),
+        models.Depot(code="DEP-MDU", name="Madurai Wholesale", region="Madurai", address="NH-7 Byepass, Kappalur SIDCO, Madurai - 625008", manager_name="V. Selvaraj", phone="+91 452 248 3344", capacity_cases=140000),
+        models.Depot(code="DEP-SLM", name="Salem Central", region="Salem", address="Bangalore Main Road, Kandampatty, Salem - 636005", manager_name="R. Anbalagan", phone="+91 427 238 9911", capacity_cases=120000),
+        models.Depot(code="DEP-TRY", name="Trichy Regional", region="Trichy", address="Thuvakudi Industrial Complex, Trichy - 620015", manager_name="G. Srinivasan", phone="+91 431 250 4422", capacity_cases=130000),
     ]
     db.add_all(depots_data)
     db.commit()

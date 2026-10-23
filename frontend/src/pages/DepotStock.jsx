@@ -270,7 +270,7 @@ export function DepotStock({
           {/* Header Bar with Active Depot Info */}
           <div className="shrink-0 pb-2 border-b border-zinc-200 dark:border-white/10">
             <h2 className="text-sm sm:text-base font-bold text-zinc-900 dark:text-white">
-              {depotInventory.name}
+              {(depotInventory.name || '').replace(/\s*Supply\s+Depot/gi, '').trim()}
             </h2>
           </div>
 

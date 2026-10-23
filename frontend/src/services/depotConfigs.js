@@ -2,7 +2,7 @@ export const DEPOT_CONFIGS = [
   {
     id: 1,
     code: 'DEP-CHN',
-    name: 'Chennai Central Wholesale Depot',
+    name: 'Chennai Central',
     shortName: 'Chennai Central',
     region: 'Chennai',
     manager_name: 'K. Palanivel (Depot Manager)',
@@ -61,7 +61,7 @@ export const DEPOT_CONFIGS = [
   {
     id: 2,
     code: 'DEP-CBE',
-    name: 'Coimbatore Regional Supply Depot',
+    name: 'Coimbatore Regional',
     shortName: 'Coimbatore Regional',
     region: 'Coimbatore',
     manager_name: 'S. Muthukumar',
@@ -120,7 +120,7 @@ export const DEPOT_CONFIGS = [
   {
     id: 3,
     code: 'DEP-MDU',
-    name: 'Madurai Wholesale Supply Depot',
+    name: 'Madurai Wholesale',
     shortName: 'Madurai Wholesale',
     region: 'Madurai',
     manager_name: 'V. Selvaraj',
@@ -179,7 +179,7 @@ export const DEPOT_CONFIGS = [
   {
     id: 4,
     code: 'DEP-SLM',
-    name: 'Salem Central Supply Depot',
+    name: 'Salem Central',
     shortName: 'Salem Central',
     region: 'Salem',
     manager_name: 'R. Anbalagan',
@@ -238,7 +238,7 @@ export const DEPOT_CONFIGS = [
   {
     id: 5,
     code: 'DEP-TRY',
-    name: 'Trichy Regional Supply Depot',
+    name: 'Trichy Regional',
     shortName: 'Trichy Regional',
     region: 'Trichy',
     manager_name: 'G. Srinivasan',
@@ -434,9 +434,11 @@ export function getEffectiveDepotConfigs(backendDepots = []) {
     const existing = configMap.get(depot.id) || configMap.get(depot.code);
     const extraWhs = customMap[String(depot.id)] || customMap[depot.code] || [];
     if (existing) {
+      const cleanName = (depot.name || existing.name || '').replace(/\s*Supply\s+Depot/gi, '').trim();
       return {
         ...existing,
         ...depot,
+        name: cleanName,
         warehouses: [...(existing.warehouses || []), ...extraWhs]
       };
     }
