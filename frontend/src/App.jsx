@@ -265,7 +265,7 @@ const RETAIL_STAGES = [
 
 export function App() {
   const [portalMode, setPortalMode] = useState(() => {
-    return localStorage.getItem('tasmac_portal_mode') || 'manufacturing';
+    return localStorage.getItem('tasmac_portal_mode') || 'admin';
   });
   const [currentTab, setCurrentTab] = useState(() => {
     const rawHash = window.location.hash.toLowerCase().replace(/^#\/?/, '');
