@@ -185,7 +185,8 @@ export function DepotStock({
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2.5 overflow-x-auto pb-1">
-            {(activeDepotConfig?.warehouses || []).map((wh) => {
+            {(activeDepotConfig?.warehouses || []).map((wh, idx) => {
+              const displayName = wh.shortName?.replace(/^WH\s*(\d+)[:\s].*$/i, 'Warehouse $1') || wh.shortName || wh.name || `Warehouse ${idx + 1}`;
               const stats = getWarehouseStats(wh, depotInventory?.items || []);
               const isSelected = selectedWarehouseId === wh.id;
               const WhIcon = getWarehouseIcon(wh.categories);
@@ -208,8 +209,8 @@ export function DepotStock({
                   <div>
                     <div className="flex items-center gap-1.5">
                       <WhIcon className={`w-3.5 h-3.5 shrink-0 ${isSelected ? 'text-orange-500' : 'text-zinc-500 dark:text-zinc-400 group-hover:text-orange-500'}`} />
-                      <h3 className="text-xs font-bold text-zinc-900 dark:text-white truncate" title={wh.name}>
-                        {wh.shortName || wh.name}
+                      <h3 className="text-xs font-bold text-zinc-900 dark:text-white truncate" title={displayName}>
+                        {displayName}
                       </h3>
                     </div>
                   </div>

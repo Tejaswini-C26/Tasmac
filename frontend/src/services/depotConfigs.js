@@ -14,8 +14,8 @@ export const DEPOT_CONFIGS = [
       { 
         id: 'wh-chn-1', 
         code: 'WH-CHN-01', 
-        name: 'Ambattur IMFL Whisky Vault', 
-        shortName: 'WH 1: Whisky Vault', 
+        name: 'Warehouse 1',
+        shortName: 'Warehouse 1', 
         categories: ['WHISKY'],
         capacity_cases: 85000,
         desc: 'High-strength IMFL Premium Blends & Scotch Whisky Vault' 
@@ -23,8 +23,8 @@ export const DEPOT_CONFIGS = [
       { 
         id: 'wh-chn-2', 
         code: 'WH-CHN-02', 
-        name: 'Ambattur Beer Storage Bay', 
-        shortName: 'WH 2: Beer Bay', 
+        name: 'Warehouse 2',
+        shortName: 'Warehouse 2', 
         categories: ['BEER'],
         capacity_cases: 60000,
         desc: 'Ambient & Palletized Storage Bay for Lagers, Draught & Strong Beer' 
@@ -32,8 +32,8 @@ export const DEPOT_CONFIGS = [
       { 
         id: 'wh-chn-3', 
         code: 'WH-CHN-03', 
-        name: 'Ambattur Vodka & White Spirits', 
-        shortName: 'WH 3: Vodka & Gin', 
+        name: 'Warehouse 3',
+        shortName: 'Warehouse 3', 
         categories: ['VODKA', 'GIN'],
         capacity_cases: 25000,
         desc: 'High-Purity Triple-Distilled Vodka, Gin & Botanical Spirits' 
@@ -41,8 +41,8 @@ export const DEPOT_CONFIGS = [
       { 
         id: 'wh-chn-4', 
         code: 'WH-CHN-04', 
-        name: 'Ambattur Cane Rum Vault', 
-        shortName: 'WH 4: Rum Bay', 
+        name: 'Warehouse 4',
+        shortName: 'Warehouse 4', 
         categories: ['RUM'],
         capacity_cases: 18000,
         desc: 'Dark Cane Rum, Spiced Blends & Coastal Buffer Vault' 
@@ -50,8 +50,8 @@ export const DEPOT_CONFIGS = [
       { 
         id: 'wh-chn-5', 
         code: 'WH-CHN-05', 
-        name: 'Ambattur Wine & Premium Reserve', 
-        shortName: 'WH 5: Wine/Premium', 
+        name: 'Warehouse 5',
+        shortName: 'Warehouse 5', 
         categories: ['WINE', 'BRANDY'],
         capacity_cases: 12000,
         desc: 'Bonded Climate-Controlled Reserve Cellar for Wines, Single Malts & Brandies' 
@@ -73,8 +73,8 @@ export const DEPOT_CONFIGS = [
       { 
         id: 'wh-cbe-1', 
         code: 'WH-CBE-01', 
-        name: 'Peelamedu IMFL Whisky Vault', 
-        shortName: 'WH 1: Whisky Vault', 
+        name: 'Warehouse 1',
+        shortName: 'Warehouse 1', 
         categories: ['WHISKY'],
         capacity_cases: 65000,
         desc: 'Western Corridor High-Proof Spirit Buffer Vault' 
@@ -82,8 +82,8 @@ export const DEPOT_CONFIGS = [
       { 
         id: 'wh-cbe-2', 
         code: 'WH-CBE-02', 
-        name: 'Peelamedu Beer Pallet Facility', 
-        shortName: 'WH 2: Beer Bay', 
+        name: 'Warehouse 2',
+        shortName: 'Warehouse 2', 
         categories: ['BEER'],
         capacity_cases: 45000,
         desc: 'Fast-Moving Pallet Bay for Commercial Beer Cases' 
@@ -91,8 +91,8 @@ export const DEPOT_CONFIGS = [
       { 
         id: 'wh-cbe-3', 
         code: 'WH-CBE-03', 
-        name: 'Peelamedu Vodka & White Spirits', 
-        shortName: 'WH 3: Vodka & Gin', 
+        name: 'Warehouse 3',
+        shortName: 'Warehouse 3', 
         categories: ['VODKA', 'GIN'],
         capacity_cases: 20000,
         desc: 'Grain Vodka, Flavored Spirits & Botanical Gin Vault' 
@@ -100,8 +100,8 @@ export const DEPOT_CONFIGS = [
       { 
         id: 'wh-cbe-4', 
         code: 'WH-CBE-04', 
-        name: 'Peelamedu Dark Rum Storage', 
-        shortName: 'WH 4: Rum Bay', 
+        name: 'Warehouse 4',
+        shortName: 'Warehouse 4', 
         categories: ['RUM'],
         capacity_cases: 12000,
         desc: 'Regional Molasses & Spiced Rum Buffer Storage' 
@@ -109,8 +109,8 @@ export const DEPOT_CONFIGS = [
       { 
         id: 'wh-cbe-5', 
         code: 'WH-CBE-05', 
-        name: 'Peelamedu Premium & Wine Vault', 
-        shortName: 'WH 5: Wine/Premium', 
+        name: 'Warehouse 5',
+        shortName: 'Warehouse 5', 
         categories: ['WINE', 'BRANDY'],
         capacity_cases: 8000,
         desc: 'Climate-Controlled Wine & Reserve Single Malt Cellar' 
@@ -132,8 +132,8 @@ export const DEPOT_CONFIGS = [
       { 
         id: 'wh-mdu-1', 
         code: 'WH-MDU-01', 
-        name: 'Kappalur IMFL Whisky Vault', 
-        shortName: 'WH 1: Whisky Vault', 
+        name: 'Warehouse 1',
+        shortName: 'Warehouse 1', 
         categories: ['WHISKY'],
         capacity_cases: 60000,
         desc: 'Southern Region IMFL Blended Whisky Storage Facility' 
@@ -141,8 +141,8 @@ export const DEPOT_CONFIGS = [
       { 
         id: 'wh-mdu-2', 
         code: 'WH-MDU-02', 
-        name: 'Kappalur Beer Storage Bay', 
-        shortName: 'WH 2: Beer Bay', 
+        name: 'Warehouse 2',
+        shortName: 'Warehouse 2', 
         categories: ['BEER'],
         capacity_cases: 42000,
         desc: 'Bulk Commercial Beer Buffer Shed' 
@@ -150,8 +150,8 @@ export const DEPOT_CONFIGS = [
       { 
         id: 'wh-mdu-3', 
         code: 'WH-MDU-03', 
-        name: 'Kappalur Vodka & White Spirits', 
-        shortName: 'WH 3: Vodka & Gin', 
+        name: 'Warehouse 3',
+        shortName: 'Warehouse 3', 
         categories: ['VODKA', 'GIN'],
         capacity_cases: 18000,
         desc: 'White Spirits & Filtered Grain Liquor Storage' 
@@ -159,8 +159,8 @@ export const DEPOT_CONFIGS = [
       { 
         id: 'wh-mdu-4', 
         code: 'WH-MDU-04', 
-        name: 'Kappalur Rum Storage Shed', 
-        shortName: 'WH 4: Rum Bay', 
+        name: 'Warehouse 4',
+        shortName: 'Warehouse 4', 
         categories: ['RUM'],
         capacity_cases: 12000,
         desc: 'Dark & Traditional Spiced Rum Staging Shed' 
@@ -168,8 +168,8 @@ export const DEPOT_CONFIGS = [
       { 
         id: 'wh-mdu-5', 
         code: 'WH-MDU-05', 
-        name: 'Kappalur Wine & Reserve Cellar', 
-        shortName: 'WH 5: Wine/Premium', 
+        name: 'Warehouse 5',
+        shortName: 'Warehouse 5', 
         categories: ['WINE', 'BRANDY'],
         capacity_cases: 8000,
         desc: 'Bonded Reserve Vault for Fine Wines & Scotch' 
@@ -191,8 +191,8 @@ export const DEPOT_CONFIGS = [
       { 
         id: 'wh-slm-1', 
         code: 'WH-SLM-01', 
-        name: 'Kandampatty IMFL Whisky Vault', 
-        shortName: 'WH 1: Whisky Vault', 
+        name: 'Warehouse 1',
+        shortName: 'Warehouse 1', 
         categories: ['WHISKY'],
         capacity_cases: 50000,
         desc: 'Central Industrial Corridor Whisky Depot' 
@@ -200,8 +200,8 @@ export const DEPOT_CONFIGS = [
       { 
         id: 'wh-slm-2', 
         code: 'WH-SLM-02', 
-        name: 'Kandampatty Beer Pallet Facility', 
-        shortName: 'WH 2: Beer Bay', 
+        name: 'Warehouse 2',
+        shortName: 'Warehouse 2', 
         categories: ['BEER'],
         capacity_cases: 36000,
         desc: 'Commercial Beer Pallet Staging Area' 
@@ -209,8 +209,8 @@ export const DEPOT_CONFIGS = [
       { 
         id: 'wh-slm-3', 
         code: 'WH-SLM-03', 
-        name: 'Kandampatty Vodka & White Spirits', 
-        shortName: 'WH 3: Vodka & Gin', 
+        name: 'Warehouse 3',
+        shortName: 'Warehouse 3', 
         categories: ['VODKA', 'GIN'],
         capacity_cases: 16000,
         desc: 'High-Purity Vodka & Gin Corridor Storage' 
@@ -218,8 +218,8 @@ export const DEPOT_CONFIGS = [
       { 
         id: 'wh-slm-4', 
         code: 'WH-SLM-04', 
-        name: 'Kandampatty Rum Buffer Shed', 
-        shortName: 'WH 4: Rum Bay', 
+        name: 'Warehouse 4',
+        shortName: 'Warehouse 4', 
         categories: ['RUM'],
         capacity_cases: 10000,
         desc: 'Spiced & Regular Cane Rum Inventory' 
@@ -227,8 +227,8 @@ export const DEPOT_CONFIGS = [
       { 
         id: 'wh-slm-5', 
         code: 'WH-SLM-05', 
-        name: 'Kandampatty Specialty Wine Vault', 
-        shortName: 'WH 5: Wine/Premium', 
+        name: 'Warehouse 5',
+        shortName: 'Warehouse 5', 
         categories: ['WINE', 'BRANDY'],
         capacity_cases: 8000,
         desc: 'Secure Lockup for Premium Liquors, Wines & Brandies' 
@@ -250,8 +250,8 @@ export const DEPOT_CONFIGS = [
       { 
         id: 'wh-try-1', 
         code: 'WH-TRY-01', 
-        name: 'Thuvakudi IMFL Whisky Vault', 
-        shortName: 'WH 1: Whisky Vault', 
+        name: 'Warehouse 1',
+        shortName: 'Warehouse 1', 
         categories: ['WHISKY'],
         capacity_cases: 55000,
         desc: 'Delta Region Central IMFL Whisky Depot' 
@@ -259,8 +259,8 @@ export const DEPOT_CONFIGS = [
       { 
         id: 'wh-try-2', 
         code: 'WH-TRY-02', 
-        name: 'Thuvakudi Beer Storage Bay', 
-        shortName: 'WH 2: Beer Bay', 
+        name: 'Warehouse 2',
+        shortName: 'Warehouse 2', 
         categories: ['BEER'],
         capacity_cases: 40000,
         desc: 'High-Turnover Regional Beer Staging Bay' 
@@ -268,8 +268,8 @@ export const DEPOT_CONFIGS = [
       { 
         id: 'wh-try-3', 
         code: 'WH-TRY-03', 
-        name: 'Thuvakudi Vodka & White Spirits', 
-        shortName: 'WH 3: Vodka & Gin', 
+        name: 'Warehouse 3',
+        shortName: 'Warehouse 3', 
         categories: ['VODKA', 'GIN'],
         capacity_cases: 17000,
         desc: 'Clean Spirit Vault & Distilled Vodka Bay' 
@@ -277,8 +277,8 @@ export const DEPOT_CONFIGS = [
       { 
         id: 'wh-try-4', 
         code: 'WH-TRY-04', 
-        name: 'Thuvakudi Rum Storage Shed', 
-        shortName: 'WH 4: Rum Bay', 
+        name: 'Warehouse 4',
+        shortName: 'Warehouse 4', 
         categories: ['RUM'],
         capacity_cases: 10000,
         desc: 'Central Delta Cane Rum Staging Facility' 
@@ -286,8 +286,8 @@ export const DEPOT_CONFIGS = [
       { 
         id: 'wh-try-5', 
         code: 'WH-TRY-05', 
-        name: 'Thuvakudi Wine & Malts Vault', 
-        shortName: 'WH 5: Wine/Premium', 
+        name: 'Warehouse 5',
+        shortName: 'Warehouse 5', 
         categories: ['WINE', 'BRANDY'],
         capacity_cases: 8000,
         desc: 'Elite Wine Cellar & Premium Consignment Storage' 
@@ -340,8 +340,8 @@ export function buildDepotConfig(depot, customWarehouses = null) {
       {
         id: `wh-${rawCode.toLowerCase()}-1`,
         code: `WH-${initials}-01`,
-        name: `${shortName} IMFL Whisky Vault`,
-        shortName: 'WH 1: Whisky Vault',
+        name: 'Warehouse 1',
+        shortName: 'Warehouse 1',
         categories: ['WHISKY'],
         capacity_cases: wh1Cap,
         desc: `High-Proof IMFL Whisky Buffer Vault for ${shortName}`
@@ -349,8 +349,8 @@ export function buildDepotConfig(depot, customWarehouses = null) {
       {
         id: `wh-${rawCode.toLowerCase()}-2`,
         code: `WH-${initials}-02`,
-        name: `${shortName} Beer Storage Bay`,
-        shortName: 'WH 2: Beer Bay',
+        name: 'Warehouse 2',
+        shortName: 'Warehouse 2',
         categories: ['BEER'],
         capacity_cases: wh2Cap,
         desc: `Chilled & Staged Commercial Beer Pallet Bay for ${shortName}`
@@ -358,8 +358,8 @@ export function buildDepotConfig(depot, customWarehouses = null) {
       {
         id: `wh-${rawCode.toLowerCase()}-3`,
         code: `WH-${initials}-03`,
-        name: `${shortName} Vodka & White Spirits`,
-        shortName: 'WH 3: Vodka & Gin',
+        name: 'Warehouse 3',
+        shortName: 'Warehouse 3',
         categories: ['VODKA', 'GIN'],
         capacity_cases: wh3Cap,
         desc: `Triple-Distilled Vodka & Craft Spirits Vault for ${shortName}`
@@ -367,8 +367,8 @@ export function buildDepotConfig(depot, customWarehouses = null) {
       {
         id: `wh-${rawCode.toLowerCase()}-4`,
         code: `WH-${initials}-04`,
-        name: `${shortName} Rum & Cane Spirits`,
-        shortName: 'WH 4: Rum Bay',
+        name: 'Warehouse 4',
+        shortName: 'Warehouse 4',
         categories: ['RUM'],
         capacity_cases: wh4Cap,
         desc: `Dark & Spiced Cane Rum Buffer Shed for ${shortName}`
@@ -376,8 +376,8 @@ export function buildDepotConfig(depot, customWarehouses = null) {
       {
         id: `wh-${rawCode.toLowerCase()}-5`,
         code: `WH-${initials}-05`,
-        name: `${shortName} Wine & Premium Reserve`,
-        shortName: 'WH 5: Wine/Premium',
+        name: 'Warehouse 5',
+        shortName: 'Warehouse 5',
         categories: ['WINE', 'BRANDY'],
         capacity_cases: wh5Cap,
         desc: `Bonded Premium Liquor Cellar & Reserve Vault for ${shortName}`

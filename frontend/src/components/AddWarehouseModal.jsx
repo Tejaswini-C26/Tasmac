@@ -32,8 +32,8 @@ export function AddWarehouseModal({ isOpen, onClose, depot, onWarehouseAdded }) 
   const rawPrefix = (depot.code || 'DEP').replace(/^DEP-/, '');
   const initials = depot.initials || rawPrefix.slice(0, 2).toUpperCase() || 'DP';
 
-  const [name, setName] = useState('');
-  const [shortName, setShortName] = useState(`WH ${nextNum}: New Shed`);
+  const [name, setName] = useState(`Warehouse ${nextNum}`);
+  const [shortName, setShortName] = useState(`Warehouse ${nextNum}`);
   const [code, setCode] = useState(`WH-${initials}-0${nextNum}`);
   const [selectedCategories, setSelectedCategories] = useState(['WHISKY']);
   const [capacityCases, setCapacityCases] = useState(25000);
@@ -53,11 +53,8 @@ export function AddWarehouseModal({ isOpen, onClose, depot, onWarehouseAdded }) 
 
   const handleNameChange = (val) => {
     setName(val);
-    if (!shortName || shortName.startsWith(`WH ${nextNum}:`)) {
-      const trimmed = val.trim();
-      if (trimmed) {
-        setShortName(`WH ${nextNum}: ${trimmed.slice(0, 16)}`);
-      }
+    if (!shortName || shortName === `Warehouse ${nextNum}` || shortName.startsWith('Warehouse ')) {
+      setShortName(val.trim() || `Warehouse ${nextNum}`);
     }
   };
 
@@ -83,8 +80,8 @@ export function AddWarehouseModal({ isOpen, onClose, depot, onWarehouseAdded }) 
     const newWarehouse = {
       id: uniqueId,
       code: code.trim() || `WH-${initials}-0${nextNum}`,
-      name: trimmedName,
-      shortName: shortName.trim() || `WH ${nextNum}: ${trimmedName.slice(0, 14)}`,
+      name: trimmedName || `Warehouse ${nextNum}`,
+      shortName: shortName.trim() || trimmedName || `Warehouse ${nextNum}`,
       categories: selectedCategories,
       capacity_cases: Number(capacityCases),
       desc: description.trim() || `Specialized storage facility for ${selectedCategories.join(', ')}`,
@@ -151,7 +148,7 @@ export function AddWarehouseModal({ isOpen, onClose, depot, onWarehouseAdded }) 
               required
               value={name}
               onChange={(e) => handleNameChange(e.target.value)}
-              placeholder="e.g. Ambattur Craft Beverages & RTD Shed"
+              placeholder={`e.g. Warehouse ${nextNum}`}
               className="w-full px-3 py-2 rounded-xl bg-zinc-100 dark:bg-black/40 border border-zinc-200 dark:border-white/10 text-zinc-900 dark:text-white focus:outline-none focus:border-orange-500"
             />
           </div>
@@ -167,7 +164,7 @@ export function AddWarehouseModal({ isOpen, onClose, depot, onWarehouseAdded }) 
                 required
                 value={shortName}
                 onChange={(e) => setShortName(e.target.value)}
-                placeholder={`WH ${nextNum}: Label`}
+                placeholder={`e.g. Warehouse ${nextNum}`}
                 className="w-full px-3 py-2 rounded-xl bg-zinc-100 dark:bg-black/40 border border-zinc-200 dark:border-white/10 text-zinc-900 dark:text-white focus:outline-none focus:border-orange-500"
               />
             </div>
