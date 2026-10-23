@@ -290,6 +290,13 @@ export function App() {
   const [selectedDepotId, setSelectedDepotId] = useState(1);
   const [selectedWarehouseId, setSelectedWarehouseId] = useState(null);
   const [expandedDepotId, setExpandedDepotId] = useState(1);
+  const [, setWarehouseRevision] = useState(0);
+
+  useEffect(() => {
+    const handleWhUpdate = () => setWarehouseRevision(v => v + 1);
+    window.addEventListener('tasmac_warehouses_updated', handleWhUpdate);
+    return () => window.removeEventListener('tasmac_warehouses_updated', handleWhUpdate);
+  }, []);
 
   const loadAlerts = async () => {
     try {

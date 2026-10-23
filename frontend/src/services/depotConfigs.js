@@ -386,9 +386,44 @@ export function buildDepotConfig(depot, customWarehouses = null) {
   };
 }
 
+const CUSTOM_WAREHOUSES_STORAGE_KEY = 'tasmac_custom_warehouses';
+
+export function getCustomWarehouses() {
+  try {
+    const raw = typeof window !== 'undefined' ? localStorage.getItem(CUSTOM_WAREHOUSES_STORAGE_KEY) : null;
+    return raw ? JSON.parse(raw) : {};
+  } catch (e) {
+    return {};
+  }
+}
+
+export function saveCustomWarehouse(depotId, newWh) {
+  try {
+    const all = getCustomWarehouses();
+    const key = String(depotId);
+    const depotWhList = all[key] || [];
+    all[key] = [...depotWhList, newWh];
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(CUSTOM_WAREHOUSES_STORAGE_KEY, JSON.stringify(all));
+    }
+    return all[key];
+  } catch (e) {
+    console.error('Failed to save custom warehouse:', e);
+    return [];
+  }
+}
+
 export function getEffectiveDepotConfigs(backendDepots = []) {
+  const customMap = getCustomWarehouses();
+
   if (!backendDepots || backendDepots.length === 0) {
-    return DEPOT_CONFIGS;
+    return DEPOT_CONFIGS.map(depot => {
+      const extraWhs = customMap[String(depot.id)] || customMap[depot.code] || [];
+      return {
+        ...depot,
+        warehouses: [...(depot.warehouses || []), ...extraWhs]
+      };
+    });
   }
 
   const configMap = new Map();
@@ -397,13 +432,18 @@ export function getEffectiveDepotConfigs(backendDepots = []) {
 
   return backendDepots.map(depot => {
     const existing = configMap.get(depot.id) || configMap.get(depot.code);
+    const extraWhs = customMap[String(depot.id)] || customMap[depot.code] || [];
     if (existing) {
       return {
         ...existing,
         ...depot,
-        warehouses: existing.warehouses
+        warehouses: [...(existing.warehouses || []), ...extraWhs]
       };
     }
-    return buildDepotConfig(depot);
+    const built = buildDepotConfig(depot);
+    return {
+      ...built,
+      warehouses: [...(built.warehouses || []), ...extraWhs]
+    };
   });
 }

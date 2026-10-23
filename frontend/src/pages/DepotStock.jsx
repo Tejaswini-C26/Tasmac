@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { fetchDepots, fetchDepotInventory } from '../services/api';
 import { DepotStockModal } from '../components/DepotStockModal';
+import { AddWarehouseModal } from '../components/AddWarehouseModal';
 import { getEffectiveDepotConfigs } from '../services/depotConfigs';
 
 export function DepotStock({ 
@@ -39,6 +40,14 @@ export function DepotStock({
   const [search, setSearch] = useState('');
   const [error, setError] = useState(null);
   const [inspectingBrand, setInspectingBrand] = useState(null);
+  const [isAddWarehouseOpen, setIsAddWarehouseOpen] = useState(false);
+  const [whVersion, setWhVersion] = useState(0);
+
+  useEffect(() => {
+    const handleUpdate = () => setWhVersion(v => v + 1);
+    window.addEventListener('tasmac_warehouses_updated', handleUpdate);
+    return () => window.removeEventListener('tasmac_warehouses_updated', handleUpdate);
+  }, []);
 
   const selectedDepotId = propSelectedDepotId ?? internalSelectedDepotId;
 
@@ -159,8 +168,39 @@ export function DepotStock({
 
   return (
     <div className="h-full flex flex-col overflow-hidden space-y-3 font-sans">
-      {/* 5 Warehouse Overview Cards (Pinned Top) */}
-      <div className="shrink-0">
+      {/* Warehouse Overview Cards (Pinned Top) */}
+      <div className="shrink-0 space-y-2">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <Warehouse className="w-4 h-4 text-orange-500" />
+            <span className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
+              Warehouse Sheds ({(activeDepotConfig?.warehouses || []).length}) &bull; {activeDepotConfig?.shortName || activeDepotConfig?.name}
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            {selectedWarehouseId && (
+              <button
+                type="button"
+                onClick={() => {
+                  if (onSelectWarehouse) onSelectWarehouse(null);
+                }}
+                className="px-2.5 py-1 rounded-lg bg-zinc-200 dark:bg-white/10 hover:bg-orange-600 hover:text-white text-zinc-700 dark:text-zinc-300 text-xs font-mono transition cursor-pointer"
+                title="Reset warehouse filter and show all sheds"
+              >
+                ✕ Show All Sheds
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={() => setIsAddWarehouseOpen(true)}
+              className="px-3 py-1.5 rounded-xl bg-orange-600 hover:bg-orange-500 text-white text-xs font-mono font-bold uppercase tracking-wider transition flex items-center gap-1.5 shadow-md shadow-orange-950/30 cursor-pointer group"
+              title="Commission a new warehouse shed for this depot"
+            >
+              <PlusCircle className="w-3.5 h-3.5 group-hover:rotate-90 transition-transform duration-200" />
+              <span>Add Warehouse</span>
+            </button>
+          </div>
+        </div>
         {(loadingDepots || loadingInventory) && !depotInventory ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2.5 overflow-x-auto pb-1">
             {[1, 2, 3, 4, 5].map((i) => (
@@ -402,6 +442,17 @@ export function DepotStock({
           onClose={() => setInspectingBrand(null)}
         />
       )}
+
+      {/* Add New Warehouse Modal */}
+      <AddWarehouseModal
+        isOpen={isAddWarehouseOpen}
+        onClose={() => setIsAddWarehouseOpen(false)}
+        depot={activeDepotConfig}
+        onWarehouseAdded={(newWh) => {
+          setWhVersion(v => v + 1);
+          if (onSelectWarehouse) onSelectWarehouse(newWh.id);
+        }}
+      />
     </div>
   );
 }
