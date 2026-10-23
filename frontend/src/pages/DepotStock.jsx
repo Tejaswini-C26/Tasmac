@@ -119,32 +119,121 @@ export function DepotStock({
            item.category.toLowerCase().includes(effectiveSearch);
   });
 
+  const getWarehouseIcon = (categories = []) => {
+    if (categories.includes('BEER')) return Beer;
+    if (categories.includes('WINE') || categories.includes('BRANDY')) return Wine;
+    if (categories.includes('VODKA') || categories.includes('GIN')) return Sparkles;
+    if (categories.includes('RUM')) return Flame;
+    return Boxes;
+  };
+
+  const getWarehouseStats = (wh, inventoryItems = []) => {
+    const whCategories = wh.categories || [];
+    const items = inventoryItems.filter(item => {
+      const itemCat = (item.category || '').toUpperCase();
+      return whCategories.some(cat => {
+        if (cat === 'BEER') return itemCat === 'BEER';
+        if (cat === 'WINE') return itemCat === 'WINE';
+        if (cat === 'WHISKY') return itemCat === 'WHISKY';
+        if (cat === 'RUM') return itemCat === 'RUM';
+        if (cat === 'VODKA') return itemCat === 'VODKA';
+        if (cat === 'BRANDY') return itemCat === 'BRANDY';
+        if (cat === 'GIN') return itemCat === 'GIN';
+        return itemCat === cat;
+      });
+    });
+
+    const liveCases = items.reduce((sum, item) => sum + (Number(item.available_cases) || 0), 0);
+    const cap = Number(wh.capacity_cases) || 1;
+    const usagePct = Math.round((liveCases / cap) * 100);
+    const brandCount = items.length;
+
+    return {
+      items,
+      liveCases,
+      capacity: cap,
+      usagePct,
+      brandCount
+    };
+  };
+
   return (
     <div className="h-full flex flex-col overflow-hidden space-y-3 font-sans">
-      {/* Depots Overview Cards (Pinned Top) */}
+      {/* Depots Switcher Bar & Warehouse Sheds Overview Cards (Pinned Top) */}
       <div className="shrink-0 space-y-2">
-        <div className="flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-              Statewide Wholesale Depots ({depots.length})
+        {/* Top Depot Switcher Navigation */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5">
+          <div className="flex items-center gap-2 overflow-x-auto scrollbar-none py-0.5">
+            <span className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 shrink-0 flex items-center gap-1.5">
+              <Building2 className="w-3.5 h-3.5 text-orange-500" />
+              Depots ({depots.length}):
             </span>
+            <div className="flex items-center gap-1.5 shrink-0">
+              {depots.map((depot) => {
+                const isDepotSelected = Number(selectedDepotId) === Number(depot.id);
+                return (
+                  <button
+                    key={depot.id}
+                    type="button"
+                    onClick={() => handleSelectDepot(depot.id)}
+                    className={`px-2.5 py-1 rounded-lg text-xs font-mono transition flex items-center gap-1.5 cursor-pointer shrink-0 ${
+                      isDepotSelected
+                        ? 'bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-bold shadow-xs'
+                        : 'bg-zinc-100 dark:bg-white/5 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white border border-zinc-200 dark:border-white/10'
+                    }`}
+                  >
+                    <span>{depot.code}</span>
+                    <span className="opacity-75 hidden md:inline">({depot.shortName || depot.region})</span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
-          {onNavigateToAddDepot && (
-            <button
-              onClick={onNavigateToAddDepot}
-              className="px-3 py-1.5 rounded-xl bg-orange-600 hover:bg-orange-500 text-white text-xs font-mono font-bold uppercase tracking-wider transition flex items-center gap-1.5 shadow-md shadow-orange-950/30 cursor-pointer group"
-              title="Commission a new wholesale depot"
-            >
-              <PlusCircle className="w-3.5 h-3.5 group-hover:rotate-90 transition-transform duration-200" />
-              <span>Add Wholesale Depot</span>
-            </button>
-          )}
+
+          <div className="flex items-center gap-2 self-end sm:self-auto shrink-0">
+            {selectedWarehouseId && (
+              <button
+                type="button"
+                onClick={() => {
+                  if (onSelectWarehouse) onSelectWarehouse(null);
+                }}
+                className="px-2.5 py-1 rounded-lg bg-zinc-200 dark:bg-white/10 hover:bg-orange-600 hover:text-white text-zinc-700 dark:text-zinc-300 text-xs font-mono transition cursor-pointer flex items-center gap-1"
+                title="Reset warehouse filter and show all sheds"
+              >
+                <span>✕ Show All Sheds</span>
+                <span className="opacity-75">({depotInventory?.total_cases?.toLocaleString()} cs)</span>
+              </button>
+            )}
+            {onNavigateToAddDepot && (
+              <button
+                onClick={onNavigateToAddDepot}
+                className="px-3 py-1.5 rounded-xl bg-orange-600 hover:bg-orange-500 text-white text-xs font-mono font-bold uppercase tracking-wider transition flex items-center gap-1.5 shadow-md shadow-orange-950/30 cursor-pointer group"
+                title="Commission a new wholesale depot"
+              >
+                <PlusCircle className="w-3.5 h-3.5 group-hover:rotate-90 transition-transform duration-200" />
+                <span>Add Wholesale Depot</span>
+              </button>
+            )}
+          </div>
         </div>
 
-        {/* Depots Top Bar - Responsive Grid or Skeleton */}
-        {loadingDepots && depots.length === 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2.5 overflow-x-auto pb-1">
-            {[1, 2, 3, 4, 5, 6].map((i) => (
+        {/* Warehouse Shed Cards Header */}
+        <div className="flex items-center justify-between gap-2 pt-0.5">
+          <div className="flex items-center gap-2">
+            <Warehouse className="w-3.5 h-3.5 text-orange-500" />
+            <span className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
+              Facility Warehouses ({activeDepotConfig?.warehouses?.length || 5} Sheds &bull; {activeDepotConfig?.name || 'Wholesale Depot'})
+            </span>
+          </div>
+          <span className="text-[11px] font-mono text-zinc-400 hidden sm:inline">
+            Click warehouse card to filter stock &bull; Click again to view all
+          </span>
+        </div>
+
+        {/* 5 Warehouse Cards Grid */}
+        {(loadingDepots || loadingInventory) && !depotInventory ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2.5 overflow-x-auto pb-1">
+            {[1, 2, 3, 4, 5].map((i) => (
               <div key={i} className="p-3 rounded-xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] animate-pulse space-y-2">
                 <div className="h-3.5 bg-zinc-200 dark:bg-white/10 rounded w-2/3" />
                 <div className="h-3 bg-zinc-200 dark:bg-white/10 rounded w-1/2" />
@@ -153,38 +242,49 @@ export function DepotStock({
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2.5 overflow-x-auto pb-1">
-            {depots.map((depot) => {
-              const isSelected = Number(selectedDepotId) === Number(depot.id);
-              const usagePct = depot.capacity_cases > 0 
-                ? Math.round((depot.total_stock_cases / depot.capacity_cases) * 100) 
-                : 0;
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2.5 overflow-x-auto pb-1">
+            {(activeDepotConfig?.warehouses || []).map((wh) => {
+              const stats = getWarehouseStats(wh, depotInventory?.items || []);
+              const isSelected = selectedWarehouseId === wh.id;
+              const WhIcon = getWarehouseIcon(wh.categories);
 
               return (
                 <button
-                  key={depot.id}
-                  onClick={() => handleSelectDepot(depot.id)}
-                  className={`p-3 rounded-xl border-2 text-left transition-colors duration-150 flex flex-col justify-between outline-none focus:outline-none focus:ring-0 cursor-pointer bg-white dark:bg-[#101010] ${
+                  key={wh.id}
+                  type="button"
+                  onClick={() => {
+                    if (onSelectWarehouse) {
+                      onSelectWarehouse(isSelected ? null : wh.id);
+                    }
+                  }}
+                  className={`p-3 rounded-xl border-2 text-left transition-colors duration-150 flex flex-col justify-between outline-none focus:outline-none focus:ring-0 cursor-pointer bg-white dark:bg-[#101010] relative group ${
                     isSelected
-                      ? 'border-orange-500 shadow-md shadow-orange-500/10'
+                      ? 'border-orange-500 shadow-md shadow-orange-500/10 ring-2 ring-orange-500/20 bg-orange-500/[0.03]'
                       : 'border-zinc-200 dark:border-white/10 hover:border-zinc-300 dark:hover:border-white/20'
                   }`}
                 >
                   <div>
                     <div className="flex items-center justify-between gap-1 mb-1">
-                      <span className="text-[10px] font-mono font-bold uppercase px-1.5 py-0.2 rounded bg-orange-500/10 text-orange-600 dark:text-orange-400">
-                        {depot.code}
+                      <span className={`text-[10px] font-mono font-bold uppercase px-1.5 py-0.2 rounded ${
+                        isSelected 
+                          ? 'bg-orange-500 text-white' 
+                          : 'bg-orange-500/10 text-orange-600 dark:text-orange-400'
+                      }`}>
+                        {wh.code || 'WH'}
                       </span>
-                      <span className="text-[10px] text-zinc-400 font-mono">
-                        {depot.region}
+                      <span className="text-[10px] text-zinc-400 font-mono uppercase truncate max-w-[110px]" title={wh.categories?.join(', ')}>
+                        {wh.categories?.join(' & ')}
                       </span>
                     </div>
-                    <h3 className="text-xs font-bold text-zinc-900 dark:text-white truncate" title={depot.name}>
-                      {depot.name}
-                    </h3>
-                    <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5 flex items-center gap-1 truncate font-normal">
-                      <User className="w-3 h-3 text-zinc-400 shrink-0" /> 
-                      <span className="truncate">{depot.manager_name}</span>
+
+                    <div className="flex items-center gap-1.5 mt-1">
+                      <WhIcon className={`w-3.5 h-3.5 shrink-0 ${isSelected ? 'text-orange-500' : 'text-zinc-500 dark:text-zinc-400 group-hover:text-orange-500'}`} />
+                      <h3 className="text-xs font-bold text-zinc-900 dark:text-white truncate" title={wh.name}>
+                        {wh.shortName || wh.name}
+                      </h3>
+                    </div>
+                    <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5 truncate font-normal" title={wh.desc}>
+                      {stats.brandCount} Brands &bull; {wh.desc}
                     </p>
                   </div>
 
@@ -192,18 +292,20 @@ export function DepotStock({
                     <div className="flex justify-between items-baseline text-xs font-normal">
                       <span className="text-zinc-500 dark:text-zinc-400 text-[11px]">Live Buffer:</span>
                       <span className="font-mono font-bold text-zinc-900 dark:text-white text-xs">
-                        {depot.total_stock_cases?.toLocaleString()} cs
+                        {stats.liveCases.toLocaleString()} cs
                       </span>
                     </div>
                     <div className="w-full bg-zinc-200 dark:bg-[#000000] h-1.5 rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-orange-500 rounded-full"
-                        style={{ width: `${Math.min(100, usagePct)}%` }}
+                        className={`h-full rounded-full transition-all duration-300 ${
+                          isSelected ? 'bg-orange-500' : 'bg-orange-500/80 group-hover:bg-orange-500'
+                        }`}
+                        style={{ width: `${Math.min(100, stats.usagePct)}%` }}
                       />
                     </div>
                     <div className="flex justify-between text-[10px] text-zinc-500 dark:text-zinc-400 font-mono">
-                      <span>Cap: {depot.capacity_cases?.toLocaleString()}</span>
-                      <span className="font-semibold text-orange-500">{usagePct}%</span>
+                      <span>Cap: {stats.capacity.toLocaleString()}</span>
+                      <span className="font-semibold text-orange-500">{stats.usagePct}%</span>
                     </div>
                   </div>
                 </button>
@@ -232,8 +334,8 @@ export function DepotStock({
         </div>
       ) : depotInventory ? (
         <div className="flex-1 min-h-0 forge-card rounded-xl p-4 border border-zinc-200 dark:border-white/10 flex flex-col overflow-hidden space-y-3 bg-white dark:bg-[#101010] shadow-sm">
-          {/* Header Bar with 3 Warehouse Shed Sub-tabs */}
-          <div className="shrink-0 space-y-3 pb-2.5 border-b border-zinc-200 dark:border-white/10">
+          {/* Header Bar with Active Depot Info & Filter Banner */}
+          <div className="shrink-0 space-y-2 pb-2.5 border-b border-zinc-200 dark:border-white/10">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               <div className="flex items-center gap-3">
                 <div className="p-2 rounded-xl bg-orange-500/10 border border-orange-500/20 text-orange-500">
@@ -269,49 +371,33 @@ export function DepotStock({
               </div>
             </div>
 
-            {/* 3 Specialized Warehouse Sheds Selector Filter */}
-            {activeDepotConfig?.warehouses && activeDepotConfig.warehouses.length > 0 && (
-              <div className="flex items-center gap-2 pt-1 overflow-x-auto scrollbar-none">
-                <span className="text-[11px] font-mono font-bold uppercase text-zinc-400 shrink-0">
-                  Warehouse Sheds:
-                </span>
+            {/* Warehouse Filter Indicator */}
+            {activeWarehouse ? (
+              <div className="flex items-center justify-between gap-2 pt-1 text-xs font-mono">
+                <div className="flex items-center gap-2">
+                  <span className="text-zinc-400 uppercase text-[11px]">Active Shed Filter:</span>
+                  <span className="px-2 py-0.5 rounded bg-orange-500/10 text-orange-600 dark:text-orange-400 font-bold border border-orange-500/20 flex items-center gap-1.5">
+                    {React.createElement(getWarehouseIcon(activeWarehouse.categories), { className: "w-3 h-3" })}
+                    <span>{activeWarehouse.shortName || activeWarehouse.name}</span>
+                  </span>
+                  <span className="text-zinc-500 text-[11px]">
+                    ({filteredItems.length} brands &bull; {filteredItems.reduce((acc, i) => acc + (i.available_cases || 0), 0).toLocaleString()} cs)
+                  </span>
+                </div>
                 <button
                   type="button"
                   onClick={() => {
                     if (onSelectWarehouse) onSelectWarehouse(null);
                   }}
-                  className={`px-3 py-1 rounded-lg text-xs font-mono transition cursor-pointer shrink-0 ${
-                    !selectedWarehouseId
-                      ? 'bg-orange-600 text-white font-bold shadow-xs'
-                      : 'bg-zinc-100 dark:bg-white/5 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white border border-zinc-200 dark:border-white/10'
-                  }`}
+                  className="text-[11px] text-orange-600 dark:text-orange-400 hover:underline cursor-pointer"
                 >
-                  All Sheds ({depotInventory.total_cases?.toLocaleString()} cs)
+                  Show All 5 Sheds &rarr;
                 </button>
-
-                {activeDepotConfig.warehouses.map((wh) => {
-                  const isWhActive = selectedWarehouseId === wh.id;
-                  const WhIcon = wh.categories.includes('BEER') ? Beer : wh.categories.includes('WINE') ? Wine : wh.categories.includes('VODKA') ? Sparkles : wh.categories.includes('RUM') ? Flame : Boxes;
-
-                  return (
-                    <button
-                      key={wh.id}
-                      type="button"
-                      onClick={() => {
-                        if (onSelectWarehouse) onSelectWarehouse(wh.id);
-                      }}
-                      className={`px-3 py-1 rounded-lg text-xs font-mono transition flex items-center gap-1.5 cursor-pointer shrink-0 ${
-                        isWhActive
-                          ? 'bg-orange-600 text-white font-bold shadow-xs'
-                          : 'bg-zinc-100 dark:bg-white/5 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white border border-zinc-200 dark:border-white/10'
-                      }`}
-                    >
-                      <WhIcon className="w-3.5 h-3.5" />
-                      <span>{wh.shortName}</span>
-                      <span className="text-[10px] opacity-75">({wh.capacity_cases?.toLocaleString()} cs cap)</span>
-                    </button>
-                  );
-                })}
+              </div>
+            ) : (
+              <div className="flex items-center justify-between gap-2 pt-1 text-xs font-mono text-zinc-400">
+                <span className="text-[11px]">Showing all 5 specialized warehouse sheds ({depotInventory.total_cases?.toLocaleString()} cs total buffer)</span>
+                <span className="text-[10px] text-zinc-500 hidden sm:inline">Select any warehouse card above to filter table</span>
               </div>
             )}
           </div>
