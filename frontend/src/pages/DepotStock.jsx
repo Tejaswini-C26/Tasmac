@@ -150,36 +150,28 @@ export function DepotStock({
     <div className="h-full flex flex-col overflow-hidden space-y-3 font-sans">
       {/* Warehouse Overview Cards (Pinned Top) */}
       <div className="shrink-0 space-y-2">
-        <div className="flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2">
-            <Warehouse className="w-4 h-4 text-orange-500" />
-            <span className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
-              Warehouse Sheds ({(activeDepotConfig?.warehouses || []).length}) &bull; {activeDepotConfig?.shortName || activeDepotConfig?.name}
-            </span>
-          </div>
-          <div className="flex items-center gap-2">
-            {selectedWarehouseId && (
-              <button
-                type="button"
-                onClick={() => {
-                  if (onSelectWarehouse) onSelectWarehouse(null);
-                }}
-                className="px-2.5 py-1 rounded-lg bg-zinc-200 dark:bg-white/10 hover:bg-orange-600 hover:text-white text-zinc-700 dark:text-zinc-300 text-xs font-mono transition cursor-pointer"
-                title="Reset warehouse filter and show all sheds"
-              >
-                ✕ Show All Sheds
-              </button>
-            )}
+        <div className="flex items-center justify-end gap-2">
+          {selectedWarehouseId && (
             <button
               type="button"
-              onClick={() => setIsAddWarehouseOpen(true)}
-              className="px-3 py-1.5 rounded-xl bg-orange-600 hover:bg-orange-500 text-white text-xs font-mono font-bold uppercase tracking-wider transition flex items-center gap-1.5 shadow-md shadow-orange-950/30 cursor-pointer group"
-              title="Commission a new warehouse shed for this depot"
+              onClick={() => {
+                if (onSelectWarehouse) onSelectWarehouse(null);
+              }}
+              className="px-2.5 py-1 rounded-lg bg-zinc-200 dark:bg-white/10 hover:bg-orange-600 hover:text-white text-zinc-700 dark:text-zinc-300 text-xs font-mono transition cursor-pointer"
+              title="Reset warehouse filter and show all sheds"
             >
-              <PlusCircle className="w-3.5 h-3.5 group-hover:rotate-90 transition-transform duration-200" />
-              <span>Add Warehouse</span>
+              ✕ Show All Sheds
             </button>
-          </div>
+          )}
+          <button
+            type="button"
+            onClick={() => setIsAddWarehouseOpen(true)}
+            className="px-3 py-1.5 rounded-xl bg-orange-600 hover:bg-orange-500 text-white text-xs font-mono font-bold uppercase tracking-wider transition flex items-center gap-1.5 shadow-md shadow-orange-950/30 cursor-pointer group"
+            title="Commission a new warehouse shed for this depot"
+          >
+            <PlusCircle className="w-3.5 h-3.5 group-hover:rotate-90 transition-transform duration-200" />
+            <span>Add Warehouse</span>
+          </button>
         </div>
         {(loadingDepots || loadingInventory) && !depotInventory ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2.5 overflow-x-auto pb-1">
@@ -214,28 +206,12 @@ export function DepotStock({
                   }`}
                 >
                   <div>
-                    <div className="flex items-center justify-between gap-1 mb-1">
-                      <span className={`text-[10px] font-mono font-bold uppercase px-1.5 py-0.2 rounded ${
-                        isSelected 
-                          ? 'bg-orange-500 text-white' 
-                          : 'bg-orange-500/10 text-orange-600 dark:text-orange-400'
-                      }`}>
-                        {wh.code || 'WH'}
-                      </span>
-                      <span className="text-[10px] text-zinc-400 font-mono uppercase truncate max-w-[110px]" title={wh.categories?.join(', ')}>
-                        {wh.categories?.join(' & ')}
-                      </span>
-                    </div>
-
-                    <div className="flex items-center gap-1.5 mt-1">
+                    <div className="flex items-center gap-1.5">
                       <WhIcon className={`w-3.5 h-3.5 shrink-0 ${isSelected ? 'text-orange-500' : 'text-zinc-500 dark:text-zinc-400 group-hover:text-orange-500'}`} />
                       <h3 className="text-xs font-bold text-zinc-900 dark:text-white truncate" title={wh.name}>
                         {wh.shortName || wh.name}
                       </h3>
                     </div>
-                    <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5 truncate font-normal" title={wh.desc}>
-                      {stats.brandCount} Bottle Brands &bull; {(stats.liveBottles || 0).toLocaleString()} Bottles
-                    </p>
                   </div>
 
                   <div className="mt-2 pt-2 border-t border-zinc-100 dark:border-white/10 space-y-1">
@@ -291,25 +267,10 @@ export function DepotStock({
       ) : depotInventory ? (
         <div className="flex-1 min-h-0 forge-card rounded-xl p-4 border border-zinc-200 dark:border-white/10 flex flex-col overflow-hidden space-y-3 bg-white dark:bg-[#101010] shadow-sm">
           {/* Header Bar with Active Depot Info */}
-          <div className="shrink-0 pb-2.5 border-b border-zinc-200 dark:border-white/10">
-            <div className="flex items-center gap-3">
-              <div className="p-2 rounded-xl bg-orange-500/10 border border-orange-500/20 text-orange-500">
-                <Building2 className="w-5 h-5" />
-              </div>
-              <div>
-                <h2 className="text-sm sm:text-base font-bold text-zinc-900 dark:text-white flex items-center gap-2">
-                  <span>{depotInventory.name}</span>
-                  <span className="text-xs font-mono font-semibold px-2 py-0.5 rounded-full bg-orange-500/10 text-orange-500 border border-orange-500/20">
-                    {activeDepotConfig?.code || 'DEPOT'}
-                  </span>
-                </h2>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
-                  Region: <span className="text-zinc-700 dark:text-zinc-200 font-medium">{depotInventory.region}</span> &bull; 
-                  Live Stock: <span className="text-orange-500 font-mono font-bold">{depotInventory.total_cases?.toLocaleString()} cs</span> <span className="font-mono font-semibold text-zinc-600 dark:text-zinc-300">({(depotInventory.total_bottles || (depotInventory.total_cases * 12)).toLocaleString()} btls)</span> &bull;
-                  Max Cap: <span className="font-mono text-zinc-600 dark:text-zinc-300">{depotInventory.capacity_cases?.toLocaleString()} cs</span>
-                </p>
-              </div>
-            </div>
+          <div className="shrink-0 pb-2 border-b border-zinc-200 dark:border-white/10">
+            <h2 className="text-sm sm:text-base font-bold text-zinc-900 dark:text-white">
+              {depotInventory.name}
+            </h2>
           </div>
 
           {/* Brands Stock Table (Internally Scrollable with Sticky Header) */}

@@ -360,11 +360,7 @@ export function App() {
       case 'depots': {
         const effectiveDepots = getEffectiveDepotConfigs(depots);
         const dObj = effectiveDepots.find(d => d.id === selectedDepotId);
-        const whObj = dObj?.warehouses?.find(w => w.id === selectedWarehouseId);
-        if (whObj) {
-          return `${dObj?.shortName || 'Depot'} • ${whObj.shortName}`;
-        }
-        return dObj ? `${dObj.shortName} Wholesale Depot` : 'Wholesale Depots';
+        return dObj ? (dObj.shortName || dObj.name) : 'Wholesale Depots';
       }
       case 'inventory':
         return 'Store Stockroom';
