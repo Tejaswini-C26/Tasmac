@@ -595,13 +595,6 @@ export function SupplierManagement({ externalSearchQuery = '' }) {
                       </td>
 
                       <td className="py-2.5 px-4 text-right space-x-1.5" onClick={(e) => e.stopPropagation()}>
-                        <button
-                          onClick={() => setSelectedConsignmentForInspect(csg)}
-                          className="px-2 py-1 rounded bg-zinc-100 hover:bg-zinc-200 dark:bg-white/10 dark:hover:bg-white/15 text-zinc-700 dark:text-zinc-200 text-[11px] font-mono font-medium transition cursor-pointer"
-                          title="Open Side Drawer Inspection"
-                        >
-                          Details &rarr;
-                        </button>
                         {csg.status === 'DISPATCHED' && (
                           <button
                             onClick={() => handleStatusTransition(csg.id, 'IN_TRANSIT')}
@@ -622,7 +615,7 @@ export function SupplierManagement({ externalSearchQuery = '' }) {
                           </button>
                         )}
                         {csg.status === 'RECEIVED' && (
-                          <span className="text-[11px] font-mono text-zinc-500">
+                          <span className="text-xs font-mono text-zinc-500 dark:text-zinc-400">
                             Breakage: {csg.breakage_bottles || 0} btl
                           </span>
                         )}
