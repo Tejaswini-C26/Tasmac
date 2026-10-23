@@ -1,4 +1,5 @@
 import os
+import time
 import logging
 from dotenv import load_dotenv
 from sqlalchemy import create_engine, text
@@ -20,7 +21,8 @@ if not is_sqlite:
             DATABASE_URL,
             pool_pre_ping=True,
             pool_recycle=300,
-            pool_timeout=5,
+            pool_timeout=2,
+            connect_args={"connect_timeout": 2}
         )
     except Exception as e:
         logging.warning(f"Could not initialize primary database engine: {e}")
@@ -37,14 +39,25 @@ SqliteSession = sessionmaker(autocommit=False, autoflush=False, bind=sqlite_engi
 
 Base = declarative_base()
 
+_primary_db_available = True if PrimarySession else False
+_last_primary_check = 0
+
 def SessionLocal():
-    if PrimarySession:
+    global _primary_db_available, _last_primary_check
+    now = time.time()
+
+    # If primary failed previously, do not penalize every request with DNS timeouts.
+    # Recheck at most once every 60 seconds.
+    if PrimarySession and (_primary_db_available or (now - _last_primary_check > 60)):
+        _last_primary_check = now
         try:
             s = PrimarySession()
             s.execute(text("SELECT 1"))
+            _primary_db_available = True
             return s
         except Exception as e:
-            logging.warning(f"Primary DB connection error ({e}). Serving request from local SQLite database.")
+            _primary_db_available = False
+            logging.warning(f"Primary DB unavailable ({e}). Using ultra-fast local SQLite database.")
             if 's' in locals() and s:
                 try:
                     s.close()
