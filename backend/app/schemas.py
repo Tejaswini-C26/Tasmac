@@ -443,3 +443,24 @@ class TokenResponse(BaseModel):
     access_token: str
     token_type: str = "bearer"
     user: UserResponse
+
+class SystemAlertResponse(BaseModel):
+    id: int
+    alert_type: str
+    recipient: str
+    recipient_role: str
+    title: str
+    message: str
+    status: str
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+class ReplenishmentTriggerResponse(BaseModel):
+    retail_alerts_created: int
+    depot_alerts_created: int
+    indents_generated: int
+    consignments_generated: int
+    message: str
+

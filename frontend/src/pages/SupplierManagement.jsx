@@ -485,6 +485,7 @@ export function SupplierManagement({ externalSearchQuery = '' }) {
             <div className="inline-flex items-center p-1 rounded-xl bg-zinc-100 dark:bg-[#0c0d12] border border-zinc-200 dark:border-white/10 gap-1 overflow-x-auto max-w-full">
               {[
                 { key: 'ALL', label: 'All' },
+                { key: 'PLANNED', label: 'Depot Requisitions' },
                 { key: 'DISPATCHED', label: 'Dispatched' },
                 { key: 'IN_TRANSIT', label: 'In Transit' },
                 { key: 'RECEIVED', label: 'Received' },
@@ -608,6 +609,14 @@ export function SupplierManagement({ externalSearchQuery = '' }) {
                       </td>
 
                       <td className="py-2.5 px-4 text-right space-x-1.5" onClick={(e) => e.stopPropagation()}>
+                        {csg.status === 'PLANNED' && (
+                          <button
+                            onClick={() => handleStatusTransition(csg.id, 'DISPATCHED')}
+                            className="px-2.5 py-1 rounded-lg bg-orange-600 hover:bg-orange-500 text-white text-[11px] font-mono font-bold transition cursor-pointer shadow-sm shadow-orange-950/20"
+                          >
+                            Dispatch Truck
+                          </button>
+                        )}
                         {csg.status === 'DISPATCHED' && (
                           <button
                             onClick={() => handleStatusTransition(csg.id, 'IN_TRANSIT')}

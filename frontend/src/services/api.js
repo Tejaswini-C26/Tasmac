@@ -268,6 +268,31 @@ export async function approveSupplierKyc(supplierId) {
   return res.json();
 }
 
+// System & Supply Chain Replenishment Alerts
+export async function fetchSystemAlerts(role = null) {
+  const url = role ? `${API_BASE}/alerts?role=${encodeURIComponent(role)}` : `${API_BASE}/alerts`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error('Failed to fetch system alerts');
+  return res.json();
+}
+
+export async function triggerReplenishment() {
+  const res = await fetch(`${API_BASE}/alerts/trigger-replenishment`, {
+    method: 'POST'
+  });
+  if (!res.ok) throw new Error('Failed to trigger auto replenishment');
+  return res.json();
+}
+
+export async function dismissAlert(alertId) {
+  const res = await fetch(`${API_BASE}/alerts/dismiss/${alertId}`, {
+    method: 'POST'
+  });
+  if (!res.ok) throw new Error('Failed to dismiss alert');
+  return res.json();
+}
+
+
 
 
 

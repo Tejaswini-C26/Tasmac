@@ -17,8 +17,8 @@ import {
   CheckCircle2,
 
   TrendingDown,
-  RotateCw
-
+  RotateCw,
+  Factory
 } from 'lucide-react';
 
 import { fetchDepots, fetchDepotInventory } from '../services/api';
@@ -267,20 +267,22 @@ export function DepotStock({ externalSearchQuery = '' }) {
                         </td>
 
                         <td className="py-2 px-4 text-center">
-                          <span
-                            className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono ${
-                              isGoodStock
-                                ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20'
-                                : 'bg-amber-500/10 text-amber-500 border border-amber-500/20'
-                            }`}
-                          >
-                            <span
-                              className={`w-1.5 h-1.5 rounded-full ${
-                                isGoodStock ? 'bg-emerald-500' : 'bg-amber-500'
-                              }`}
-                            />
-                            {isGoodStock ? 'High Stock' : 'Replenish Soon'}
-                          </span>
+                          {item.available_cases <= 350 ? (
+                            <div className="inline-flex flex-col items-center gap-0.5">
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-500/30 font-semibold">
+                                <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
+                                Low Buffer
+                              </span>
+                              <span className="inline-flex items-center gap-1 text-[9px] font-mono text-purple-600 dark:text-purple-400 font-medium">
+                                <Factory className="w-2.5 h-2.5" /> Requisitioned to Distillery
+                              </span>
+                            </div>
+                          ) : (
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                              Optimal Buffer
+                            </span>
+                          )}
                         </td>
                       </tr>
                     );

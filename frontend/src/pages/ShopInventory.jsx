@@ -8,7 +8,8 @@ import {
   ShoppingCart, 
   RotateCw, 
   ArrowRight, 
-  X 
+  X,
+  Truck
 } from 'lucide-react';
 import { fetchShopInventory, fetchShops } from '../services/api';
 import { ShopSearchSelector } from '../components/ShopSearchSelector';
@@ -303,9 +304,14 @@ export function ShopInventory({ selectedShop, onSelectShop, shops = [], onOpenMa
                   </td>
                   <td className="py-2 px-3 text-center">
                     {item.is_low_stock ? (
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-500/30">
-                        <AlertTriangle className="w-3 h-3" /> Low Stock
-                      </span>
+                      <div className="inline-flex flex-col items-center gap-0.5">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-500/30 font-semibold">
+                          <AlertTriangle className="w-3 h-3" /> Low Stock
+                        </span>
+                        <span className="inline-flex items-center gap-1 text-[9px] font-mono text-orange-600 dark:text-orange-400 font-medium">
+                          <Truck className="w-2.5 h-2.5" /> Indent Sent to Depot
+                        </span>
+                      </div>
                     ) : (
                       <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
                         <CheckCircle2 className="w-3 h-3" /> In Stock

@@ -55,7 +55,7 @@ import { OrderDrawer } from './components/OrderDrawer';
 import { ShopSearchSelector } from './components/ShopSearchSelector';
 import { ShopMapModal } from './components/ShopMapModal';
 import { UserProfileDropdown } from './components/UserProfileDropdown';
-import { fetchShops, fetchDepots, fetchMetrics, fetchCurrentUser } from './services/api';
+import { fetchShops, fetchDepots, fetchMetrics, fetchCurrentUser, fetchSystemAlerts, triggerReplenishment, dismissAlert } from './services/api';
 
 const ALL_PAGE_IDS = [
   'suppliers',
@@ -166,6 +166,44 @@ export function App() {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [headerSearchQuery, setHeaderSearchQuery] = useState('');
   const [showHeaderAlerts, setShowHeaderAlerts] = useState(false);
+  const [alerts, setAlerts] = useState([]);
+  const [replenishing, setReplenishing] = useState(false);
+
+  const loadAlerts = async () => {
+    try {
+      const data = await fetchSystemAlerts();
+      setAlerts(data || []);
+    } catch (e) {
+      console.error('Failed to load system alerts:', e);
+    }
+  };
+
+  useEffect(() => {
+    loadAlerts();
+    const interval = setInterval(loadAlerts, 20000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleTriggerReplenishment = async () => {
+    try {
+      setReplenishing(true);
+      await triggerReplenishment();
+      await loadAlerts();
+    } catch (e) {
+      console.error('Auto replenishment failed:', e);
+    } finally {
+      setReplenishing(false);
+    }
+  };
+
+  const handleDismissAlert = async (id) => {
+    try {
+      await dismissAlert(id);
+      setAlerts(prev => prev.filter(a => a.id !== id));
+    } catch (e) {
+      console.error('Dismiss failed:', e);
+    }
+  };
 
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
@@ -652,29 +690,85 @@ useEffect(() => {
                     className="p-2 text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-white/5 rounded-xl transition cursor-pointer relative"
                   >
                     <Bell className="w-4 h-4" />
-                    <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-orange-500 ring-2 ring-white dark:ring-black" />
+                    {alerts.length > 0 && (
+                      <span className="absolute top-1 right-1 min-w-[16px] h-4 px-1 rounded-full bg-orange-600 text-white text-[9px] font-mono font-bold flex items-center justify-center ring-2 ring-white dark:ring-black">
+                        {alerts.length > 9 ? '9+' : alerts.length}
+                      </span>
+                    )}
                   </button>
 
                   {/* Alerts Popover Dropdown */}
                   {showHeaderAlerts && (
-                    <div className="absolute right-0 mt-2 w-72 sm:w-80 p-3 bg-white dark:bg-[#121212] border border-zinc-200 dark:border-white/10 rounded-2xl shadow-xl z-50 animate-slideDown font-sans">
+                    <div className="absolute right-0 mt-2 w-80 sm:w-96 p-3 bg-white dark:bg-[#121212] border border-zinc-200 dark:border-white/10 rounded-2xl shadow-xl z-50 animate-slideDown font-sans">
                       <div className="flex items-center justify-between pb-2 border-b border-zinc-100 dark:border-white/5 mb-2">
-                        <span className="text-xs font-bold text-zinc-900 dark:text-white">Active Operational Alerts</span>
-                        <span className="text-[10px] text-orange-500 font-bold uppercase font-mono px-1.5 py-0.5 rounded bg-orange-500/10">3 New</span>
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-xs font-bold text-zinc-900 dark:text-white">Supply Chain Alerts</span>
+                          <span className="text-[10px] text-orange-600 dark:text-orange-400 font-bold uppercase font-mono px-1.5 py-0.5 rounded bg-orange-500/10">
+                            {alerts.length} Active
+                          </span>
+                        </div>
+                        <button
+                          onClick={handleTriggerReplenishment}
+                          disabled={replenishing}
+                          className="px-2 py-0.5 rounded-lg bg-orange-600 hover:bg-orange-500 text-white text-[10px] font-mono font-bold transition flex items-center gap-1 cursor-pointer disabled:opacity-50"
+                          title="Generate indents for shops and consignments for depots"
+                        >
+                          <RotateCw className={`w-2.5 h-2.5 ${replenishing ? 'animate-spin' : ''}`} />
+                          <span>{replenishing ? 'Dispatching...' : 'Auto-Replenish'}</span>
+                        </button>
                       </div>
-                      <div className="space-y-2 text-xs">
-                        <div className="p-2 rounded-lg bg-zinc-50 dark:bg-white/5 border border-zinc-100 dark:border-white/5">
-                          <p className="font-semibold text-zinc-800 dark:text-zinc-200 text-[11px]">Consignment GRN Verified</p>
-                          <p className="text-[10px] text-zinc-500">Salem Depot accepted 500 cases of Eight PM with zero breakages.</p>
-                        </div>
-                        <div className="p-2 rounded-lg bg-zinc-50 dark:bg-white/5 border border-zinc-100 dark:border-white/5">
-                          <p className="font-semibold text-zinc-800 dark:text-zinc-200 text-[11px]">Inward Transit Dispatched</p>
-                          <p className="text-[10px] text-zinc-500">Mohan Breweries truck TN-37-CT-4421 en route to Coimbatore Wholesale Depot.</p>
-                        </div>
-                        <div className="p-2 rounded-lg bg-zinc-50 dark:bg-white/5 border border-zinc-100 dark:border-white/5">
-                          <p className="font-semibold text-zinc-800 dark:text-zinc-200 text-[11px]">Retail Reorder Threshold</p>
-                          <p className="text-[10px] text-zinc-500">Shop #104 Anna Nagar stock reorder threshold reached.</p>
-                        </div>
+
+                      <div className="space-y-2 text-xs max-h-80 overflow-y-auto pr-1">
+                        {alerts.length === 0 ? (
+                          <div className="py-6 text-center text-zinc-400 text-xs font-mono">
+                            ✓ All state supply chain nodes stocked within thresholds.
+                          </div>
+                        ) : (
+                          alerts.map((al) => {
+                            const isShopAlert = al.alert_type === 'RETAIL_REPLENISHMENT';
+                            const isDepotAlert = al.alert_type === 'DEPOT_REQUISITION';
+
+                            return (
+                              <div 
+                                key={al.id}
+                                className={`p-2.5 rounded-xl border transition-all text-xs relative group ${
+                                  isShopAlert
+                                    ? 'bg-amber-50/50 dark:bg-amber-950/10 border-amber-200 dark:border-amber-500/20'
+                                    : isDepotAlert
+                                    ? 'bg-rose-50/50 dark:bg-rose-950/10 border-rose-200 dark:border-rose-500/20'
+                                    : 'bg-zinc-50 dark:bg-white/5 border-zinc-100 dark:border-white/5'
+                                }`}
+                              >
+                                <div className="flex items-center justify-between gap-1 mb-1">
+                                  <div className="flex items-center gap-1.5 min-w-0">
+                                    <span className={`px-1.5 py-0.5 rounded text-[9px] font-mono font-bold uppercase shrink-0 ${
+                                      isShopAlert
+                                        ? 'bg-amber-500/20 text-amber-700 dark:text-amber-400'
+                                        : isDepotAlert
+                                        ? 'bg-rose-500/20 text-rose-700 dark:text-rose-400'
+                                        : 'bg-zinc-200 dark:bg-white/10 text-zinc-600 dark:text-zinc-300'
+                                    }`}>
+                                      {isShopAlert ? '🏪 Vend → Depot' : isDepotAlert ? '🏢 Depot → Distillery' : 'System'}
+                                    </span>
+                                    <p className="font-semibold text-zinc-900 dark:text-zinc-100 text-[11px] truncate">
+                                      {al.title}
+                                    </p>
+                                  </div>
+                                  <button
+                                    onClick={() => handleDismissAlert(al.id)}
+                                    className="opacity-0 group-hover:opacity-100 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition cursor-pointer p-0.5 shrink-0"
+                                    title="Dismiss alert"
+                                  >
+                                    <X className="w-3 h-3" />
+                                  </button>
+                                </div>
+                                <p className="text-[11px] text-zinc-600 dark:text-zinc-400 leading-relaxed font-sans">
+                                  {al.message}
+                                </p>
+                              </div>
+                            );
+                          })
+                        )}
                       </div>
                     </div>
                   )}
