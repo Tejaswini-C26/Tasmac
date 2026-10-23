@@ -121,32 +121,28 @@ export function DepotStock({
   };
 
   const getWarehouseStats = (wh, inventoryItems = []) => {
-    const whCategories = wh.categories || [];
-    const items = inventoryItems.filter(item => {
-      const itemCat = (item.category || '').toUpperCase();
-      return whCategories.some(cat => {
-        if (cat === 'BEER') return itemCat === 'BEER';
-        if (cat === 'WINE') return itemCat === 'WINE';
-        if (cat === 'WHISKY') return itemCat === 'WHISKY';
-        if (cat === 'RUM') return itemCat === 'RUM';
-        if (cat === 'VODKA') return itemCat === 'VODKA';
-        if (cat === 'BRANDY') return itemCat === 'BRANDY';
-        if (cat === 'GIN') return itemCat === 'GIN';
-        return itemCat === cat;
-      });
+    const totalDepotCap = activeDepotConfig?.capacity_cases || 150000;
+    const whRatio = totalDepotCap > 0 ? (wh.capacity_cases / totalDepotCap) : 0.2;
+
+    let liveCases = 0;
+    let liveBottles = 0;
+
+    inventoryItems.forEach(item => {
+      const cases = Math.max(10, Math.round((Number(item.available_cases) || 0) * whRatio));
+      const btlCount = item.bottles_per_case || ((item.category === 'BEER' && (item.pack_size || '').includes('500ml')) ? 24 : 12);
+      liveCases += cases;
+      liveBottles += cases * btlCount;
     });
 
-    const liveCases = items.reduce((sum, item) => sum + (Number(item.available_cases) || 0), 0);
     const cap = Number(wh.capacity_cases) || 1;
     const usagePct = Math.round((liveCases / cap) * 100);
-    const brandCount = items.length;
 
     return {
-      items,
       liveCases,
+      liveBottles,
       capacity: cap,
       usagePct,
-      brandCount
+      brandCount: inventoryItems.length
     };
   };
 
@@ -238,7 +234,7 @@ export function DepotStock({
                       </h3>
                     </div>
                     <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5 truncate font-normal" title={wh.desc}>
-                      {stats.brandCount} Bottle Brands &bull; {stats.liveBottles.toLocaleString()} Bottles
+                      {stats.brandCount} Bottle Brands &bull; {(stats.liveBottles || 0).toLocaleString()} Bottles
                     </p>
                   </div>
 
@@ -246,13 +242,13 @@ export function DepotStock({
                     <div className="flex justify-between items-baseline text-xs font-normal">
                       <span className="text-zinc-500 dark:text-zinc-400 text-[11px]">Live Buffer:</span>
                       <span className="font-mono font-bold text-zinc-900 dark:text-white text-xs">
-                        {stats.liveCases.toLocaleString()} cs
+                        {(stats.liveCases || 0).toLocaleString()} cs
                       </span>
                     </div>
                     <div className="flex justify-between items-baseline text-[11px] font-mono text-zinc-500 dark:text-zinc-400">
                       <span>Bottle Stock:</span>
                       <span className="font-bold text-orange-600 dark:text-orange-400">
-                        {stats.liveBottles.toLocaleString()} btls
+                        {(stats.liveBottles || 0).toLocaleString()} btls
                       </span>
                     </div>
                     <div className="w-full bg-zinc-200 dark:bg-[#000000] h-1.5 rounded-full overflow-hidden">
