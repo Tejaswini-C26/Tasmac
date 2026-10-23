@@ -10,7 +10,6 @@ import {
   Truck, 
   Check, 
   Settings, 
-  ArrowLeftRight, 
   LogOut, 
   User, 
   KeyRound,
@@ -179,7 +178,7 @@ export function UserProfileDropdown({
             })}
           </div>
 
-          <div className="border-t border-zinc-200 dark:border-white/10 my-1.5" />
+                    <div className="border-t border-zinc-200 dark:border-white/10 my-1.5" />
 
           {/* Account & Settings Link */}
           <button
@@ -192,19 +191,6 @@ export function UserProfileDropdown({
           >
             <Settings className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
             <span>Account & settings</span>
-          </button>
-
-          {/* Switch to Alternate View */}
-          <button
-            type="button"
-            onClick={() => {
-              if (onTogglePortalMode) onTogglePortalMode();
-              setIsOpen(false);
-            }}
-            className="w-full px-2.5 py-1.5 rounded-md flex items-center gap-2.5 text-xs text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-white/5 transition cursor-pointer"
-          >
-            <ArrowLeftRight className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
-            <span>Switch to {portalMode === 'manufacturing' ? 'Retail view' : 'Manufacturing view'}</span>
           </button>
 
           <div className="border-t border-zinc-200 dark:border-white/10 my-1.5" />
