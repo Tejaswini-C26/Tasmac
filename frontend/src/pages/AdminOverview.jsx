@@ -14,7 +14,6 @@ import {
   Sparkles,
   BarChart3
 } from 'lucide-react';
-import { OverviewCharts } from '../components/OverviewCharts';
 import { 
   fetchMetrics, 
   fetchSupplierAnalytics, 
@@ -120,11 +119,8 @@ export function AdminOverview({ onNavigateToPage, externalSearchQuery = '' }) {
         
         {/* Card 1: Inward Inflow */}
         <div className="p-3.5 rounded-xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-xs flex flex-col justify-between">
-          <div className="flex items-center justify-between text-zinc-500 text-xs font-medium">
+          <div className="text-zinc-500 text-xs font-medium">
             <span>Inward Inflow</span>
-            <svg className="w-12 h-4 text-orange-500 shrink-0" viewBox="0 0 48 16" fill="none">
-              <path d="M 0 14 Q 12 11, 24 13 T 36 6 T 48 2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
           </div>
           <div className="mt-2">
             <div className="text-lg sm:text-xl font-mono font-bold text-zinc-900 dark:text-white">
@@ -136,11 +132,8 @@ export function AdminOverview({ onNavigateToPage, externalSearchQuery = '' }) {
 
         {/* Card 2: Delivery OTIF */}
         <div className="p-3.5 rounded-xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-xs flex flex-col justify-between">
-          <div className="flex items-center justify-between text-zinc-500 text-xs font-medium">
+          <div className="text-zinc-500 text-xs font-medium">
             <span>Delivery OTIF</span>
-            <svg className="w-12 h-4 text-teal-500 shrink-0" viewBox="0 0 48 16" fill="none">
-              <path d="M 0 10 Q 12 12, 24 6 T 36 4 T 48 2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
           </div>
           <div className="mt-2">
             <div className="text-lg sm:text-xl font-mono font-bold text-teal-600 dark:text-teal-400">
@@ -152,11 +145,8 @@ export function AdminOverview({ onNavigateToPage, externalSearchQuery = '' }) {
 
         {/* Card 3: Depot Buffer Stock */}
         <div className="p-3.5 rounded-xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-xs flex flex-col justify-between">
-          <div className="flex items-center justify-between text-zinc-500 text-xs font-medium">
+          <div className="text-zinc-500 text-xs font-medium">
             <span>Depot Buffer Stock</span>
-            <svg className="w-12 h-4 text-orange-500 shrink-0" viewBox="0 0 48 16" fill="none">
-              <path d="M 0 12 Q 12 8, 24 10 T 36 5 T 48 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
           </div>
           <div className="mt-2">
             <div className="text-lg sm:text-xl font-mono font-bold text-zinc-900 dark:text-white">
@@ -168,11 +158,8 @@ export function AdminOverview({ onNavigateToPage, externalSearchQuery = '' }) {
 
         {/* Card 4: Buffer Capacity */}
         <div className="p-3.5 rounded-xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-xs flex flex-col justify-between">
-          <div className="flex items-center justify-between text-zinc-500 text-xs font-medium">
+          <div className="text-zinc-500 text-xs font-medium">
             <span>Buffer Capacity</span>
-            <svg className="w-12 h-4 text-zinc-400 shrink-0" viewBox="0 0 48 16" fill="none">
-              <path d="M 0 8 L 12 8 L 24 8 L 36 8 L 48 8" stroke="currentColor" strokeWidth="2" strokeDasharray="3 3" strokeLinecap="round" />
-            </svg>
           </div>
           <div className="mt-2">
             <div className="text-lg sm:text-xl font-mono font-bold text-zinc-900 dark:text-white">
@@ -186,11 +173,8 @@ export function AdminOverview({ onNavigateToPage, externalSearchQuery = '' }) {
 
         {/* Card 5: Replenishment Indents */}
         <div className="p-3.5 rounded-xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-xs flex flex-col justify-between">
-          <div className="flex items-center justify-between text-zinc-500 text-xs font-medium">
+          <div className="text-zinc-500 text-xs font-medium">
             <span>Replenishment Indents</span>
-            <svg className="w-12 h-4 text-orange-500 shrink-0" viewBox="0 0 48 16" fill="none">
-              <path d="M 0 13 Q 12 15, 24 8 T 36 10 T 48 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
           </div>
           <div className="mt-2">
             <div className="text-lg sm:text-xl font-mono font-bold text-orange-600 dark:text-orange-400">
@@ -202,11 +186,8 @@ export function AdminOverview({ onNavigateToPage, externalSearchQuery = '' }) {
 
         {/* Card 6: Sales Revenue */}
         <div className="p-3.5 rounded-xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-xs flex flex-col justify-between">
-          <div className="flex items-center justify-between text-zinc-500 text-xs font-medium">
+          <div className="text-zinc-500 text-xs font-medium">
             <span>Sales Revenue</span>
-            <svg className="w-12 h-4 text-emerald-500 shrink-0" viewBox="0 0 48 16" fill="none">
-              <path d="M 0 14 Q 12 12, 24 9 T 36 5 T 48 2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
           </div>
           <div className="mt-2">
             <div className="text-lg sm:text-xl font-mono font-bold text-emerald-600 dark:text-emerald-400">
@@ -398,14 +379,6 @@ export function AdminOverview({ onNavigateToPage, externalSearchQuery = '' }) {
           </div>
         </div>
       </div>
-
-      {/* 2.5 Statewide Visual Telemetry & Supply Intelligence (Interactive Graphs) */}
-      <OverviewCharts 
-        depots={depots}
-        consignments={consignments}
-        metrics={metrics}
-        supplierAnalytics={supplierAnalytics}
-      />
 
       {/* 3. Statewide Regional Depots Capacity & Allocation (Sorted by Live Stock Data) */}
       <div className="p-4 sm:p-5 rounded-xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-xs space-y-3.5">
