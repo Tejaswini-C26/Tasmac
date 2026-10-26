@@ -21,8 +21,8 @@ if not is_sqlite:
             DATABASE_URL,
             pool_pre_ping=True,
             pool_recycle=300,
-            pool_timeout=2,
-            connect_args={"connect_timeout": 2}
+            pool_timeout=10,
+            connect_args={"connect_timeout": 10}
         )
     except Exception as e:
         logging.warning(f"Could not initialize primary database engine: {e}")

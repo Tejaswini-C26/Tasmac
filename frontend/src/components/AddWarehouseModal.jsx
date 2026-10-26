@@ -1,31 +1,16 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { 
   Warehouse, 
   PlusCircle, 
   X, 
-  Boxes, 
-  Beer, 
-  Wine, 
-  Sparkles, 
-  Flame, 
-  Layers, 
-  Check, 
   AlertCircle 
 } from 'lucide-react';
 import { saveCustomWarehouse } from '../services/depotConfigs';
 
-const AVAILABLE_CATEGORIES = [
-  { id: 'WHISKY', label: 'IMFL Whisky', icon: Boxes, color: 'text-amber-500' },
-  { id: 'BEER', label: 'Beer & Draught', icon: Beer, color: 'text-yellow-500' },
-  { id: 'VODKA', label: 'Vodka', icon: Sparkles, color: 'text-sky-500' },
-  { id: 'GIN', label: 'Gin & White Spirits', icon: Sparkles, color: 'text-teal-500' },
-  { id: 'RUM', label: 'Rum & Cane Spirits', icon: Flame, color: 'text-orange-500' },
-  { id: 'WINE', label: 'Wines', icon: Wine, color: 'text-rose-500' },
-  { id: 'BRANDY', label: 'Brandies', icon: Wine, color: 'text-purple-500' },
-];
-
 export function AddWarehouseModal({ isOpen, onClose, depot, onWarehouseAdded }) {
   if (!isOpen || !depot) return null;
+  if (typeof document === 'undefined') return null;
 
   const currentCount = depot.warehouses?.length || 5;
   const nextNum = currentCount + 1;
@@ -35,21 +20,9 @@ export function AddWarehouseModal({ isOpen, onClose, depot, onWarehouseAdded }) 
   const [name, setName] = useState(`Warehouse ${nextNum}`);
   const [shortName, setShortName] = useState(`Warehouse ${nextNum}`);
   const [code, setCode] = useState(`WH-${initials}-0${nextNum}`);
-  const [selectedCategories, setSelectedCategories] = useState(['WHISKY']);
   const [capacityCases, setCapacityCases] = useState(25000);
   const [description, setDescription] = useState('');
   const [error, setError] = useState('');
-
-  const toggleCategory = (catId) => {
-    setSelectedCategories(prev => {
-      if (prev.includes(catId)) {
-        if (prev.length === 1) return prev; // Keep at least one
-        return prev.filter(c => c !== catId);
-      } else {
-        return [...prev, catId];
-      }
-    });
-  };
 
   const handleNameChange = (val) => {
     setName(val);
@@ -67,10 +40,6 @@ export function AddWarehouseModal({ isOpen, onClose, depot, onWarehouseAdded }) 
       setError('Please provide a warehouse shed name.');
       return;
     }
-    if (selectedCategories.length === 0) {
-      setError('Please select at least one spirit category for this warehouse.');
-      return;
-    }
     if (!capacityCases || capacityCases <= 0) {
       setError('Please specify a positive storage capacity in cases.');
       return;
@@ -82,9 +51,9 @@ export function AddWarehouseModal({ isOpen, onClose, depot, onWarehouseAdded }) 
       code: code.trim() || `WH-${initials}-0${nextNum}`,
       name: trimmedName || `Warehouse ${nextNum}`,
       shortName: shortName.trim() || trimmedName || `Warehouse ${nextNum}`,
-      categories: selectedCategories,
+      categories: ['ALL'],
       capacity_cases: Number(capacityCases),
-      desc: description.trim() || `Specialized storage facility for ${selectedCategories.join(', ')}`,
+      desc: description.trim() || 'General wholesale buffer storage facility',
       isCustom: true
     };
 
@@ -97,8 +66,11 @@ export function AddWarehouseModal({ isOpen, onClose, depot, onWarehouseAdded }) 
     onClose();
   };
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fade-in font-sans">
+  return createPortal(
+    <div 
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in font-sans"
+      onClick={onClose}
+    >
       <div 
         className="w-full max-w-lg rounded-2xl bg-white dark:bg-[#121318] border border-zinc-200 dark:border-white/10 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
         onClick={(e) => e.stopPropagation()}
@@ -183,36 +155,6 @@ export function AddWarehouseModal({ isOpen, onClose, depot, onWarehouseAdded }) 
             </div>
           </div>
 
-          {/* Spirit Categories */}
-          <div className="space-y-1.5">
-            <label className="font-bold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider text-[11px] flex justify-between">
-              <span>Allocated Spirit Categories *</span>
-              <span className="text-zinc-400 font-normal">Select 1 or more</span>
-            </label>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-              {AVAILABLE_CATEGORIES.map((cat) => {
-                const isSelected = selectedCategories.includes(cat.id);
-                const Icon = cat.icon;
-                return (
-                  <button
-                    key={cat.id}
-                    type="button"
-                    onClick={() => toggleCategory(cat.id)}
-                    className={`p-2 rounded-xl border text-left transition flex items-center gap-2 cursor-pointer ${
-                      isSelected
-                        ? 'border-orange-500 bg-orange-500/10 text-orange-600 dark:text-orange-400 font-bold'
-                        : 'border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-black/20 text-zinc-600 dark:text-zinc-400 hover:border-zinc-300'
-                    }`}
-                  >
-                    <Icon className={`w-3.5 h-3.5 shrink-0 ${isSelected ? 'text-orange-500' : 'text-zinc-400'}`} />
-                    <span className="truncate text-[11px]">{cat.label}</span>
-                    {isSelected && <Check className="w-3 h-3 ml-auto text-orange-500 shrink-0" />}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
           {/* Case Capacity */}
           <div className="space-y-1">
             <div className="flex justify-between items-center">
@@ -239,7 +181,7 @@ export function AddWarehouseModal({ isOpen, onClose, depot, onWarehouseAdded }) 
                   key={val}
                   type="button"
                   onClick={() => setCapacityCases(val)}
-                  className="px-2 py-0.5 rounded text-[10px] bg-zinc-100 dark:bg-white/5 hover:bg-zinc-200 dark:hover:bg-white/10 text-zinc-600 dark:text-zinc-400 transition"
+                  className="px-2 py-0.5 rounded text-[10px] bg-zinc-100 dark:bg-white/5 hover:bg-zinc-200 dark:hover:bg-white/10 text-zinc-600 dark:text-zinc-400 transition cursor-pointer"
                 >
                   +{val.toLocaleString()}
                 </button>
@@ -256,7 +198,7 @@ export function AddWarehouseModal({ isOpen, onClose, depot, onWarehouseAdded }) 
               type="text"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="e.g. Temperature-controlled buffer for regional draught beer"
+              placeholder="e.g. Temperature-controlled buffer for regional storage"
               className="w-full px-3 py-2 rounded-xl bg-zinc-100 dark:bg-black/40 border border-zinc-200 dark:border-white/10 text-zinc-900 dark:text-white focus:outline-none focus:border-orange-500"
             />
           </div>
@@ -280,7 +222,7 @@ export function AddWarehouseModal({ isOpen, onClose, depot, onWarehouseAdded }) 
           </div>
         </form>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
-
