@@ -614,8 +614,8 @@ export function RetailCatalog({ onAddToCart, cart, onNavigateToAddBottle, extern
       ) : (
         /* Dense Table View (Internally scrollable with sticky header) */
         <div className="flex-1 min-h-0 overflow-auto rounded-md border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm">
-          <table className="w-full text-left text-xs text-zinc-300">
-            <thead className="sticky top-0 z-10 bg-zinc-100 dark:bg-[#08090c] text-zinc-900 dark:text-white uppercase text-xs font-mono font-semibold tracking-wider border-b border-zinc-200 dark:border-white/10 shadow-xs">
+          <table className="w-full text-left text-xs text-zinc-900 dark:text-zinc-300">
+            <thead className="sticky top-0 z-10 bg-zinc-100 dark:bg-[#090a0d] text-zinc-900 dark:text-white uppercase text-xs font-mono font-semibold tracking-wider border-b border-zinc-200 dark:border-white/10 shadow-xs">
               <tr>
                 <th className="py-2.5 px-4">Brand</th>
                 <th className="py-2.5 px-3">Govt Approval Code</th>

@@ -65,10 +65,27 @@ export function OrderDrawer({
   const activeDepotId = selectedDepotId || selectedShop?.assigned_depot_id || (depots[0]?.id ?? 1);
   const activeDepot = depots.find((d) => d.id === activeDepotId);
 
+  // Robust unit wholesale price resolver (never 0)
+  const getUnitPrice = (item) => {
+    if (item.current_price?.wholesale_issue_price != null && Number(item.current_price.wholesale_issue_price) > 0) {
+      return Number(item.current_price.wholesale_issue_price);
+    }
+    if (item.wholesale_issue_price != null && Number(item.wholesale_issue_price) > 0) {
+      return Number(item.wholesale_issue_price);
+    }
+    if (item.pack_rate?.wholesale_issue_price != null && Number(item.pack_rate.wholesale_issue_price) > 0) {
+      return Number(item.pack_rate.wholesale_issue_price);
+    }
+    // Fallback: estimate wholesale price per case from bottle MRP (approx 75.5% of MRP * bottles per case)
+    const mrp = Number(item.current_price?.mrp_per_bottle || item.mrp_per_bottle || 500);
+    const bottlesPerCase = Number(item.bottles_per_case || ((item.category === 'BEER' && (item.pack_size || '').includes('500ml')) ? 24 : 12));
+    return Math.round(mrp * bottlesPerCase * 0.755) || 2400;
+  };
+
   // Cart calculations
   const totalCases = cart.reduce((acc, item) => acc + item.quantity, 0);
   const subtotal = cart.reduce(
-    (acc, item) => acc + item.quantity * (item.current_price?.wholesale_issue_price || 0),
+    (acc, item) => acc + item.quantity * getUnitPrice(item),
     0
   );
   const taxDuty = Math.round(subtotal * 0.05 * 100) / 100;
@@ -81,7 +98,17 @@ export function OrderDrawer({
           const key = item.cartKey || item.id;
           if (key === itemKey) {
             const nextQty = item.quantity + delta;
-            return nextQty > 0 ? { ...item, quantity: nextQty } : null;
+            if (nextQty <= 0) return null;
+            const price = getUnitPrice(item);
+            return {
+              ...item,
+              quantity: nextQty,
+              wholesale_issue_price: price,
+              current_price: {
+                ...(item.current_price || {}),
+                wholesale_issue_price: price,
+              }
+            };
           }
           return item;
         })
@@ -471,10 +498,10 @@ export function OrderDrawer({
                   </div>
                   {cart.map((item) => {
                     const itemKey = item.cartKey || item.id;
-                    const unitPrice = item.current_price?.wholesale_issue_price || 0;
+                    const unitPrice = getUnitPrice(item);
                     const itemTotal = unitPrice * item.quantity;
-                    const packLabel = item.selectedLabel || item.pack_size;
-                    const mrp = item.current_price?.mrp_per_bottle;
+                    const packLabel = item.selectedLabel || item.pack_size || '750ml';
+                    const mrp = item.current_price?.mrp_per_bottle || item.mrp_per_bottle;
 
                     return (
                       <div

@@ -133,6 +133,8 @@ def get_shop_inventory(shop_id: int, db: Session = Depends(get_db)):
         brand = item.brand
         latest_price = brand.prices[0] if (brand and brand.prices) else None
         mrp = latest_price.mrp_per_bottle if latest_price else 0.0
+        btl_count = 24 if (brand and brand.category == 'BEER' and '500ml' in (brand.pack_size or '')) else 12
+        ws_price = latest_price.wholesale_issue_price if (latest_price and latest_price.wholesale_issue_price) else round(mrp * btl_count * 0.755, 2)
         is_low = item.cases_on_hand <= item.reorder_threshold_cases
 
         results.append(
@@ -150,6 +152,7 @@ def get_shop_inventory(shop_id: int, db: Session = Depends(get_db)):
                 daily_sales_rate=item.daily_sales_rate,
                 reorder_threshold_cases=item.reorder_threshold_cases,
                 mrp_per_bottle=mrp,
+                wholesale_issue_price=ws_price,
                 is_low_stock=is_low
             )
         )

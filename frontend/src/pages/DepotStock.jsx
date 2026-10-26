@@ -203,21 +203,21 @@ return (
                   }`}
                 >
                   <div>
-                    <h3 className="text-sm font-bold text-zinc-900 dark:text-white truncate" title={displayName}>
+                    <h3 className="text-xs font-bold text-zinc-900 dark:text-white truncate" title={displayName}>
                       {displayName}
                     </h3>
                   </div>
 
                   <div className="mt-2 pt-2 border-t border-zinc-100 dark:border-white/10 space-y-1">
                     <div className="flex justify-between items-baseline text-xs font-normal">
-                      <span className="text-zinc-500 dark:text-zinc-400 text-xs font-medium">Live Buffer:</span>
-                      <span className="font-mono font-bold text-zinc-900 dark:text-white text-sm">
-                        {(stats.liveCases || 0).toLocaleString()} <span className="text-xs font-normal text-zinc-400">cs</span>
+                      <span className="text-zinc-500 dark:text-zinc-400 text-[11px]">Live Buffer:</span>
+                      <span className="font-mono font-bold text-zinc-900 dark:text-white text-xs">
+                        {(stats.liveCases || 0).toLocaleString()} cs
                       </span>
                     </div>
-                    <div className="flex justify-between items-baseline text-xs font-mono text-zinc-500 dark:text-zinc-400">
+                    <div className="flex justify-between items-baseline text-[11px] font-mono text-zinc-500 dark:text-zinc-400">
                       <span>Bottle Stock:</span>
-                      <span className="font-bold text-orange-600 dark:text-orange-400 text-xs sm:text-sm">
+                      <span className="font-bold text-orange-600 dark:text-orange-400">
                         {(stats.liveBottles || 0).toLocaleString()} btls
                       </span>
                     </div>
@@ -229,9 +229,9 @@ return (
                         style={{ width: `${Math.min(100, stats.usagePct)}%` }}
                       />
                     </div>
-                    <div className="flex justify-between text-xs text-zinc-500 dark:text-zinc-400 font-mono">
+                    <div className="flex justify-between text-[10px] text-zinc-500 dark:text-zinc-400 font-mono">
                       <span>Cap: {stats.capacity.toLocaleString()}</span>
-                      <span className="font-bold text-orange-500">{stats.usagePct}%</span>
+                      <span className="font-semibold text-orange-500">{stats.usagePct}%</span>
                     </div>
                   </div>
                 </button>
@@ -262,24 +262,24 @@ return (
         <div className="flex-1 min-h-0 forge-card rounded-xl p-4 border border-zinc-200 dark:border-white/10 flex flex-col overflow-hidden space-y-3 bg-white dark:bg-[#101010] shadow-sm">
           {/* Header Bar with Active Depot Info */}
           <div className="shrink-0 pb-2 border-b border-zinc-200 dark:border-white/10">
-            <h2 className="text-base sm:text-lg font-bold text-zinc-900 dark:text-white">
+            <h2 className="text-sm sm:text-base font-bold text-zinc-900 dark:text-white">
               {(depotInventory.name || '').replace(/\s*Supply\s+Depot/gi, '').trim()}
             </h2>
           </div>
 
           {/* Brands Stock Table (Internally Scrollable with Sticky Header) */}
           <div className="flex-1 min-h-0 overflow-auto rounded-lg border border-zinc-200 dark:border-white/10">
-            <table className="w-full text-left text-sm text-zinc-900 dark:text-zinc-200">
-              <thead className="sticky top-0 z-10 bg-zinc-100 dark:bg-[#090a0d] text-zinc-900 dark:text-white uppercase text-xs font-mono font-bold tracking-wider border-b border-zinc-200 dark:border-white/10 shadow-xs">
+            <table className="w-full text-left text-xs text-zinc-900 dark:text-zinc-300">
+              <thead className="sticky top-0 z-10 bg-zinc-100 dark:bg-[#090a0d] text-zinc-900 dark:text-white uppercase text-xs font-mono font-semibold tracking-wider border-b border-zinc-200 dark:border-white/10 shadow-xs">
                 <tr>
-                  <th className="py-3 px-4">Brand</th>
-                  <th className="py-3 px-3">Category</th>
-                  <th className="py-3 px-3">Pack Size</th>
-                  <th className="py-3 px-3 text-right">Available Cases</th>
-                  <th className="py-3 px-3 text-right">Bottle Stock</th>
-                  <th className="py-3 px-3 text-right">Wholesale Case Rate</th>
-                  <th className="py-3 px-3 text-right">Gazette MRP</th>
-                  <th className="py-3 px-4 text-center">Status</th>
+                  <th className="py-2.5 px-4">Brand</th>
+                  <th className="py-2.5 px-3">Category</th>
+                  <th className="py-2.5 px-3">Pack Size</th>
+                  <th className="py-2.5 px-3 text-right">Available Cases</th>
+                  <th className="py-2.5 px-3 text-right">Bottle Stock</th>
+                  <th className="py-2.5 px-3 text-right">Wholesale Case Rate</th>
+                  <th className="py-2.5 px-3 text-right">Gazette MRP</th>
+                  <th className="py-2.5 px-4 text-center">Status</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-zinc-200 dark:divide-white/[0.06]">
@@ -296,8 +296,8 @@ return (
                       })}
                       className="hover:bg-orange-500/5 dark:hover:bg-white/[0.03] transition cursor-pointer group"
                     >
-                      <td className="py-3 px-4 font-semibold text-sm text-zinc-900 dark:text-white flex items-center gap-3 group-hover:text-orange-500 transition-colors">
-                        <div className="w-8 h-8 rounded bg-zinc-100 dark:bg-[#000000] border border-zinc-200 dark:border-white/10 p-0.5 flex items-center justify-center flex-shrink-0">
+                      <td className="py-2.5 px-4 font-semibold text-zinc-900 dark:text-white flex items-center gap-2.5 group-hover:text-orange-500 transition-colors">
+                        <div className="w-7 h-7 rounded bg-zinc-100 dark:bg-[#000000] border border-zinc-200 dark:border-white/10 p-0.5 flex items-center justify-center flex-shrink-0">
                           <img
                             src={item.image_url}
                             alt={item.brand_name}
@@ -310,13 +310,13 @@ return (
                         <span>{item.brand_name}</span>
                       </td>
 
-                      <td className="py-3 px-3">
-                        <span className="px-2.5 py-1 rounded text-xs bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-mono font-medium">
+                      <td className="py-2.5 px-3">
+                        <span className="px-2 py-0.5 rounded text-[10px] bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-mono">
                           {item.category}
                         </span>
                       </td>
 
-                      <td className="py-3 px-3 font-mono text-sm text-zinc-600 dark:text-zinc-400">
+                      <td className="py-2.5 px-3 font-mono text-zinc-500 dark:text-zinc-400">
                         {item.pack_size}
                       </td>
 
@@ -327,15 +327,15 @@ return (
 
                         return (
                           <>
-                            <td className="py-3 px-3 text-right font-mono text-sm font-bold text-zinc-900 dark:text-white">
-                              {displayCases.toLocaleString()} <span className="text-xs font-normal text-zinc-400">cs</span>
+                            <td className="py-2.5 px-3 text-right font-mono font-bold text-zinc-900 dark:text-white">
+                              {displayCases.toLocaleString()} cs
                             </td>
 
-                            <td className="py-3 px-3 text-right font-mono">
-                              <div className="text-sm font-bold text-orange-600 dark:text-orange-400">
-                                {displayBottles.toLocaleString()} <span className="text-xs font-normal">btls</span>
+                            <td className="py-2.5 px-3 text-right font-mono">
+                              <div className="font-bold text-orange-600 dark:text-orange-400">
+                                {displayBottles.toLocaleString()} btls
                               </div>
-                              <div className="text-xs text-zinc-400 font-normal">
+                              <div className="text-[10px] text-zinc-400 font-normal">
                                 ({btlsPerCase} btls/cs)
                               </div>
                             </td>
@@ -343,27 +343,27 @@ return (
                         );
                       })()}
 
-                      <td className="py-3 px-3 text-right font-mono text-sm font-semibold text-zinc-700 dark:text-zinc-300">
+                      <td className="py-2.5 px-3 text-right font-mono text-zinc-600 dark:text-zinc-300">
                         ₹{item.wholesale_price?.toLocaleString()}
                       </td>
 
-                      <td className="py-3 px-3 text-right font-mono text-sm text-orange-500 font-bold">
+                      <td className="py-2.5 px-3 text-right font-mono text-orange-500 font-bold">
                         ₹{item.mrp}
                       </td>
 
-                      <td className="py-3 px-4 text-center">
+                      <td className="py-2.5 px-4 text-center">
                         {item.available_cases <= 150 ? (
-                          <div className="inline-flex flex-col items-center gap-1">
-                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-mono bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-500/30 font-semibold">
+                          <div className="inline-flex flex-col items-center gap-0.5">
+                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20">
                               <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
                               Low Buffer
                             </span>
-                            <span className="inline-flex items-center gap-1 text-[11px] font-mono text-purple-600 dark:text-purple-400 font-medium">
-                              <Factory className="w-3 h-3" /> Requisitioned to Distillery
+                            <span className="inline-flex items-center gap-1 text-[9px] font-mono text-purple-600 dark:text-purple-400 font-medium">
+                              <Factory className="w-2.5 h-2.5" /> Requisitioned to Distillery
                             </span>
                           </div>
                         ) : (
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-mono bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 font-semibold">
+                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
                             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                             Optimal Buffer
                           </span>

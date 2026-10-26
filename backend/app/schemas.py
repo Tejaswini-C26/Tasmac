@@ -239,6 +239,7 @@ class ShopInventoryResponse(BaseModel):
     daily_sales_rate: float
     reorder_threshold_cases: int
     mrp_per_bottle: float
+    wholesale_issue_price: Optional[float] = 0.0
     is_low_stock: bool
 
     class Config:

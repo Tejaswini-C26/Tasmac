@@ -891,13 +891,13 @@ useEffect(() => {
                                   setSelectedWarehouseId(wh.id);
                                   window.location.hash = `#depot-${depot.id}-${wh.id}`;
                                 }}
-                                className={`w-full py-2 px-2.5 rounded-md flex items-center gap-2 text-left transition-colors cursor-pointer text-xs font-mono font-medium ${
+                                className={`w-full py-1.5 px-2 rounded-md flex items-center gap-2 text-left transition-colors cursor-pointer text-[10px] font-mono ${
                                   isWhActive
                                     ? 'bg-orange-500 text-white font-bold shadow-xs'
                                     : 'text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/5'
                                 }`}
                               >
-                                <WhIcon size={14} className={`shrink-0 ${isWhActive ? 'text-white' : 'text-orange-400'}`} />
+                                <WhIcon size={12} className={`shrink-0 ${isWhActive ? 'text-white' : 'text-orange-400'}`} />
                                 <span className="truncate">{wh.shortName}</span>
                               </button>
                             );
