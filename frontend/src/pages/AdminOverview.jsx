@@ -113,7 +113,7 @@ export function AdminOverview({ onNavigateToPage, externalSearchQuery = '' }) {
 
   return (
     <div className="h-full flex flex-col overflow-y-auto pr-1 text-zinc-900 dark:text-zinc-100 select-none pb-6">
-      <div className="space-y-4 w-full" style={{ zoom: 1.03 }}>
+      <div className="space-y-4 w-full" style={{ zoom: 1.10 }}>
       
       {/* 1. Statewide Core KPI Tiles */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
