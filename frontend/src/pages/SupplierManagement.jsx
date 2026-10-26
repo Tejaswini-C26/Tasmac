@@ -456,7 +456,7 @@ export function SupplierManagement({ externalSearchQuery = '', activeTab: propAc
 
           value: `${d.id}|Wholesale ${num}`,
 
-          label: `${regionName} Wholesale ${num} (${regionName})`,
+          label: `${regionName} Wholesale ${num}`,
 
           depotId: d.id,
 
