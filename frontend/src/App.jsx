@@ -682,12 +682,41 @@ useEffect(() => {
     loadInitialData();
   }, []);
 
-  const handleAddToCart = (brand, packRate = null, quantity = 1) => {
-    const selectedSize = packRate?.size || brand.pack_size || '750ml';
-    const selectedLabel = selectedSize;
-    const mrp = packRate ? packRate.mrp : (brand.current_price?.mrp_per_bottle || 0);
-    const wsPrice = packRate ? packRate.wholesale_issue_price : (brand.current_price?.wholesale_issue_price || 0);
-    const bottlesPerCase = packRate?.bottles_per_case || brand.bottles_per_case || 12;
+  const handleAddToCart = (brand, packRateOrQty = null, quantity = 1) => {
+    let packRate = packRateOrQty;
+    let qty = quantity;
+    if (typeof packRateOrQty === 'number') {
+      qty = packRateOrQty;
+      packRate = null;
+    }
+
+    const isPackRateObj = packRate && typeof packRate === 'object';
+    const selectedSize = (isPackRateObj && packRate.size) || brand.selectedSize || brand.pack_size || '750ml';
+    const selectedLabel = (isPackRateObj && (packRate.label || packRate.size)) || selectedSize;
+
+    // Resolve statutory bottle MRP
+    const mrp = (isPackRateObj && packRate.mrp != null)
+      ? Number(packRate.mrp)
+      : Number(brand.current_price?.mrp_per_bottle || brand.mrp_per_bottle || 500);
+
+    // Resolve bottles per case
+    const bottlesPerCase = (isPackRateObj && packRate.bottles_per_case)
+      || brand.bottles_per_case
+      || ((brand.category === 'BEER' && selectedSize.includes('500ml')) ? 24 : 12);
+
+    // Resolve wholesale issue price per case (never 0)
+    let wsPrice = (isPackRateObj && packRate.wholesale_issue_price != null && Number(packRate.wholesale_issue_price) > 0)
+      ? Number(packRate.wholesale_issue_price)
+      : (brand.current_price?.wholesale_issue_price != null && Number(brand.current_price.wholesale_issue_price) > 0)
+        ? Number(brand.current_price.wholesale_issue_price)
+        : (brand.wholesale_issue_price != null && Number(brand.wholesale_issue_price) > 0)
+          ? Number(brand.wholesale_issue_price)
+          : Math.round(mrp * bottlesPerCase * 0.755);
+
+    if (!wsPrice || wsPrice <= 0) {
+      wsPrice = Math.round(mrp * bottlesPerCase * 0.755) || 2400.0;
+    }
+
     const cartKey = `${brand.id}-${selectedSize}`;
 
     const brandPayload = {
@@ -697,6 +726,7 @@ useEffect(() => {
       selectedLabel,
       pack_size: selectedSize,
       bottles_per_case: bottlesPerCase,
+      wholesale_issue_price: wsPrice,
       current_price: {
         ...(brand.current_price || {}),
         mrp_per_bottle: mrp,
@@ -709,16 +739,29 @@ useEffect(() => {
       if (existing) {
         return prev.map((item) =>
           (item.cartKey || `${item.id}-${item.pack_size}`) === cartKey
-            ? { ...item, quantity: item.quantity + quantity }
+            ? { 
+                ...item, 
+                quantity: item.quantity + qty,
+                wholesale_issue_price: wsPrice,
+                current_price: {
+                  ...(item.current_price || {}),
+                  mrp_per_bottle: mrp,
+                  wholesale_issue_price: wsPrice,
+                }
+              }
             : item
         );
       }
-      return [...prev, { ...brandPayload, quantity }];
+      return [...prev, { ...brandPayload, quantity: qty }];
     });
     setIsDrawerOpen(true);
   };
 
   const handleQuickIndentFromInventory = (inventoryItem) => {
+    const bottlesPerCase = (inventoryItem.category === 'BEER' && (inventoryItem.pack_size || '').includes('500ml')) ? 24 : 12;
+    const mrp = Number(inventoryItem.mrp_per_bottle || 500);
+    const wsPrice = Number(inventoryItem.wholesale_issue_price || Math.round(mrp * bottlesPerCase * 0.755) || 2400.0);
+
     // Create cart brand payload from inventory item
     const brandPayload = {
       id: inventoryItem.brand_id,
@@ -727,12 +770,14 @@ useEffect(() => {
       category: inventoryItem.category,
       pack_size: inventoryItem.pack_size,
       image_url: inventoryItem.image_url,
+      bottles_per_case: bottlesPerCase,
+      wholesale_issue_price: wsPrice,
       current_price: {
-        wholesale_issue_price: 2400.0,
-        mrp_per_bottle: inventoryItem.mrp_per_bottle,
+        wholesale_issue_price: wsPrice,
+        mrp_per_bottle: mrp,
       }
     };
-    handleAddToCart(brandPayload, 10);
+    handleAddToCart(brandPayload, null, 5);
   };
 
   const totalCartCases = cart.reduce((acc, i) => acc + i.quantity, 0);
@@ -846,13 +891,13 @@ useEffect(() => {
                                   setSelectedWarehouseId(wh.id);
                                   window.location.hash = `#depot-${depot.id}-${wh.id}`;
                                 }}
-                                className={`w-full py-1.5 px-2 rounded-md flex items-center gap-2 text-left transition-colors cursor-pointer text-[10px] font-mono ${
+                                className={`w-full py-2 px-2.5 rounded-md flex items-center gap-2 text-left transition-colors cursor-pointer text-xs font-mono font-medium ${
                                   isWhActive
                                     ? 'bg-orange-500 text-white font-bold shadow-xs'
                                     : 'text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/5'
                                 }`}
                               >
-                                <WhIcon size={12} className={`shrink-0 ${isWhActive ? 'text-white' : 'text-orange-400'}`} />
+                                <WhIcon size={14} className={`shrink-0 ${isWhActive ? 'text-white' : 'text-orange-400'}`} />
                                 <span className="truncate">{wh.shortName}</span>
                               </button>
                             );
