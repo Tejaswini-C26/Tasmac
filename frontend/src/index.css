@@ -163,10 +163,19 @@ html.light .from-emerald-500 svg polyline {
   stroke: #ffffff !important;
 }
 
-/* Table Headers: 12px font size, black font color in light mode, crisp white in dark mode */
+/* Table Headers: exact reference styling matching Supplier Consignments table */
 thead th,
 th {
+  font-family: 'JetBrains Mono', 'SF Mono', Consolas, monospace !important;
   font-size: 12px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+}
+
+.font-mono {
+  font-family: 'JetBrains Mono', 'SF Mono', Consolas, monospace !important;
+  font-feature-settings: "tnum" 1;
 }
 
 html.light thead th,

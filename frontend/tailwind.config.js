@@ -45,7 +45,7 @@ export default {
       },
       fontFamily: {
         sans: ['Geist', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        mono: ['"SF Mono"', 'Consolas', 'Liberation Mono', 'Menlo', 'monospace'],
+        mono: ["'JetBrains Mono'", '"SF Mono"', 'Consolas', 'Liberation Mono', 'Menlo', 'monospace'],
       },
       borderRadius: {
         xl: '0.75rem',
