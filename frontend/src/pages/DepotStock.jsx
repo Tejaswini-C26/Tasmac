@@ -102,23 +102,34 @@ export function DepotStock({
 
   const effectiveSearch = (externalSearchQuery || search).trim().toLowerCase();
   const filteredItems = (depotInventory?.items || []).filter((item) => {
+    // If a specific warehouse shed is selected, filter items belonging to this warehouse's categories
+    if (activeWarehouse && activeWarehouse.categories && activeWarehouse.categories.length > 0) {
+      const matchCat = activeWarehouse.categories.some(cat => 
+        (item.category || '').toUpperCase().includes(cat.toUpperCase())
+      );
+      if (!matchCat) return false;
+    }
     if (!effectiveSearch) return true;
     return item.brand_name.toLowerCase().includes(effectiveSearch) ||
            item.category.toLowerCase().includes(effectiveSearch);
   });
 
   const getWarehouseStats = (wh, inventoryItems = []) => {
-    const totalDepotCap = activeDepotConfig?.capacity_cases || 150000;
-    const whRatio = totalDepotCap > 0 ? (wh.capacity_cases / totalDepotCap) : 0.2;
+    const whCategories = wh.categories || [];
+    const whItems = whCategories.length > 0
+      ? inventoryItems.filter(item => 
+          whCategories.some(cat => (item.category || '').toUpperCase().includes(cat.toUpperCase()))
+        )
+      : inventoryItems;
 
     let liveCases = 0;
     let liveBottles = 0;
 
-    inventoryItems.forEach(item => {
-      const cases = Math.max(10, Math.round((Number(item.available_cases) || 0) * whRatio));
+    whItems.forEach(item => {
+      const cases = Number(item.available_cases) || 0;
       const btlCount = item.bottles_per_case || ((item.category === 'BEER' && (item.pack_size || '').includes('500ml')) ? 24 : 12);
       liveCases += cases;
-      liveBottles += cases * btlCount;
+      liveBottles += (item.available_bottles != null ? Number(item.available_bottles) : (cases * btlCount));
     });
 
     const cap = Number(wh.capacity_cases) || 1;
@@ -129,7 +140,7 @@ export function DepotStock({
       liveBottles,
       capacity: cap,
       usagePct,
-      brandCount: inventoryItems.length
+      brandCount: whItems.length
     };
   };
 
@@ -310,15 +321,9 @@ return (
                       </td>
 
                       {(() => {
-                        const totalDepotCap = activeDepotConfig?.capacity_cases || 150000;
-                        const whRatio = activeWarehouse && totalDepotCap > 0 
-                          ? (activeWarehouse.capacity_cases / totalDepotCap) 
-                          : 1.0;
-                        const displayCases = activeWarehouse 
-                          ? Math.max(10, Math.round((Number(item.available_cases) || 0) * whRatio))
-                          : (Number(item.available_cases) || 0);
+                        const displayCases = Number(item.available_cases) || 0;
                         const btlsPerCase = item.bottles_per_case || ((item.category === 'BEER' && (item.pack_size || '').includes('500ml')) ? 24 : 12);
-                        const displayBottles = displayCases * btlsPerCase;
+                        const displayBottles = item.available_bottles != null ? Number(item.available_bottles) : (displayCases * btlsPerCase);
 
                         return (
                           <>

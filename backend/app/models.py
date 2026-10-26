@@ -137,6 +137,7 @@ class SupplierConsignment(Base):
     consignment_no = Column(String(50), unique=True, index=True, nullable=False)
     supplier_id = Column(Integer, ForeignKey("suppliers.id"), nullable=False)
     depot_id = Column(Integer, ForeignKey("depots.id"), nullable=False)
+    wholesale_unit = Column(String(50), nullable=True, default="Wholesale 1")
     total_cases = Column(Integer, nullable=False)
     total_value = Column(Float, nullable=False)
     status = Column(String(50), default="DISPATCHED") # DISPATCHED, IN_TRANSIT, RECEIVED

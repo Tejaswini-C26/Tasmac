@@ -296,6 +296,7 @@ class ConsignmentItemCreate(BaseModel):
 class ConsignmentCreate(BaseModel):
     supplier_id: int
     depot_id: int
+    wholesale_unit: Optional[str] = "Wholesale 1"
     batch_no: str
     vehicle_no: str
     driver_name: Optional[str] = None
@@ -325,6 +326,7 @@ class ConsignmentResponse(BaseModel):
     supplier_name: str
     depot_id: int
     depot_name: str
+    wholesale_unit: Optional[str] = "Wholesale 1"
     total_cases: int
     total_value: float
     status: str

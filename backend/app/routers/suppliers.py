@@ -84,6 +84,10 @@ def get_consignments(
             for item in c.items
         ]
 
+        unit_str = getattr(c, 'wholesale_unit', None) or "Wholesale 1"
+        city_name = c.depot.region if c.depot else (c.depot.name if c.depot else "Unknown")
+        full_depot_name = f"{city_name} {unit_str}" if c.depot else "Unknown Depot"
+
         results.append(
             schemas.ConsignmentResponse(
                 id=c.id,
@@ -91,7 +95,8 @@ def get_consignments(
                 supplier_id=c.supplier_id,
                 supplier_name=c.supplier.name if c.supplier else "Unknown Supplier",
                 depot_id=c.depot_id,
-                depot_name=c.depot.name if c.depot else "Unknown Depot",
+                depot_name=full_depot_name,
+                wholesale_unit=unit_str,
                 total_cases=c.total_cases,
                 total_value=c.total_value,
                 status=c.status,
@@ -159,6 +164,7 @@ def create_consignment(payload: schemas.ConsignmentCreate, db: Session = Depends
         consignment_no=consignment_no,
         supplier_id=supplier.id,
         depot_id=depot.id,
+        wholesale_unit=payload.wholesale_unit or "Wholesale 1",
         total_cases=total_cases,
         total_value=total_val,
         status="DISPATCHED",
@@ -285,6 +291,7 @@ def receive_consignment_grn(
     }
 
 @router.get("/analytics/overview", response_model=schemas.SupplierAnalyticsResponse)
+@router.get("/analytics", response_model=schemas.SupplierAnalyticsResponse)
 def get_supplier_analytics(db: Session = Depends(get_db)):
     total_suppliers = db.query(models.Supplier).count()
     consignments = db.query(models.SupplierConsignment).all()
