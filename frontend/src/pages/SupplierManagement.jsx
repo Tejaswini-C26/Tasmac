@@ -2101,7 +2101,7 @@ export function SupplierManagement({ externalSearchQuery = '', activeTab: propAc
 
                   onClick={() => setIsGrnModalOpen(false)}
 
-                  className="px-4 py-2 rounded-lg border border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition cursor-pointer"
+                  className="px-3.5 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white font-mono text-xs font-medium transition cursor-pointer"
 
                 >
 
@@ -2115,11 +2115,11 @@ export function SupplierManagement({ externalSearchQuery = '', activeTab: propAc
 
                   disabled={grnSubmitting}
 
-                  className="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold uppercase tracking-wider transition cursor-pointer disabled:opacity-50 flex items-center gap-1.5"
+                  className="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-mono text-xs font-bold uppercase tracking-wider shadow-sm transition cursor-pointer disabled:opacity-50 flex items-center gap-1.5"
 
                 >
 
-                  <CheckCircle2 className="w-4 h-4" />
+                  <CheckCircle2 className="w-3.5 h-3.5" />
 
                   {grnSubmitting ? 'Confirming GRN...' : 'Confirm GRN & Restock Depot'}
 
