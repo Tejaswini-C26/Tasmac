@@ -239,18 +239,18 @@ export function ShopInventory({ selectedShop, onSelectShop, shops = [], onOpenMa
         </div>
       ) : (
         <div className="flex-1 min-h-0 overflow-auto rounded-md border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm">
-          <table className="w-full text-left text-xs">
-            <thead className="sticky top-0 z-10 bg-zinc-100 dark:bg-[#08090c] text-zinc-900 dark:text-white uppercase text-xs font-mono font-semibold tracking-wider border-b border-zinc-200 dark:border-white/[0.06] shadow-xs">
+          <table className="w-full text-left text-sm text-zinc-900 dark:text-zinc-200">
+            <thead className="sticky top-0 z-10 bg-zinc-100 dark:bg-[#08090c] text-zinc-900 dark:text-white uppercase text-xs font-mono font-bold tracking-wider border-b border-zinc-200 dark:border-white/[0.06] shadow-xs">
               <tr>
-                <th className="py-2.5 px-4">Brand</th>
-                <th className="py-2.5 px-3">Category</th>
-                <th className="py-2.5 px-3 text-right">Backroom Cases</th>
-                <th className="py-2.5 px-3 text-right">Shelf Bottles</th>
-                <th className="py-2.5 px-3 text-right">Sales Velocity</th>
-                <th className="py-2.5 px-3 text-right">Reorder Threshold</th>
-                <th className="py-2.5 px-3 text-center">Status</th>
+                <th className="py-3 px-4">Brand</th>
+                <th className="py-3 px-3">Category</th>
+                <th className="py-3 px-3 text-right">Backroom Cases</th>
+                <th className="py-3 px-3 text-right">Shelf Bottles</th>
+                <th className="py-3 px-3 text-right">Sales Velocity</th>
+                <th className="py-3 px-3 text-right">Reorder Threshold</th>
+                <th className="py-3 px-3 text-center">Status</th>
                 {onQuickIndent && (
-                  <th className="py-2.5 px-3 text-right">Action</th>
+                  <th className="py-3 px-3 text-right">Action</th>
                 )}
               </tr>
             </thead>
@@ -261,9 +261,9 @@ export function ShopInventory({ selectedShop, onSelectShop, shops = [], onOpenMa
                   onClick={() => setSelectedSkuForDrawer(item)}
                   className="hover:bg-orange-500/5 dark:hover:bg-white/[0.03] transition cursor-pointer group"
                 >
-                  <td className="py-2 px-4">
+                  <td className="py-3 px-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded bg-zinc-100 dark:bg-[#08090c] border border-zinc-200 dark:border-white/10 p-0.5 flex items-center justify-center flex-shrink-0">
+                      <div className="w-9 h-9 rounded bg-zinc-100 dark:bg-[#08090c] border border-zinc-200 dark:border-white/10 p-0.5 flex items-center justify-center flex-shrink-0">
                         {item.image_url ? (
                           <img
                             src={item.image_url}
@@ -278,51 +278,51 @@ export function ShopInventory({ selectedShop, onSelectShop, shops = [], onOpenMa
                         )}
                       </div>
                       <div>
-                        <div className="font-semibold text-zinc-900 dark:text-white group-hover:text-orange-500 transition-colors">{item.brand_name}</div>
-                        <div className="text-[10px] font-mono text-zinc-500">
+                        <div className="text-sm font-semibold text-zinc-900 dark:text-white group-hover:text-orange-500 transition-colors">{item.brand_name}</div>
+                        <div className="text-xs font-mono text-zinc-500 dark:text-zinc-400 mt-0.5">
                           {item.brand_code} &bull; {item.pack_size}
                         </div>
                       </div>
                     </div>
                   </td>
-                  <td className="py-2 px-3">
-                    <span className="px-2 py-0.5 rounded text-[10px] bg-zinc-100 dark:bg-white/5 border border-zinc-200 dark:border-white/5 text-zinc-700 dark:text-zinc-300 font-mono">
+                  <td className="py-3 px-3">
+                    <span className="px-2.5 py-1 rounded text-xs bg-zinc-100 dark:bg-white/5 border border-zinc-200 dark:border-white/5 text-zinc-700 dark:text-zinc-300 font-mono font-medium">
                       {item.category}
                     </span>
                   </td>
-                  <td className="py-2 px-3 text-right font-mono font-bold text-zinc-900 dark:text-white">
-                    {item.cases_on_hand} cs
+                  <td className="py-3 px-3 text-right font-mono text-sm font-bold text-zinc-900 dark:text-white">
+                    {item.cases_on_hand} <span className="text-xs font-normal text-zinc-400">cs</span>
                   </td>
-                  <td className="py-2 px-3 text-right font-mono font-medium text-zinc-800 dark:text-zinc-200">
-                    {item.bottles_on_shelf} btls
+                  <td className="py-3 px-3 text-right font-mono text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+                    {item.bottles_on_shelf} <span className="text-xs font-normal text-zinc-400">btls</span>
                   </td>
-                  <td className="py-2 px-3 text-right font-mono text-zinc-600 dark:text-zinc-400">
-                    ~{item.daily_sales_rate} btls/day
+                  <td className="py-3 px-3 text-right font-mono text-sm text-zinc-700 dark:text-zinc-300">
+                    ~{item.daily_sales_rate} <span className="text-xs font-normal text-zinc-400">btls/day</span>
                   </td>
-                  <td className="py-2 px-3 text-right font-mono text-zinc-500">
-                    {item.reorder_threshold_cases} cs
+                  <td className="py-3 px-3 text-right font-mono text-sm text-zinc-600 dark:text-zinc-400">
+                    {item.reorder_threshold_cases} <span className="text-xs font-normal text-zinc-500">cs</span>
                   </td>
-                  <td className="py-2 px-3 text-center">
+                  <td className="py-3 px-3 text-center">
                     {item.is_low_stock ? (
-                      <div className="inline-flex flex-col items-center gap-0.5">
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-500/30 font-semibold">
-                          <AlertTriangle className="w-3 h-3" /> Low Stock
+                      <div className="inline-flex flex-col items-center gap-1">
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-mono bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-500/30 font-semibold">
+                          <AlertTriangle className="w-3.5 h-3.5" /> Low Stock
                         </span>
-                        <span className="inline-flex items-center gap-1 text-[9px] font-mono text-orange-600 dark:text-orange-400 font-medium">
-                          <Truck className="w-2.5 h-2.5" /> Indent Sent to Depot
+                        <span className="inline-flex items-center gap-1 text-[11px] font-mono text-orange-600 dark:text-orange-400 font-medium">
+                          <Truck className="w-3 h-3" /> Indent Sent to Depot
                         </span>
                       </div>
                     ) : (
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
-                        <CheckCircle2 className="w-3 h-3" /> In Stock
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-mono bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 font-semibold">
+                        <CheckCircle2 className="w-3.5 h-3.5" /> In Stock
                       </span>
                     )}
                   </td>
                   {onQuickIndent && (
-                    <td className="py-2 px-3 text-right" onClick={(e) => e.stopPropagation()}>
+                    <td className="py-3 px-3 text-right" onClick={(e) => e.stopPropagation()}>
                       <button
                         onClick={() => onQuickIndent(item)}
-                        className="px-2.5 py-1 text-[11px] font-medium rounded bg-orange-500/10 hover:bg-orange-500 text-orange-600 dark:text-orange-400 hover:text-white border border-orange-500/20 transition cursor-pointer"
+                        className="px-3 py-1.5 text-xs font-semibold rounded bg-orange-500/10 hover:bg-orange-500 text-orange-600 dark:text-orange-400 hover:text-white border border-orange-500/20 transition cursor-pointer"
                       >
                         Indent
                       </button>
