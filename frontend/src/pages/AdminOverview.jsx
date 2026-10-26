@@ -115,20 +115,21 @@ export function AdminOverview({ onNavigateToPage, externalSearchQuery = '' }) {
     <div className="h-full flex flex-col overflow-y-auto space-y-3.5 pr-1 text-zinc-900 dark:text-zinc-100 select-none pb-6 font-sans">
       
       {/* 1. Statewide Core KPI Tiles (Matching Reference Style in Supplier Management) */}
-      <div className="shrink-0 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+      <div className="shrink-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
         
         {/* Card 1: Inward Inflow */}
         <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all flex items-end justify-between gap-3">
-          <div>
-            <span className="text-xs font-semibold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
+          <div className="min-w-0">
+            <span className="text-xs font-semibold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block truncate">
               Inward Inflow
             </span>
-            <div className="text-2xl sm:text-3xl font-mono font-semibold text-zinc-900 dark:text-white mt-1">
-              {totalInwardCases.toLocaleString()} <span className="text-xs font-normal text-zinc-500 dark:text-zinc-400">cs</span>
+            <div className="text-2xl sm:text-3xl font-mono font-semibold text-zinc-900 dark:text-white mt-1 flex items-baseline gap-1.5">
+              <span>{totalInwardCases.toLocaleString()}</span>
+              <span className="text-xs font-normal text-zinc-500 dark:text-zinc-400 font-sans">cs</span>
             </div>
           </div>
           <div className="text-right pb-1 shrink-0">
-            <span className="text-xs text-zinc-500 dark:text-zinc-400 block font-normal">
+            <span className="text-xs text-zinc-500 dark:text-zinc-400 block font-normal whitespace-nowrap">
               {totalConsignmentsCount} bulk consignments
             </span>
           </div>
@@ -136,8 +137,8 @@ export function AdminOverview({ onNavigateToPage, externalSearchQuery = '' }) {
 
         {/* Card 2: Delivery OTIF */}
         <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all flex items-end justify-between gap-3">
-          <div>
-            <span className="text-xs font-semibold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
+          <div className="min-w-0">
+            <span className="text-xs font-semibold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block truncate">
               Delivery OTIF
             </span>
             <div className="text-2xl sm:text-3xl font-mono font-semibold text-teal-600 dark:text-teal-400 mt-1">
@@ -145,7 +146,7 @@ export function AdminOverview({ onNavigateToPage, externalSearchQuery = '' }) {
             </div>
           </div>
           <div className="text-right pb-1 shrink-0">
-            <span className="text-xs text-zinc-500 dark:text-zinc-400 block font-normal">
+            <span className="text-xs text-zinc-500 dark:text-zinc-400 block font-normal whitespace-nowrap">
               {totalBreakagePct}% Breakage SLA
             </span>
           </div>
@@ -153,16 +154,17 @@ export function AdminOverview({ onNavigateToPage, externalSearchQuery = '' }) {
 
         {/* Card 3: Depot Buffer Stock */}
         <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all flex items-end justify-between gap-3">
-          <div>
-            <span className="text-xs font-semibold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
+          <div className="min-w-0">
+            <span className="text-xs font-semibold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block truncate">
               Depot Buffer Stock
             </span>
-            <div className="text-2xl sm:text-3xl font-mono font-semibold text-zinc-900 dark:text-white mt-1">
-              {totalWholesaleCases.toLocaleString()} <span className="text-xs font-normal text-zinc-500 dark:text-zinc-400">cs</span>
+            <div className="text-2xl sm:text-3xl font-mono font-semibold text-zinc-900 dark:text-white mt-1 flex items-baseline gap-1.5">
+              <span>{totalWholesaleCases.toLocaleString()}</span>
+              <span className="text-xs font-normal text-zinc-500 dark:text-zinc-400 font-sans">cs</span>
             </div>
           </div>
           <div className="text-right pb-1 shrink-0">
-            <span className="text-xs text-zinc-500 dark:text-zinc-400 block font-normal">
+            <span className="text-xs text-zinc-500 dark:text-zinc-400 block font-normal whitespace-nowrap">
               Across {totalDepotsCount} regional depots
             </span>
           </div>
@@ -170,16 +172,17 @@ export function AdminOverview({ onNavigateToPage, externalSearchQuery = '' }) {
 
         {/* Card 4: Buffer Capacity */}
         <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all flex items-end justify-between gap-3">
-          <div>
-            <span className="text-xs font-semibold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
+          <div className="min-w-0">
+            <span className="text-xs font-semibold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block truncate">
               Buffer Capacity
             </span>
-            <div className="text-2xl sm:text-3xl font-mono font-semibold text-zinc-900 dark:text-white mt-1">
-              {totalDepotCapacity.toLocaleString()} <span className="text-xs font-normal text-zinc-500 dark:text-zinc-400">cs</span>
+            <div className="text-2xl sm:text-3xl font-mono font-semibold text-zinc-900 dark:text-white mt-1 flex items-baseline gap-1.5">
+              <span>{totalDepotCapacity.toLocaleString()}</span>
+              <span className="text-xs font-normal text-zinc-500 dark:text-zinc-400 font-sans">cs</span>
             </div>
           </div>
           <div className="text-right pb-1 shrink-0">
-            <span className="text-xs text-zinc-500 dark:text-zinc-400 block font-normal">
+            <span className="text-xs text-zinc-500 dark:text-zinc-400 block font-normal whitespace-nowrap">
               {totalDepotCapacity > 0 ? Math.round((totalWholesaleCases / totalDepotCapacity) * 100) : 0}% state buffer spread
             </span>
           </div>
@@ -187,16 +190,17 @@ export function AdminOverview({ onNavigateToPage, externalSearchQuery = '' }) {
 
         {/* Card 5: Replenishment Indents */}
         <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all flex items-end justify-between gap-3">
-          <div>
-            <span className="text-xs font-semibold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
+          <div className="min-w-0">
+            <span className="text-xs font-semibold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block truncate">
               Replenishment Indents
             </span>
-            <div className="text-2xl sm:text-3xl font-mono font-semibold text-orange-600 dark:text-orange-400 mt-1">
-              {totalOrdersCount} <span className="text-xs font-normal text-zinc-500 dark:text-zinc-400">Orders</span>
+            <div className="text-2xl sm:text-3xl font-mono font-semibold text-orange-600 dark:text-orange-400 mt-1 flex items-baseline gap-1.5">
+              <span>{totalOrdersCount}</span>
+              <span className="text-xs font-normal text-zinc-500 dark:text-zinc-400 font-sans">Orders</span>
             </div>
           </div>
           <div className="text-right pb-1 shrink-0">
-            <span className="text-xs text-zinc-500 dark:text-zinc-400 block font-normal">
+            <span className="text-xs text-zinc-500 dark:text-zinc-400 block font-normal whitespace-nowrap">
               {totalShopsCount} Standard & Elite Vends
             </span>
           </div>
@@ -204,8 +208,8 @@ export function AdminOverview({ onNavigateToPage, externalSearchQuery = '' }) {
 
         {/* Card 6: Sales Revenue */}
         <div className="forge-card rounded-md p-4 border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] shadow-sm hover:border-zinc-300 dark:hover:border-white/20 transition-all flex items-end justify-between gap-3">
-          <div>
-            <span className="text-xs font-semibold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
+          <div className="min-w-0">
+            <span className="text-xs font-semibold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block truncate">
               Sales Revenue
             </span>
             <div className="text-2xl sm:text-3xl font-mono font-semibold text-emerald-600 dark:text-emerald-400 mt-1">
@@ -213,7 +217,7 @@ export function AdminOverview({ onNavigateToPage, externalSearchQuery = '' }) {
             </div>
           </div>
           <div className="text-right pb-1 shrink-0">
-            <span className="text-xs text-zinc-500 dark:text-zinc-400 block font-normal">
+            <span className="text-xs text-zinc-500 dark:text-zinc-400 block font-normal whitespace-nowrap">
               Total indent turnover
             </span>
           </div>
