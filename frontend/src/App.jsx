@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { flushSync } from 'react-dom';
 import { 
   Building2, 
   ShoppingCart, 
@@ -652,40 +651,8 @@ useEffect(() => {
     localStorage.setItem('theme', theme);
   }, [theme]);
 
-  const toggleTheme = (e) => {
-    const isDark = theme === 'dark';
-    const nextTheme = isDark ? 'light' : 'dark';
-
-    if (!document.startViewTransition) {
-      setTheme(nextTheme);
-      return;
-    }
-
-    // Get exact button center coordinates
-    const rect = e?.currentTarget?.getBoundingClientRect?.();
-    const x = rect ? Math.round(rect.left + rect.width / 2) : Math.round(e?.clientX ?? window.innerWidth - 50);
-    const y = rect ? Math.round(rect.top + rect.height / 2) : Math.round(e?.clientY ?? 28);
-
-    // Calculate maximum distance to the furthest corner of the viewport + 50px buffer
-    const maxDist = Math.max(
-      Math.hypot(x, y),
-      Math.hypot(window.innerWidth - x, y),
-      Math.hypot(x, window.innerHeight - y),
-      Math.hypot(window.innerWidth - x, window.innerHeight - y)
-    );
-    const endRadius = Math.ceil(maxDist + 50);
-
-    // Set CSS properties on root for native CSS @keyframes theme-wave-reveal
-    const root = document.documentElement;
-    root.style.setProperty('--theme-wave-x', `${x}px`);
-    root.style.setProperty('--theme-wave-y', `${y}px`);
-    root.style.setProperty('--theme-wave-r', `${endRadius}px`);
-
-    document.startViewTransition(() => {
-      flushSync(() => {
-        setTheme(nextTheme);
-      });
-    });
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
   };
 
   const loadInitialData = async () => {
