@@ -374,15 +374,15 @@ const INITIAL_CONSIGNMENTS = [
     wholesale_unit: "Wholesale 1",
     total_cases: 500,
     total_value: 7575000,
-    status: "IN_TRANSIT",
+    status: "RECEIVED",
     batch_no: "BTH-2026-990",
     vehicle_no: "TN-04-AB-8821",
     driver_name: "R. Senthil Kumar",
     driver_phone: "+91 98401 99882",
     excise_permit_no: "TN-EXC-PRMT-2026/60435",
-    grn_no: null,
+    grn_no: "GRN-MDU-2026/5246",
     breakage_bottles: 0,
-    received_cases: null,
+    received_cases: 500,
     created_at: "2026-10-26T04:43:49",
     items: [{ id: 6, brand_id: 1, brand_name: "Absolut Vodka", cases_dispatched: 500, case_rate: 15150, total_amount: 7575000 }]
   },
@@ -549,6 +549,14 @@ export function SupplierManagement({ externalSearchQuery = '', activeTab: propAc
   const [brands, setBrands] = useState([]);
 
   const [loading, setLoading] = useState(false);
+
+  const handleConsignmentUpdated = (updated) => {
+    if (updated && updated.id) {
+      setConsignments(prev => prev.map(c => c.id === updated.id ? { ...c, ...updated } : c));
+      setSelectedConsignmentForWorkstation(prev => (prev?.id === updated.id ? { ...prev, ...updated } : prev));
+    }
+    loadData();
+  };
 
 
 
@@ -1146,7 +1154,7 @@ export function SupplierManagement({ externalSearchQuery = '', activeTab: propAc
             consignments={consignments}
             selectedConsignment={selectedConsignmentForWorkstation}
             onSelectConsignment={setSelectedConsignmentForWorkstation}
-            onConsignmentUpdated={loadData}
+            onConsignmentUpdated={handleConsignmentUpdated}
           />
 
           {/* Filters & Actions in a Single Straight Row */}
@@ -1332,15 +1340,15 @@ export function SupplierManagement({ externalSearchQuery = '', activeTab: propAc
 
 
                       <td className="py-2.5 px-3">
-
                         <div className="font-semibold text-zinc-900 dark:text-white">{csg.supplier_name}</div>
-
-                        <div className="text-[10px] text-zinc-500 font-mono">
-
-                          Vehicle: {csg.vehicle_no}
-
+                        <div className="text-[11px] text-zinc-600 dark:text-zinc-400 font-mono flex items-center gap-1 mt-0.5">
+                          <span className="truncate max-w-[120px]">{csg.supplier_name}</span>
+                          <span className="text-orange-500 font-bold">➔</span>
+                          <span className="truncate max-w-[120px]">{csg.depot_name}</span>
                         </div>
-
+                        <div className="text-[10px] text-zinc-500 font-mono mt-0.5">
+                          Vehicle: {csg.vehicle_no}
+                        </div>
                       </td>
 
 

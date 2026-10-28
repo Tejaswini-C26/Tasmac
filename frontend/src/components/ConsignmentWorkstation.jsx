@@ -105,7 +105,10 @@ export function ConsignmentWorkstation({
       setActiveStage(nextStage);
       setViewingStage(nextStage);
       if (onConsignmentUpdated) {
-        await onConsignmentUpdated();
+        await onConsignmentUpdated({
+          ...csg,
+          status: statusToUpdate || csg.status
+        });
       }
     } catch (err) {
       console.error('Failed to advance stage:', err);
@@ -167,7 +170,13 @@ export function ConsignmentWorkstation({
       localStorage.setItem(storageKey, '5');
       setActiveStage(5);
       if (onConsignmentUpdated) {
-        await onConsignmentUpdated();
+        await onConsignmentUpdated({
+          ...csg,
+          status: 'RECEIVED',
+          grn_no: csg.grn_no || `GRN-${(csg.depot_name || 'DEP').slice(0, 3).toUpperCase()}-2026/${5100 + csg.id * 19}`,
+          breakage_bottles: 0,
+          received_cases: csg.total_cases || 500
+        });
       }
     } catch (err) {
       console.error('Failed to receive GRN:', err);

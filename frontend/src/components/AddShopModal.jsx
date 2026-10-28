@@ -159,14 +159,6 @@ export function AddShopModal({
               <Store className="w-5 h-5" />
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] font-mono text-orange-600 dark:text-orange-400 uppercase font-bold tracking-wider">
-                  State Retail Network
-                </span>
-                <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-orange-500/10 text-orange-500 border border-orange-500/20 font-bold">
-                  {shopCode}
-                </span>
-              </div>
               <h3 className="text-base font-bold text-zinc-900 dark:text-white">
                 Onboard New TASMAC Retail Store
               </h3>
@@ -408,3 +400,4 @@ export function AddShopModal({
     document.body
   );
 }
+
