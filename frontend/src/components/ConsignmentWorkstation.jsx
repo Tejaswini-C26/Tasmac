@@ -204,29 +204,8 @@ export function ConsignmentWorkstation({
 
   return (
     <div className="rounded-2xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#0c0d12] shadow-md p-4 sm:p-5 mb-4 text-zinc-900 dark:text-zinc-100 transition-all">
-      {/* 1. Header Bar: Workstation Title + Consignment Quick Switcher */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-zinc-200 dark:border-white/[0.08]">
-        <div className="flex items-center gap-2.5">
-          <span className="flex h-2.5 w-2.5 relative">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-orange-500"></span>
-          </span>
-          <div>
-            <div className="flex items-center gap-2">
-              <h2 className="text-sm font-mono font-bold tracking-tight uppercase text-zinc-900 dark:text-white flex items-center gap-1.5">
-                <Sparkles className="w-4 h-4 text-orange-500" />
-                Live Interactive Workstation
-              </h2>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-orange-500/10 text-orange-500 border border-orange-500/20">
-                Statutory Execution Engine
-              </span>
-            </div>
-            <p className="text-[11px] text-zinc-500 font-mono">
-              Actively tracking and executing consignment through all 5 statutory stages
-            </p>
-          </div>
-        </div>
-
+      {/* 1. Header Bar: Consignment Quick Switcher */}
+      <div className="flex items-center justify-end pb-3 border-b border-zinc-200 dark:border-white/[0.08]">
         {/* Consignment Selector Dropdown */}
         <div className="relative">
           <button
@@ -273,10 +252,7 @@ export function ConsignmentWorkstation({
       {/* 2. Step-by-Step Statutory Pipeline (Exact Match to Screenshot) */}
       <div className="pt-4 pb-2">
         {/* Pipeline Subheader */}
-        <div className="flex items-center justify-between text-[11px] font-mono tracking-wider mb-3">
-          <div className="text-zinc-500 dark:text-zinc-400 font-bold uppercase">
-            STEP-BY-STEP STATUTORY PIPELINE (CLICK ANY STAGE TO VIEW/CONFIRM)
-          </div>
+        <div className="flex items-center justify-end text-[11px] font-mono tracking-wider mb-3">
           <div className="text-orange-500 font-bold">
             Viewing Stage {viewingStage} of 5
           </div>
@@ -369,20 +345,10 @@ export function ConsignmentWorkstation({
         {/* ================= STAGE 1 ================= */}
         {viewingStage === 1 && (
           <div className="space-y-4">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-              <div>
-                <span className="text-[10px] font-mono font-bold uppercase text-orange-500">
-                  Stage 1 Governance
-                </span>
-                <h3 className="text-sm font-bold text-zinc-900 dark:text-white flex items-center gap-2">
-                  <ShieldCheck className="w-4 h-4 text-emerald-500" />
-                  State Licensing & Quota Verification
-                </h3>
-              </div>
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 self-start sm:self-auto">
-                <BadgeCheck className="w-3.5 h-3.5" />
-                License Active & Gazette Verified
-              </span>
+            <div className="pb-1">
+              <h3 className="text-sm font-bold text-zinc-900 dark:text-white">
+                State Licensing & Quota Verification
+              </h3>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-mono">
@@ -448,20 +414,10 @@ export function ConsignmentWorkstation({
         {/* ================= STAGE 2 ================= */}
         {viewingStage === 2 && (
           <div className="space-y-4">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-              <div>
-                <span className="text-[10px] font-mono font-bold uppercase text-orange-500">
-                  Stage 2 Certification
-                </span>
-                <h3 className="text-sm font-bold text-zinc-900 dark:text-white flex items-center gap-2">
-                  <FlaskConical className="w-4 h-4 text-orange-500" />
-                  Chemical Lab Certification & Holograms
-                </h3>
-              </div>
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-mono font-bold bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 self-start sm:self-auto">
-                <QrCode className="w-3.5 h-3.5" />
-                2D QR Security Hologram Compliant
-              </span>
+            <div className="pb-1">
+              <h3 className="text-sm font-bold text-zinc-900 dark:text-white">
+                Chemical Lab Certification & Holograms
+              </h3>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-mono">
@@ -538,20 +494,10 @@ export function ConsignmentWorkstation({
         {/* ================= STAGE 3 ================= */}
         {viewingStage === 3 && (
           <div className="space-y-4">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-              <div>
-                <span className="text-[10px] font-mono font-bold uppercase text-orange-500">
-                  Stage 3 Transit Permit
-                </span>
-                <h3 className="text-sm font-bold text-zinc-900 dark:text-white flex items-center gap-2">
-                  <FileText className="w-4 h-4 text-orange-500" />
-                  Statutory Excise Gate Pass (EGP)
-                </h3>
-              </div>
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-mono font-bold bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/20 self-start sm:self-auto">
-                <Clock className="w-3.5 h-3.5" />
-                Strict 6-Hour GPS Travel Window
-              </span>
+            <div className="pb-1">
+              <h3 className="text-sm font-bold text-zinc-900 dark:text-white">
+                Statutory Excise Gate Pass (EGP)
+              </h3>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-mono">
@@ -618,20 +564,10 @@ export function ConsignmentWorkstation({
         {/* ================= STAGE 4 ================= */}
         {viewingStage === 4 && (
           <div className="space-y-4">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-              <div>
-                <span className="text-[10px] font-mono font-bold uppercase text-orange-500">
-                  Stage 4 Transit Telemetry
-                </span>
-                <h3 className="text-sm font-bold text-zinc-900 dark:text-white flex items-center gap-2">
-                  <Truck className="w-4 h-4 text-orange-500" />
-                  GPS Highway Transit to Buffer Depot
-                </h3>
-              </div>
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-mono font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 self-start sm:self-auto">
-                <Radio className="w-3.5 h-3.5 animate-pulse" />
-                Tamper Seals Secure & Monitored
-              </span>
+            <div className="pb-1">
+              <h3 className="text-sm font-bold text-zinc-900 dark:text-white">
+                GPS Highway Transit to Buffer Depot
+              </h3>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-mono">
@@ -704,24 +640,10 @@ export function ConsignmentWorkstation({
         {/* ================= STAGE 5 ================= */}
         {viewingStage === 5 && (
           <div className="space-y-4">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-              <div>
-                <span className="text-[10px] font-mono font-bold uppercase text-orange-500">
-                  Stage 5 Final Settlement
-                </span>
-                <h3 className="text-sm font-bold text-zinc-900 dark:text-white flex items-center gap-2">
-                  <Receipt className="w-4 h-4 text-emerald-500" />
-                  Goods Receipt Note (GRN) & Fortnight Payout
-                </h3>
-              </div>
-              <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-mono font-bold border self-start sm:self-auto ${
-                isReceived 
-                  ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' 
-                  : 'bg-orange-500/10 text-orange-500 border-orange-500/20'
-              }`}>
-                <Coins className="w-3.5 h-3.5" />
-                {isReceived ? 'Settlement Disbursed & Reconciled' : 'Ready for GRN & Settlement'}
-              </span>
+            <div className="pb-1">
+              <h3 className="text-sm font-bold text-zinc-900 dark:text-white">
+                Goods Receipt Note (GRN) & Fortnight Payout
+              </h3>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-mono">
