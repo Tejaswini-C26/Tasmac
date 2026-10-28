@@ -23,6 +23,27 @@ export function ShopInventory({ selectedShop, onSelectShop, shops = [], onOpenMa
   const [availableShops, setAvailableShops] = useState(shops || []);
   const [selectedSkuForDrawer, setSelectedSkuForDrawer] = useState(null);
 
+  // Listen to new shops being onboarded dynamically
+  useEffect(() => {
+    const handleShopUpdate = (e) => {
+      const newShop = e.detail;
+      if (newShop) {
+        setAvailableShops((prev) => {
+          if (prev.some((s) => s.id === newShop.id || s.shop_code === newShop.shop_code)) {
+            return prev;
+          }
+          return [newShop, ...prev];
+        });
+        if (onSelectShop) {
+          onSelectShop(newShop);
+        }
+        loadInventory(newShop);
+      }
+    };
+    window.addEventListener('tasmac_shops_updated', handleShopUpdate);
+    return () => window.removeEventListener('tasmac_shops_updated', handleShopUpdate);
+  }, []);
+
   // Sync available shops and self-heal if empty
   useEffect(() => {
     if (shops && shops.length > 0) {

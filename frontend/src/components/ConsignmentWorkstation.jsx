@@ -180,13 +180,11 @@ export function ConsignmentWorkstation({
   };
 
   // Progress Bar Percentage
-  const progressPercent = useMemo(() => {
-    if (activeStage === 1) return 10;
-    if (activeStage === 2) return 30;
-    if (activeStage === 3) return 50;
-    if (activeStage === 4) return 80;
-    return 100;
-  }, [activeStage]);
+  const progressPercent = 
+    activeStage === 1 ? 10 :
+    activeStage === 2 ? 30 :
+    activeStage === 3 ? 50 :
+    activeStage === 4 ? 80 : 100;
 
   // Derived mock data based on consignment
   const bottlesCount = (csg.total_cases || 500) * 12;

@@ -84,6 +84,19 @@ export async function fetchShops() {
   return res.json();
 }
 
+export async function createShop(shopData) {
+  const res = await fetch(`${API_BASE}/shops`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(shopData),
+  });
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData.detail || 'Failed to onboard retail shop');
+  }
+  return res.json();
+}
+
 export async function fetchShopInventory(shopId) {
   const res = await fetch(`${API_BASE}/shops/${shopId}/inventory`);
   if (!res.ok) throw new Error('Failed to fetch shop inventory');

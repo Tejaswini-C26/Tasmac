@@ -293,8 +293,24 @@ export function App() {
 
   useEffect(() => {
     const handleWhUpdate = () => setWarehouseRevision(v => v + 1);
+    const handleShopsUpdate = (e) => {
+      const newShop = e.detail;
+      if (newShop) {
+        setShops((prev) => {
+          if (prev.some((s) => s.id === newShop.id || s.shop_code === newShop.shop_code)) {
+            return prev;
+          }
+          return [newShop, ...prev];
+        });
+        setSelectedShop(newShop);
+      }
+    };
     window.addEventListener('tasmac_warehouses_updated', handleWhUpdate);
-    return () => window.removeEventListener('tasmac_warehouses_updated', handleWhUpdate);
+    window.addEventListener('tasmac_shops_updated', handleShopsUpdate);
+    return () => {
+      window.removeEventListener('tasmac_warehouses_updated', handleWhUpdate);
+      window.removeEventListener('tasmac_shops_updated', handleShopsUpdate);
+    };
   }, []);
 
   const loadAlerts = async () => {

@@ -81,11 +81,105 @@ def get_shops(
             address=s.address,
             manager_name=s.manager_name,
             phone=s.phone,
-            assigned_depot_id=s.assigned_depot_id
+            assigned_depot_id=s.assigned_depot_id,
+            license_number=s.license_number,
+            license_expiry_date=s.license_expiry_date,
+            license_status=s.license_status,
+            credit_limit=s.credit_limit,
+            current_credit_used=s.current_credit_used,
+            monthly_quota_cases=s.monthly_quota_cases
         )
         for s in shops
     ]
     return results
+
+@router.post("", response_model=schemas.RetailShopResponse, status_code=201)
+def create_shop(payload: schemas.RetailShopOnboardRequest, db: Session = Depends(get_db)):
+    # 1. Check or generate unique shop_code
+    existing = db.query(models.RetailShop).filter(models.RetailShop.shop_code == payload.shop_code).first()
+    if existing or not payload.shop_code:
+        max_id = db.query(func.max(models.RetailShop.id)).scalar() or 1000
+        shop_code = f"SHOP-{max_id + 1}"
+    else:
+        shop_code = payload.shop_code.strip()
+
+    # 2. Resolve depot
+    depot_id = payload.assigned_depot_id
+    if not depot_id:
+        dist_lower = (payload.district or "").lower()
+        depot = None
+        if "chennai" in dist_lower:
+            depot = db.query(models.Depot).filter(models.Depot.code.ilike("%CHN%")).first()
+        elif "coimbatore" in dist_lower:
+            depot = db.query(models.Depot).filter(models.Depot.code.ilike("%CBE%")).first()
+        elif "madurai" in dist_lower:
+            depot = db.query(models.Depot).filter(models.Depot.code.ilike("%MDU%")).first()
+        elif "salem" in dist_lower:
+            depot = db.query(models.Depot).filter(models.Depot.code.ilike("%SLM%")).first()
+        elif "trichy" in dist_lower or "tiruchirappalli" in dist_lower:
+            depot = db.query(models.Depot).filter(models.Depot.code.ilike("%TRY%")).first()
+        
+        if not depot:
+            depot = db.query(models.Depot).first()
+        depot_id = depot.id if depot else 1
+
+    new_shop = models.RetailShop(
+        shop_code=shop_code,
+        name=payload.name.strip() if payload.name else f"TASMAC Outlet {shop_code}",
+        shop_type=payload.shop_type or "STANDARD_VEND",
+        district=payload.district or "Chennai",
+        address=payload.address or f"TASMAC Outlet, {payload.district}",
+        manager_name=payload.manager_name or "Station Officer",
+        phone=payload.phone or "+91 98401 00000",
+        assigned_depot_id=depot_id,
+        license_number=payload.license_number or f"TN-EXC-RET-2026/{shop_code.replace('SHOP-', '')}",
+        license_expiry_date=datetime.utcnow() + timedelta(days=365),
+        license_status="ACTIVE",
+        credit_limit=float(payload.credit_limit or 800000.0),
+        current_credit_used=0.0,
+        monthly_quota_cases=int(payload.monthly_quota_cases or 750),
+        cases_ordered_this_month=0,
+        lat=payload.lat or 13.0827,
+        lng=payload.lng or 80.2707,
+    )
+    db.add(new_shop)
+    db.commit()
+    db.refresh(new_shop)
+
+    # 3. Seed initial stock shelves for this shop from active brands
+    all_brands = db.query(models.Brand).all()
+    for b in all_brands:
+        inv = models.ShopInventory(
+            shop_id=new_shop.id,
+            brand_id=b.id,
+            cases_on_hand=25,
+            bottles_on_shelf=36,
+            daily_sales_rate=8.5,
+            reorder_threshold_cases=10,
+        )
+        db.add(inv)
+    db.commit()
+
+    cache.invalidate("shops")
+    cache.invalidate("dashboard:metrics")
+
+    return schemas.RetailShopResponse(
+        id=new_shop.id,
+        shop_code=new_shop.shop_code,
+        name=new_shop.name,
+        shop_type=new_shop.shop_type,
+        district=new_shop.district,
+        address=new_shop.address,
+        manager_name=new_shop.manager_name,
+        phone=new_shop.phone,
+        assigned_depot_id=new_shop.assigned_depot_id,
+        license_number=new_shop.license_number,
+        license_expiry_date=new_shop.license_expiry_date,
+        license_status=new_shop.license_status,
+        credit_limit=new_shop.credit_limit,
+        current_credit_used=new_shop.current_credit_used,
+        monthly_quota_cases=new_shop.monthly_quota_cases
+    )
 
 @router.get("/{shop_id}", response_model=schemas.RetailShopResponse)
 def get_shop(shop_id: int, db: Session = Depends(get_db)):

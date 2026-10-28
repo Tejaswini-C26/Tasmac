@@ -19,10 +19,12 @@ if not is_sqlite:
     try:
         primary_engine = create_engine(
             DATABASE_URL,
+            pool_size=20,
+            max_overflow=20,
             pool_pre_ping=True,
             pool_recycle=300,
             pool_timeout=10,
-            connect_args={"connect_timeout": 10}
+            connect_args={"connect_timeout": 5}
         )
     except Exception as e:
         logging.warning(f"Could not initialize primary database engine: {e}")
@@ -46,23 +48,25 @@ def SessionLocal():
     global _primary_db_available, _last_primary_check
     now = time.time()
 
-    # If primary failed previously, do not penalize every request with DNS timeouts.
-    # Recheck at most once every 60 seconds.
-    if PrimarySession and (_primary_db_available or (now - _last_primary_check > 60)):
+    if PrimarySession and _primary_db_available:
+        try:
+            return PrimarySession()
+        except Exception as e:
+            _primary_db_available = False
+            _last_primary_check = now
+            logging.warning(f"Primary DB checkout failed ({e}). Using ultra-fast local SQLite database.")
+            return SqliteSession()
+
+    if PrimarySession and not _primary_db_available and (now - _last_primary_check > 60):
         _last_primary_check = now
         try:
             s = PrimarySession()
             s.execute(text("SELECT 1"))
             _primary_db_available = True
             return s
-        except Exception as e:
-            _primary_db_available = False
-            logging.warning(f"Primary DB unavailable ({e}). Using ultra-fast local SQLite database.")
-            if 's' in locals() and s:
-                try:
-                    s.close()
-                except Exception:
-                    pass
+        except Exception:
+            pass
+
     return SqliteSession()
 
 def get_db():

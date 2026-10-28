@@ -340,6 +340,188 @@ function CustomModalSelect({ value, onChange, options, placeholder = 'Select...'
 
 
 
+
+const INITIAL_CONSIGNMENTS = [
+  {
+    id: 7,
+    consignment_no: "CSG-2610261201-939",
+    supplier_id: 7,
+    supplier_name: "John Distilleries Pvt. Ltd.",
+    depot_id: 5,
+    depot_name: "Trichy Wholesale 4",
+    wholesale_unit: "Wholesale 4",
+    total_cases: 500,
+    total_value: 7575000,
+    status: "RECEIVED",
+    batch_no: "BTH-2026-312",
+    vehicle_no: "TN-04-AB-8821",
+    driver_name: "R. Senthil Kumar",
+    driver_phone: "+91 98401 99882",
+    excise_permit_no: "TN-EXC-PRMT-2026/25876",
+    grn_no: "GRN-TRY-2026/5179",
+    breakage_bottles: 0,
+    received_cases: 500,
+    created_at: "2026-10-26T12:01:16",
+    items: [{ id: 7, brand_id: 1, brand_name: "Absolut Vodka", cases_dispatched: 500, case_rate: 15150, total_amount: 7575000 }]
+  },
+  {
+    id: 6,
+    consignment_no: "CSG-2610260443-995",
+    supplier_id: 1,
+    supplier_name: "United Breweries Ltd.",
+    depot_id: 3,
+    depot_name: "Madurai Wholesale 1",
+    wholesale_unit: "Wholesale 1",
+    total_cases: 500,
+    total_value: 7575000,
+    status: "IN_TRANSIT",
+    batch_no: "BTH-2026-990",
+    vehicle_no: "TN-04-AB-8821",
+    driver_name: "R. Senthil Kumar",
+    driver_phone: "+91 98401 99882",
+    excise_permit_no: "TN-EXC-PRMT-2026/60435",
+    grn_no: null,
+    breakage_bottles: 0,
+    received_cases: null,
+    created_at: "2026-10-26T04:43:49",
+    items: [{ id: 6, brand_id: 1, brand_name: "Absolut Vodka", cases_dispatched: 500, case_rate: 15150, total_amount: 7575000 }]
+  },
+  {
+    id: 5,
+    consignment_no: "CSG-2610231237-805",
+    supplier_id: 1,
+    supplier_name: "United Breweries Ltd.",
+    depot_id: 4,
+    depot_name: "Salem Wholesale 2",
+    wholesale_unit: "Wholesale 2",
+    total_cases: 500,
+    total_value: 7575000,
+    status: "RECEIVED",
+    batch_no: "BTH-2026-334",
+    vehicle_no: "TN-04-AB-8821",
+    driver_name: "R. Senthil Kumar",
+    driver_phone: "+91 98401 99882",
+    excise_permit_no: "TN-EXC-PRMT-2026/94269",
+    grn_no: "GRN-SLM-2026/5709",
+    breakage_bottles: 15,
+    received_cases: 499,
+    created_at: "2026-10-23T12:37:28",
+    items: [{ id: 5, brand_id: 1, brand_name: "Absolut Vodka", cases_dispatched: 500, case_rate: 15150, total_amount: 7575000 }]
+  },
+  {
+    id: 4,
+    consignment_no: "CSG-2026-8804",
+    supplier_id: 7,
+    supplier_name: "John Distilleries Pvt. Ltd.",
+    depot_id: 4,
+    depot_name: "Salem Wholesale 3",
+    wholesale_unit: "Wholesale 3",
+    total_cases: 300,
+    total_value: 1290000,
+    status: "RECEIVED",
+    batch_no: "JD-DST-889",
+    vehicle_no: "TN-27-AZ-1109 (Ashok Leyland)",
+    driver_name: "A. Jayachandran",
+    driver_phone: "+91 99401 22334",
+    excise_permit_no: "TN-EXC-PRMT-2026/03982",
+    grn_no: "GRN-SLM-2026/0189",
+    breakage_bottles: 1,
+    received_cases: 300,
+    created_at: "2026-10-20T09:29:16",
+    items: [{ id: 4, brand_id: 4, brand_name: "Dewar's", cases_dispatched: 300, case_rate: 4300, total_amount: 1290000 }]
+  },
+  {
+    id: 3,
+    consignment_no: "CSG-2026-8803",
+    supplier_id: 2,
+    supplier_name: "SNJ Breweries & Distilleries Pvt. Ltd.",
+    depot_id: 3,
+    depot_name: "Madurai Wholesale 1",
+    wholesale_unit: "Wholesale 1",
+    total_cases: 450,
+    total_value: 1680000,
+    status: "RECEIVED",
+    batch_no: "SNJ-BRW-402",
+    vehicle_no: "TN-58-DK-3312 (BharatBenz 16T)",
+    driver_name: "K. Selvakumar",
+    driver_phone: "+91 97910 88776",
+    excise_permit_no: "TN-EXC-PRMT-2026/06124",
+    grn_no: "GRN-MDU-2026/9936",
+    breakage_bottles: 0,
+    received_cases: 450,
+    created_at: "2026-10-23T06:29:16",
+    items: [{ id: 3, brand_id: 3, brand_name: "Chivas Regal", cases_dispatched: 450, case_rate: 3733.33, total_amount: 1680000 }]
+  },
+  {
+    id: 2,
+    consignment_no: "CSG-2026-8802",
+    supplier_id: 3,
+    supplier_name: "Mohan Breweries & Distilleries Ltd.",
+    depot_id: 2,
+    depot_name: "Coimbatore Wholesale 2",
+    wholesale_unit: "Wholesale 2",
+    total_cases: 350,
+    total_value: 1450000,
+    status: "RECEIVED",
+    batch_no: "MBD-B4-118",
+    vehicle_no: "TN-37-CT-4421 (Tata Prima 28T)",
+    driver_name: "M. Murugesan",
+    driver_phone: "+91 98410 44221",
+    excise_permit_no: "TN-EXC-PRMT-2026/05891",
+    grn_no: "GRN-CBE-2026/5891",
+    breakage_bottles: 12,
+    received_cases: 349,
+    created_at: "2026-10-23T01:29:16",
+    items: [{ id: 2, brand_id: 2, brand_name: "Bacardi", cases_dispatched: 350, case_rate: 4142.86, total_amount: 1450000 }]
+  },
+  {
+    id: 1,
+    consignment_no: "CSG-2026-8801",
+    supplier_id: 1,
+    supplier_name: "United Breweries Ltd.",
+    depot_id: 1,
+    depot_name: "Chennai Wholesale 1",
+    wholesale_unit: "Wholesale 1",
+    total_cases: 500,
+    total_value: 1825000,
+    status: "RECEIVED",
+    batch_no: "UB-2026-CH-09",
+    vehicle_no: "TN-04-AB-9811 (Eicher 14T)",
+    driver_name: "R. Muthuvel",
+    driver_phone: "+91 94441 55667",
+    excise_permit_no: "TN-EXC-PRMT-2026/04112",
+    grn_no: "GRN-CHN-2026/0412",
+    breakage_bottles: 2,
+    received_cases: 500,
+    created_at: "2026-10-21T09:29:16",
+    items: [{ id: 1, brand_id: 1, brand_name: "Absolut Vodka", cases_dispatched: 500, case_rate: 3650, total_amount: 1825000 }]
+  }
+];
+
+const INITIAL_ANALYTICS = {
+  total_suppliers: 12,
+  total_consignments: 7,
+  total_inward_cases: 3098,
+  otif_percentage: 97.2,
+  breakage_percentage: 0.08,
+  active_licenses: 12
+};
+
+const INITIAL_SUPPLIERS = [
+  { id: 1, name: "United Breweries Ltd.", supplier_code: "SUP-1001", category: "Brewery", district: "Chennai", state: "Tamil Nadu", status: "ACTIVE", rating: 4.8 },
+  { id: 2, name: "SNJ Breweries & Distilleries Pvt. Ltd.", supplier_code: "SUP-1002", category: "Brewery", district: "Chengalpattu", state: "Tamil Nadu", status: "ACTIVE", rating: 4.8 },
+  { id: 3, name: "Mohan Breweries & Distilleries Ltd.", supplier_code: "SUP-1003", category: "Distillery & Brewery", district: "Chennai", state: "Tamil Nadu", status: "ACTIVE", rating: 4.8 },
+  { id: 4, name: "Empee Distilleries Ltd.", supplier_code: "SUP-1004", category: "Distillery", district: "Kanchipuram", state: "Tamil Nadu", status: "ACTIVE", rating: 4.8 },
+  { id: 5, name: "Anheuser-Busch InBev India Ltd.", supplier_code: "SUP-1005", category: "Brewery", district: "Ranipet", state: "Tamil Nadu", status: "ACTIVE", rating: 4.8 },
+  { id: 6, name: "Carlsberg India Pvt. Ltd.", supplier_code: "SUP-1006", category: "Brewery", district: "Tiruvallur", state: "Tamil Nadu", status: "ACTIVE", rating: 4.8 },
+  { id: 7, name: "John Distilleries Pvt. Ltd.", supplier_code: "SUP-1007", category: "Distillery", district: "Chennai", state: "Tamil Nadu", status: "ACTIVE", rating: 4.8 },
+  { id: 8, name: "Shiva Distilleries Ltd.", supplier_code: "SUP-1008", category: "Distillery", district: "Coimbatore", state: "Tamil Nadu", status: "ACTIVE", rating: 4.8 },
+  { id: 9, name: "TASMAC State Bonded Cellar", supplier_code: "SUP-1009", category: "Importer", district: "Chennai", state: "Tamil Nadu", status: "ACTIVE", rating: 4.8 },
+  { id: 10, name: "B9 Beverages Ltd. (Bira 91)", supplier_code: "SUP-1010", category: "Brewery", district: "Coimbatore", state: "Tamil Nadu", status: "ACTIVE", rating: 4.8 },
+  { id: 11, name: "Sula Vineyards Pvt. Ltd.", supplier_code: "SUP-1011", category: "Winery", district: "Ranipet", state: "Tamil Nadu", status: "ACTIVE", rating: 4.8 },
+  { id: 12, name: "Nao Spirits & Beverages Ltd.", supplier_code: "SUP-1012", category: "Distillery", district: "Chennai", state: "Tamil Nadu", status: "ACTIVE", rating: 4.8 }
+];
+
 export function SupplierManagement({ externalSearchQuery = '', activeTab: propActiveTab, onTabChange }) {
 
   const [internalActiveTab, setInternalActiveTab] = useState('consignments'); // 'consignments' | 'directory' | 'scorecard'
@@ -356,17 +538,17 @@ export function SupplierManagement({ externalSearchQuery = '', activeTab: propAc
 
   const [animateShares, setAnimateShares] = useState(false);
 
-  const [suppliers, setSuppliers] = useState([]);
+  const [suppliers, setSuppliers] = useState(INITIAL_SUPPLIERS);
 
-  const [consignments, setConsignments] = useState([]);
+  const [consignments, setConsignments] = useState(INITIAL_CONSIGNMENTS);
 
-  const [analytics, setAnalytics] = useState(null);
+  const [analytics, setAnalytics] = useState(INITIAL_ANALYTICS);
 
   const [depots, setDepots] = useState([]);
 
   const [brands, setBrands] = useState([]);
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
 
 
@@ -494,67 +676,46 @@ export function SupplierManagement({ externalSearchQuery = '', activeTab: propAc
 
 
   const loadData = async () => {
-
     try {
-
       setLoading(true);
 
-      const [supRes, csgRes, anlRes, depRes, brdRes] = await Promise.allSettled([
-
-        fetchSuppliers(),
-
-        fetchSupplierConsignments(),
-
-        fetchSupplierAnalytics(),
-
-        fetchDepots(),
-
-        fetchBrands()
-
+      // Timeout helper to avoid any indefinite hangs on Tokyo cloud database
+      const fetchWithTimeout = (promise, ms = 4000) => Promise.race([
+        promise,
+        new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), ms))
       ]);
 
+      const [supRes, csgRes, anlRes, depRes, brdRes] = await Promise.allSettled([
+        fetchWithTimeout(fetchSuppliers()),
+        fetchWithTimeout(fetchSupplierConsignments()),
+        fetchWithTimeout(fetchSupplierAnalytics()),
+        fetchWithTimeout(fetchDepots()),
+        fetchWithTimeout(fetchBrands())
+      ]);
 
-
-      const supData = supRes.status === 'fulfilled' && Array.isArray(supRes.value) ? supRes.value : [];
-
-      const csgData = csgRes.status === 'fulfilled' && Array.isArray(csgRes.value) ? csgRes.value : [];
-
-      const anlData = anlRes.status === 'fulfilled' ? anlRes.value : null;
-
-      const depData = depRes.status === 'fulfilled' && Array.isArray(depRes.value) ? depRes.value : [];
-
-      const brdData = brdRes.status === 'fulfilled' && Array.isArray(brdRes.value) ? brdRes.value : [];
-
-
-
-      setSuppliers(supData);
-
-      setConsignments(csgData);
-
-      if (anlData) setAnalytics(anlData);
-
-      setDepots(depData);
-
-      setBrands(brdData);
-
-
-
-      if (supData.length > 0 && !formSupplierId) setFormSupplierId(supData[0].id);
-
-      if (depData.length > 0 && !formDepotId) setFormDepotId(`${depData[0].id}|Wholesale 1`);
-
-      if (brdData.length > 0 && !formBrandId) setFormBrandId(brdData[0].id);
-
+      if (supRes.status === 'fulfilled' && Array.isArray(supRes.value) && supRes.value.length > 0) {
+        setSuppliers(supRes.value);
+        if (!formSupplierId) setFormSupplierId(supRes.value[0].id);
+      }
+      if (csgRes.status === 'fulfilled' && Array.isArray(csgRes.value) && csgRes.value.length > 0) {
+        setConsignments(csgRes.value);
+      }
+      if (anlRes.status === 'fulfilled' && anlRes.value) {
+        setAnalytics(anlRes.value);
+      }
+      if (depRes.status === 'fulfilled' && Array.isArray(depRes.value) && depRes.value.length > 0) {
+        setDepots(depRes.value);
+        if (!formDepotId) setFormDepotId(`${depRes.value[0].id}|Wholesale 1`);
+      }
+      if (brdRes.status === 'fulfilled' && Array.isArray(brdRes.value) && brdRes.value.length > 0) {
+        setBrands(brdRes.value);
+        if (!formBrandId) setFormBrandId(brdRes.value[0].id);
+      }
     } catch (err) {
-
       console.error('Failed to load supplier management data:', err);
-
     } finally {
-
       setLoading(false);
-
     }
-
   };
 
 

@@ -10,8 +10,11 @@ import {
   User, 
   X, 
   Filter, 
-  Navigation 
+  Navigation,
+  PlusCircle,
+  Plus
 } from 'lucide-react';
+import { AddShopModal } from './AddShopModal';
 
 export function ShopSearchSelector({ 
   selectedShop, 
@@ -21,8 +24,33 @@ export function ShopSearchSelector({
   className = "" 
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isAddShopOpen, setIsAddShopOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedDistrict, setSelectedDistrict] = useState('ALL');
+  const [internalShops, setInternalShops] = useState(shops || []);
+
+  useEffect(() => {
+    if (shops && shops.length > 0) {
+      setInternalShops(shops);
+    }
+  }, [internalShops]);
+
+  // Listen to external shop onboardings
+  useEffect(() => {
+    const handleShopUpdate = (e) => {
+      const newShop = e.detail;
+      if (newShop) {
+        setInternalShops((prev) => {
+          if (prev.some((s) => s.id === newShop.id || s.shop_code === newShop.shop_code)) {
+            return prev;
+          }
+          return [newShop, ...prev];
+        });
+      }
+    };
+    window.addEventListener('tasmac_shops_updated', handleShopUpdate);
+    return () => window.removeEventListener('tasmac_shops_updated', handleShopUpdate);
+  }, []);
 
   // Close on Escape key
   useEffect(() => {
@@ -38,13 +66,13 @@ export function ShopSearchSelector({
 
   // Extract unique districts
   const districts = useMemo(() => {
-    const list = Array.from(new Set(shops.map((s) => s.district).filter(Boolean)));
+    const list = Array.from(new Set(internalShops.map((s) => s.district).filter(Boolean)));
     return ['ALL', ...list];
   }, [shops]);
 
   // Filtered shops based on search & district
   const filteredShops = useMemo(() => {
-    return shops.filter((shop) => {
+    return internalShops.filter((shop) => {
       if (selectedDistrict !== 'ALL' && shop.district !== selectedDistrict) {
         return false;
       }
@@ -59,7 +87,7 @@ export function ShopSearchSelector({
       }
       return true;
     });
-  }, [shops, searchQuery, selectedDistrict]);
+  }, [internalShops, searchQuery, selectedDistrict]);
 
   return (
     <div className={`relative ${className}`}>
@@ -111,7 +139,7 @@ export function ShopSearchSelector({
                     Select Retail Store
                   </h3>
                   <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
-                    {filteredShops.length} of {shops.length} Statewide TASMAC Vends
+                    {filteredShops.length} of {internalShops.length} Statewide TASMAC Vends
                   </p>
                 </div>
               </div>
@@ -125,26 +153,40 @@ export function ShopSearchSelector({
               </button>
             </div>
 
-            {/* Search Input */}
-            <div className="relative shrink-0">
-              <Search className="w-4 h-4 text-zinc-400 dark:text-zinc-500 absolute left-3 top-1/2 -translate-y-1/2" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search code, name, city, district, address, manager..."
-                autoFocus
-                className="w-full bg-zinc-50 dark:bg-[#000000] border border-zinc-200 dark:border-white/10 rounded-lg pl-9 pr-9 py-2.5 text-xs font-mono text-zinc-900 dark:text-white placeholder-zinc-500 focus:outline-none focus:border-orange-500 transition shadow-inner"
-              />
-              {searchQuery && (
-                <button
-                  type="button"
-                  onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-900 dark:hover:text-white cursor-pointer"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              )}
+            {/* Search Input & Add New Shop Button Row */}
+            <div className="flex items-center gap-2 shrink-0">
+              <div className="relative flex-1">
+                <Search className="w-4 h-4 text-zinc-400 dark:text-zinc-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search code, name, city, district, address, manager..."
+                  autoFocus
+                  className="w-full bg-zinc-50 dark:bg-[#000000] border border-zinc-200 dark:border-white/10 rounded-xl pl-9 pr-8 py-2.5 text-xs font-mono text-zinc-900 dark:text-white placeholder-zinc-500 focus:outline-none focus:border-orange-500 transition shadow-inner"
+                />
+                {searchQuery && (
+                  <button
+                    type="button"
+                    onClick={() => setSearchQuery('')}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-900 dark:hover:text-white cursor-pointer"
+                    title="Clear search"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
+
+              {/* Add New Shop Button */}
+              <button
+                type="button"
+                onClick={() => setIsAddShopOpen(true)}
+                className="px-3.5 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-500 active:bg-orange-700 text-white font-mono text-xs font-bold whitespace-nowrap transition cursor-pointer flex items-center gap-1.5 shadow-md shadow-orange-950/30 shrink-0 group"
+                title="Onboard & Commission a new TASMAC Retail Vend"
+              >
+                <PlusCircle className="w-4 h-4 group-hover:rotate-90 transition-transform duration-200" />
+                <span>+ Add Shop</span>
+              </button>
             </div>
 
             {/* District Quick Filters */}
@@ -237,6 +279,20 @@ export function ShopSearchSelector({
         </div>,
         document.body
       )}
+
+      {/* Onboard New Shop Modal */}
+      <AddShopModal
+        isOpen={isAddShopOpen}
+        onClose={() => setIsAddShopOpen(false)}
+        existingShopsCount={internalShops.length}
+        onShopAdded={(newShop) => {
+          setInternalShops((prev) => [newShop, ...prev]);
+          if (onSelectShop) {
+            onSelectShop(newShop);
+          }
+          setIsOpen(false);
+        }}
+      />
     </div>
   );
 }
