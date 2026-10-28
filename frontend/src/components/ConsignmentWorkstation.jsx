@@ -15,7 +15,6 @@ import {
   Receipt, 
   Coins, 
   ChevronRight, 
-  ChevronDown,
   AlertCircle, 
   ArrowRight, 
   Lock, 
@@ -76,7 +75,6 @@ export function ConsignmentWorkstation({
   const [activeStage, setActiveStage] = useState(() => getInitialActiveStage(activeConsignment));
   const [viewingStage, setViewingStage] = useState(() => getInitialActiveStage(activeConsignment));
   const [actionLoading, setActionLoading] = useState(false);
-  const [isSelectorOpen, setIsSelectorOpen] = useState(false);
   const [actionFeedback, setActionFeedback] = useState(null);
 
   // Sync when activeConsignment changes
@@ -212,60 +210,16 @@ export function ConsignmentWorkstation({
           Live Interactive Workstation
         </h2>
 
-        <div className="flex flex-wrap items-center gap-2.5">
-          {onOpenDispatch && (
-            <button
-              onClick={onOpenDispatch}
-              className="inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-mono text-xs uppercase font-bold tracking-wider shadow-md shadow-orange-950/20 transition-all cursor-pointer shrink-0"
-            >
-              <Plus className="w-3.5 h-3.5" />
-              Dispatch Inward Consignment
-            </button>
-          )}
-
-          {/* Consignment Selector Dropdown */}
-          <div className="relative">
+        {onOpenDispatch && (
           <button
-            onClick={() => setIsSelectorOpen(!isSelectorOpen)}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#12131a] hover:border-orange-500/40 text-xs font-mono transition cursor-pointer text-left"
+            onClick={onOpenDispatch}
+            className="inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-mono text-xs uppercase font-bold tracking-wider shadow-md shadow-orange-950/20 transition-all cursor-pointer shrink-0"
           >
-            <div className="truncate max-w-[240px]">
-              <span className="font-bold text-orange-500">{csg.consignment_no}</span>
-              <span className="text-zinc-500 text-[11px] ml-1.5">({csg.supplier_name?.slice(0, 15)}...)</span>
-            </div>
-            <ChevronDown className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
+            <Plus className="w-3.5 h-3.5" />
+            Dispatch Inward Consignment
           </button>
-
-          {isSelectorOpen && (
-            <div className="absolute right-0 mt-1.5 w-80 max-h-64 overflow-y-auto rounded-xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#12131a] shadow-xl z-50 p-1 divide-y divide-zinc-100 dark:divide-white/5">
-              <div className="px-3 py-1.5 text-[10px] font-mono uppercase font-bold text-zinc-400">
-                Select Consignment to Track
-              </div>
-              {consignments.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => {
-                    if (onSelectConsignment) onSelectConsignment(item);
-                    setIsSelectorOpen(false);
-                  }}
-                  className={`w-full text-left px-3 py-2 rounded-lg text-xs font-mono transition flex items-center justify-between gap-2 hover:bg-orange-500/10 ${
-                    item.id === csg.id ? 'bg-orange-500/10 text-orange-500 font-bold' : 'text-zinc-700 dark:text-zinc-300'
-                  }`}
-                >
-                  <div className="truncate">
-                    <div className="font-bold">{item.consignment_no}</div>
-                    <div className="text-[10px] text-zinc-500 truncate">{item.supplier_name} ➔ {item.depot_name}</div>
-                  </div>
-                  <span className="px-1.5 py-0.5 rounded text-[9px] font-bold shrink-0 bg-zinc-100 dark:bg-white/5">
-                    {item.status}
-                  </span>
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
+        )}
       </div>
-    </div>
 
       {/* 2. Step-by-Step Statutory Pipeline (Exact Match to Screenshot) */}
       <div className="pt-4 pb-2">
