@@ -1,3 +1,4 @@
+import random
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session, joinedload
 from typing import List, Optional
@@ -149,7 +150,7 @@ def trigger_auto_replenishment(db: Session = Depends(get_db)):
         ).first()
 
         if not existing_order:
-            order_no = f"IND-AUTO-{int(datetime.utcnow().timestamp()) % 100000:05d}"
+            order_no = f"IND-AUTO-{int(datetime.utcnow().timestamp()) % 10000:04d}-{random.randint(100, 999)}"
             order = models.ShopOrder(
                 order_no=order_no,
                 shop_id=shop.id,
@@ -209,13 +210,19 @@ def trigger_auto_replenishment(db: Session = Depends(get_db)):
         ).first()
 
         if not existing_csg:
-            csg_no = f"CSG-AUTO-{int(datetime.utcnow().timestamp()) % 100000:05d}"
+            csg_no = f"CSG-AUTO-{int(datetime.utcnow().timestamp()) % 10000:04d}-{random.randint(100, 999)}"
+            batch_code = f"BTH-{datetime.utcnow().year}-{int(datetime.utcnow().timestamp()) % 10000:04d}"
+            excise_code = f"TN-EXC-PRMT-{datetime.utcnow().year}/{int(datetime.utcnow().timestamp()) % 100000:05d}"
             csg = models.SupplierConsignment(
                 consignment_no=csg_no,
                 supplier_id=supplier.id,
                 depot_id=depot.id,
-                transit_pass_no=f"TP-INW-{int(datetime.utcnow().timestamp()) % 100000:05d}",
+                wholesale_unit="Wholesale 1",
+                batch_no=batch_code,
+                excise_permit_no=excise_code,
                 vehicle_no="TN 22 BK 9042",
+                driver_name="K. Murugan",
+                driver_phone="+91 94440 12345",
                 status="PLANNED",
                 total_cases=0,
                 total_value=0.0,
@@ -228,17 +235,15 @@ def trigger_auto_replenishment(db: Session = Depends(get_db)):
             tot_val = 0.0
             for stk in stocks:
                 order_cs = max(200, 500 - stk.available_cases)
-                rate = stk.brand.prices[0].supplier_rate_per_case if (stk.brand and stk.brand.prices) else 900.0
+                rate = stk.brand.prices[0].ex_factory_price if (stk.brand and stk.brand.prices) else 900.0
                 subtot = order_cs * rate
 
                 csg_item = models.ConsignmentItem(
                     consignment_id=csg.id,
                     brand_id=stk.brand_id,
-                    batch_no=f"BATCH-{int(datetime.utcnow().timestamp()) % 100000:05d}",
-                    cases_shipped=order_cs,
-                    cases_received=0,
-                    rate_per_case=rate,
-                    total_value=subtot
+                    cases_dispatched=order_cs,
+                    case_rate=rate,
+                    total_amount=subtot
                 )
                 db.add(csg_item)
                 tot_cases += order_cs
