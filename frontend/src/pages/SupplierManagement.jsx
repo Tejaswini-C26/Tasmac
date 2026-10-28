@@ -50,6 +50,8 @@ import {
 
 } from 'lucide-react';
 
+import { ConsignmentWorkstation } from '../components/ConsignmentWorkstation';
+
 import { 
 
   fetchSuppliers, 
@@ -387,6 +389,7 @@ export function SupplierManagement({ externalSearchQuery = '', activeTab: propAc
   const [selectedSupplierForBrands, setSelectedSupplierForBrands] = useState(null);
 
   const [selectedConsignmentForInspect, setSelectedConsignmentForInspect] = useState(null);
+  const [selectedConsignmentForWorkstation, setSelectedConsignmentForWorkstation] = useState(null);
 
 
 
@@ -974,11 +977,16 @@ export function SupplierManagement({ externalSearchQuery = '', activeTab: propAc
 
 
 
-      {/* TAB 1: Inward Consignments */}
-
+            {/* TAB 1: Inward Consignments */}
       {activeTab === 'consignments' && (
-
-        <div className="flex-1 min-h-0 flex flex-col overflow-hidden space-y-2.5">
+        <div className="flex-1 min-h-0 flex flex-col overflow-y-auto space-y-3 pr-1 pb-4">
+          {/* Live Interactive Workstation */}
+          <ConsignmentWorkstation
+            consignments={consignments}
+            selectedConsignment={selectedConsignmentForWorkstation}
+            onSelectConsignment={setSelectedConsignmentForWorkstation}
+            onConsignmentUpdated={loadData}
+          />
 
           {/* Filters & Actions in a Single Straight Row */}
 
@@ -1138,9 +1146,13 @@ export function SupplierManagement({ externalSearchQuery = '', activeTab: propAc
 
                       key={csg.id} 
 
-                      onClick={() => setSelectedConsignmentForInspect(csg)}
-
-                      className="hover:bg-orange-500/5 dark:hover:bg-white/[0.03] transition cursor-pointer group"
+                      onClick={() => {
+                        setSelectedConsignmentForWorkstation(csg);
+                        setSelectedConsignmentForInspect(csg);
+                      }}
+                      className={`hover:bg-orange-500/5 dark:hover:bg-white/[0.03] transition cursor-pointer group ${
+                        selectedConsignmentForWorkstation?.id === csg.id ? 'bg-orange-500/[0.07] dark:bg-orange-950/20' : ''
+                      }`}
 
                     >
 
@@ -1269,6 +1281,17 @@ export function SupplierManagement({ externalSearchQuery = '', activeTab: propAc
 
 
                       <td className="py-2.5 px-4 text-right space-x-1.5" onClick={(e) => e.stopPropagation()}>
+                        <button
+                          onClick={() => setSelectedConsignmentForWorkstation(csg)}
+                          title="Track in Live Statutory Workstation"
+                          className={`px-2 py-1 rounded-lg text-[11px] font-mono font-bold transition cursor-pointer ${
+                            selectedConsignmentForWorkstation?.id === csg.id
+                              ? 'bg-orange-500 text-white shadow-xs'
+                              : 'bg-zinc-100 dark:bg-white/5 hover:bg-orange-500/20 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-white/10'
+                          }`}
+                        >
+                          {selectedConsignmentForWorkstation?.id === csg.id ? '● Tracking' : 'Track'}
+                        </button>
 
                         {csg.status === 'PLANNED' && (
 
