@@ -204,8 +204,12 @@ export function ConsignmentWorkstation({
 
   return (
     <div className="rounded-2xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#0c0d12] shadow-md p-4 sm:p-5 mb-4 text-zinc-900 dark:text-zinc-100 transition-all">
-      {/* 1. Header Bar: Consignment Quick Switcher */}
-      <div className="flex items-center justify-end pb-3 border-b border-zinc-200 dark:border-white/[0.08]">
+      {/* 1. Header Bar: Workstation Title + Consignment Quick Switcher */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-zinc-200 dark:border-white/[0.08]">
+        <h2 className="text-sm font-mono font-bold uppercase tracking-wider text-zinc-900 dark:text-white">
+          Live Interactive Workstation
+        </h2>
+
         {/* Consignment Selector Dropdown */}
         <div className="relative">
           <button
