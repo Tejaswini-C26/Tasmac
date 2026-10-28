@@ -1155,6 +1155,7 @@ export function SupplierManagement({ externalSearchQuery = '', activeTab: propAc
             selectedConsignment={selectedConsignmentForWorkstation}
             onSelectConsignment={setSelectedConsignmentForWorkstation}
             onConsignmentUpdated={handleConsignmentUpdated}
+            onOpenDispatch={() => setIsDispatchModalOpen(true)}
           />
 
           {/* SELECT CONSIGNMENT TO TRACK TABLE (Matching media_1793171744257_73ca696e.png) */}

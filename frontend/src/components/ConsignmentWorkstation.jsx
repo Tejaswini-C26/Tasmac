@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { 
   Check, 
   CheckCircle2, 
+  Plus,
   ShieldCheck, 
   FileText, 
   Truck, 
@@ -42,7 +43,8 @@ export function ConsignmentWorkstation({
   consignments = [],
   selectedConsignment,
   onSelectConsignment,
-  onConsignmentUpdated
+  onConsignmentUpdated,
+  onOpenDispatch
 }) {
   // If no consignment selected, default to the first active/in-progress or first overall
   const activeConsignment = useMemo(() => {
@@ -210,8 +212,19 @@ export function ConsignmentWorkstation({
           Live Interactive Workstation
         </h2>
 
-        {/* Consignment Selector Dropdown */}
-        <div className="relative">
+        <div className="flex flex-wrap items-center gap-2.5">
+          {onOpenDispatch && (
+            <button
+              onClick={onOpenDispatch}
+              className="inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-mono text-xs uppercase font-bold tracking-wider shadow-md shadow-orange-950/20 transition-all cursor-pointer shrink-0"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              Dispatch Inward Consignment
+            </button>
+          )}
+
+          {/* Consignment Selector Dropdown */}
+          <div className="relative">
           <button
             onClick={() => setIsSelectorOpen(!isSelectorOpen)}
             className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#12131a] hover:border-orange-500/40 text-xs font-mono transition cursor-pointer text-left"
@@ -252,6 +265,7 @@ export function ConsignmentWorkstation({
           )}
         </div>
       </div>
+    </div>
 
       {/* 2. Step-by-Step Statutory Pipeline (Exact Match to Screenshot) */}
       <div className="pt-4 pb-2">
