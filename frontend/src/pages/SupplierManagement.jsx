@@ -1160,17 +1160,9 @@ export function SupplierManagement({ externalSearchQuery = '', activeTab: propAc
 
           {/* SELECT CONSIGNMENT TO TRACK TABLE (Matching media_1793171744257_73ca696e.png) */}
           <div className="rounded-2xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#0c0d12] shadow-sm p-4 sm:p-5 transition-all">
-            <div className="flex items-center justify-between pb-3 border-b border-zinc-200 dark:border-white/[0.08] mb-3">
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-                  SELECT CONSIGNMENT TO TRACK
-                </span>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-orange-500/10 text-orange-500 border border-orange-500/20">
-                  {consignments.length} Available
-                </span>
-              </div>
-              <span className="text-[11px] font-mono text-zinc-400 hidden sm:inline">
-                Click any consignment row to track & execute in the statutory workstation
+            <div className="pb-3 border-b border-zinc-200 dark:border-white/[0.08] mb-3">
+              <span className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+                SELECT CONSIGNMENT TO TRACK
               </span>
             </div>
 
@@ -1233,100 +1225,6 @@ export function SupplierManagement({ externalSearchQuery = '', activeTab: propAc
               })}
             </div>
           </div>
-
-          {/* Filters & Actions in a Single Straight Row */}
-
-          <div className="shrink-0 flex items-center justify-between gap-3">
-
-            <div className="inline-flex items-center p-1 rounded-xl bg-zinc-100 dark:bg-[#0c0d12] border border-zinc-200 dark:border-white/10 gap-1 overflow-x-auto max-w-full">
-
-              {[
-
-                { key: 'ALL', label: 'All' },
-
-                { key: 'PLANNED', label: 'Depot Requisitions' },
-
-                { key: 'DISPATCHED', label: 'Dispatched' },
-
-                { key: 'IN_TRANSIT', label: 'In Transit' },
-
-                { key: 'RECEIVED', label: 'Received' },
-
-              ].map((tab) => {
-
-                const active = statusFilter === tab.key;
-
-                return (
-
-                  <button
-
-                    key={tab.key}
-
-                    onClick={() => setStatusFilter(tab.key)}
-
-                    className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
-
-                      active
-
-                        ? 'bg-orange-500 text-white shadow-sm font-bold'
-
-                        : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white font-bold'
-
-                    }`}
-
-                  >
-
-                    {tab.label}
-
-                  </button>
-
-                );
-
-              })}
-
-            </div>
-
-
-
-            <div className="flex items-center gap-2 shrink-0">
-
-              <button
-
-                onClick={loadData}
-
-                disabled={loading}
-
-                title="Refresh Consignments & Analytics"
-
-                className="p-2 rounded-lg border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#101010] text-zinc-700 dark:text-zinc-300 hover:text-orange-600 dark:hover:text-orange-400 hover:border-orange-500/40 transition disabled:opacity-50 cursor-pointer"
-
-              >
-
-                <RotateCw className={`w-4 h-4 ${loading ? 'animate-spin text-orange-500' : ''}`} />
-
-              </button>
-
-
-
-              <button
-
-                onClick={() => setIsDispatchModalOpen(true)}
-
-                className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-mono text-xs uppercase font-bold tracking-wider shadow-lg shadow-orange-950/20 transition-all cursor-pointer shrink-0"
-
-              >
-
-                <Plus className="w-4 h-4" />
-
-                Dispatch Inward Consignment
-
-              </button>
-
-            </div>
-
-          </div>
-
-
 
           {/* Consignments Table (Internally Scrollable with Sticky Header) */}
 
