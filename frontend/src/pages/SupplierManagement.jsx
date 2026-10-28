@@ -1157,6 +1157,82 @@ export function SupplierManagement({ externalSearchQuery = '', activeTab: propAc
             onConsignmentUpdated={handleConsignmentUpdated}
           />
 
+          {/* SELECT CONSIGNMENT TO TRACK TABLE (Matching media_1793171744257_73ca696e.png) */}
+          <div className="rounded-2xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#0c0d12] shadow-sm p-4 sm:p-5 transition-all">
+            <div className="flex items-center justify-between pb-3 border-b border-zinc-200 dark:border-white/[0.08] mb-3">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+                  SELECT CONSIGNMENT TO TRACK
+                </span>
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-orange-500/10 text-orange-500 border border-orange-500/20">
+                  {consignments.length} Available
+                </span>
+              </div>
+              <span className="text-[11px] font-mono text-zinc-400 hidden sm:inline">
+                Click any consignment row to track & execute in the statutory workstation
+              </span>
+            </div>
+
+            <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
+              {consignments.map((item) => {
+                const isSelected = (selectedConsignmentForWorkstation?.id === item.id) || 
+                  (!selectedConsignmentForWorkstation && consignments[0]?.id === item.id);
+                return (
+                  <div
+                    key={item.id}
+                    onClick={() => {
+                      setSelectedConsignmentForWorkstation(item);
+                      setSelectedConsignmentForInspect(item);
+                    }}
+                    className={`w-full p-3 sm:px-4 sm:py-3 rounded-xl border transition-all cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 ${
+                      isSelected
+                        ? 'bg-[#fff7ed] dark:bg-orange-950/20 border-orange-300 dark:border-orange-500/40 shadow-xs'
+                        : 'bg-white dark:bg-[#12131a] border-zinc-200 dark:border-white/10 hover:border-orange-300 dark:hover:border-white/20 hover:bg-orange-50/40 dark:hover:bg-white/[0.02]'
+                    }`}
+                  >
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2">
+                        <span className={`font-mono font-bold text-sm tracking-tight ${
+                          isSelected ? 'text-orange-600 dark:text-orange-400 font-extrabold' : 'text-zinc-900 dark:text-zinc-100'
+                        }`}>
+                          {item.consignment_no}
+                        </span>
+                        {isSelected && (
+                          <span className="text-[10px] font-mono font-bold text-orange-600 dark:text-orange-400 flex items-center gap-1">
+                            <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-ping" />
+                            Tracking Active
+                          </span>
+                        )}
+                      </div>
+                      <div className="text-xs text-zinc-600 dark:text-zinc-400 font-mono flex items-center gap-1.5 mt-0.5 truncate">
+                        <span className="font-medium text-zinc-800 dark:text-zinc-200">{item.supplier_name}</span>
+                        <span className="text-orange-500 font-bold">➔</span>
+                        <span>{item.depot_name}</span>
+                        {item.wholesale_unit && <span className="text-zinc-400">• {item.wholesale_unit}</span>}
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-3 shrink-0 self-end sm:self-auto">
+                      <div className="text-right hidden sm:block font-mono text-[11px] text-zinc-500">
+                        <div>{item.total_cases?.toLocaleString()} cs</div>
+                        <div className="text-orange-500 font-semibold">₹{item.total_value?.toLocaleString()}</div>
+                      </div>
+                      <span className={`px-2.5 py-1 rounded-md text-xs font-mono font-bold tracking-wider uppercase border ${
+                        item.status === 'RECEIVED'
+                          ? 'border-[#fed7aa] dark:border-orange-500/30 bg-[#fff7ed] dark:bg-orange-500/10 text-[#ea580c] dark:text-[#fb923c]'
+                          : item.status === 'IN_TRANSIT'
+                          ? 'border-blue-300 dark:border-blue-500/30 bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400'
+                          : 'border-amber-300 dark:border-amber-500/30 bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400'
+                      }`}>
+                        {item.status}
+                      </span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
           {/* Filters & Actions in a Single Straight Row */}
 
           <div className="shrink-0 flex items-center justify-between gap-3">
