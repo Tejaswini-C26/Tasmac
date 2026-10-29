@@ -1160,7 +1160,7 @@ export function SupplierManagement({ externalSearchQuery = '', activeTab: propAc
 
           {/* SELECT CONSIGNMENT TO TRACK TABLE (Matching media_1793171744257_73ca696e.png) */}
           <div className="rounded-2xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#0c0d12] shadow-sm p-4 sm:p-5 transition-all">
-            <div className="pb-3 border-b border-zinc-200 dark:border-white/[0.08] mb-3">
+            <div className="mb-3">
               <span className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
                 SELECT CONSIGNMENT TO TRACK
               </span>
