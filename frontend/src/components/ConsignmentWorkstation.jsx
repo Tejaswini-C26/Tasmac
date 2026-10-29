@@ -639,7 +639,7 @@ export function ConsignmentWorkstation({
                 <div className="text-zinc-500 text-[10px] uppercase font-bold">Official Goods Receipt Note</div>
                 <div className="font-bold text-emerald-500 mt-1 text-sm">{grnNo}</div>
                 <div className="text-zinc-500 text-[10px] mt-1">
-                  Receiving Depot: {csg.depot_name} ({csg.wholesale_unit || 'Wholesale Unit 1'})
+                  Receiving Depot: {csg.depot_name}{csg.wholesale_unit && !csg.depot_name?.toLowerCase().includes(csg.wholesale_unit.toLowerCase()) ? ` (${csg.wholesale_unit})` : ''}
                 </div>
                 <div className="text-zinc-400 text-[10px] mt-0.5">
                   Depot Buffer Stock Credited in Database

@@ -1201,7 +1201,6 @@ export function SupplierManagement({ externalSearchQuery = '', activeTab: propAc
                         <span className="font-medium text-zinc-800 dark:text-zinc-200">{item.supplier_name}</span>
                         <span className="text-orange-500 font-bold">➔</span>
                         <span>{item.depot_name}</span>
-                        {item.wholesale_unit && <span className="text-zinc-400">• {item.wholesale_unit}</span>}
                       </div>
                     </div>
 
