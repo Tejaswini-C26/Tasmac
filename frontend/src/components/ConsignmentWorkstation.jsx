@@ -237,17 +237,6 @@ export function ConsignmentWorkstation({
             const isActive = s.id === activeStage && !isReceived;
             const isViewing = s.id === viewingStage;
 
-            // Status label below stage title
-            let statusText = `Stage ${s.id}`;
-            let statusClass = 'text-zinc-400 dark:text-zinc-500';
-            if (isCompleted) {
-              statusText = 'Done ✓';
-              statusClass = 'text-emerald-600 dark:text-emerald-400 font-semibold';
-            } else if (isActive) {
-              statusText = 'Active •';
-              statusClass = 'text-orange-500 font-bold';
-            }
-
             return (
               <div
                 key={s.id}
@@ -284,11 +273,6 @@ export function ConsignmentWorkstation({
                 {/* Stage Title */}
                 <span className="text-[11px] sm:text-xs font-bold text-zinc-900 dark:text-white mt-1.5 truncate max-w-full">
                   {s.label}
-                </span>
-
-                {/* Status Subtitle */}
-                <span className={`text-[10px] font-mono mt-0.5 ${statusClass}`}>
-                  {statusText}
                 </span>
               </div>
             );
