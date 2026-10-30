@@ -203,7 +203,7 @@ export function ConsignmentWorkstation({
   const settlementRef = `FT-SETTLE-2026-${9100 + csg.id * 23}`;
 
   return (
-    <div className="forge-card rounded-md border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#0c0d12] shadow-md p-4 sm:p-5 mb-4 text-zinc-900 dark:text-zinc-100 transition-all">
+    <div className="forge-card rounded-md border border-zinc-300 dark:border-white/20 bg-white dark:bg-[#0c0d12] shadow-md p-4 sm:p-5 mb-4 text-zinc-900 dark:text-zinc-100 transition-all">
       {/* 1. Header Bar: Workstation Title + Consignment Quick Switcher */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3">
         <h2 className="text-xs font-sans font-bold uppercase tracking-wider text-black dark:text-white">
@@ -308,14 +308,14 @@ export function ConsignmentWorkstation({
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-sans">
-              <div className="p-3 rounded-md border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#101014]">
+              <div className="p-3 rounded-md border border-zinc-400 dark:border-white/25 bg-zinc-50 dark:bg-[#101014]">
                 <div className="text-black dark:text-white text-xs font-normal font-sans">Manufacturer & License</div>
                 <div className="font-normal text-black dark:text-white mt-1 text-sm truncate">{csg.supplier_name}</div>
                 <div className="text-black dark:text-white font-normal mt-0.5">{exciseLicNo}</div>
                 <div className="text-black dark:text-white text-[10px] font-normal mt-1">Status: Primary Grain Distillery (State Corridor)</div>
               </div>
 
-              <div className="p-3 rounded-md border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#101014]">
+              <div className="p-3 rounded-md border border-zinc-400 dark:border-white/25 bg-zinc-50 dark:bg-[#101014]">
                 <div className="text-black dark:text-white text-xs font-normal font-sans">Monthly Quota Ceiling & Balance</div>
                 <div className="flex items-baseline justify-between mt-1">
                   <span className="text-black dark:text-white text-[10px] font-normal">Monthly Ceiling:</span>
@@ -334,7 +334,7 @@ export function ConsignmentWorkstation({
                 </div>
               </div>
 
-              <div className="p-3 rounded-md border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#101014]">
+              <div className="p-3 rounded-md border border-zinc-400 dark:border-white/25 bg-zinc-50 dark:bg-[#101014]">
                 <div className="text-black dark:text-white text-xs font-normal font-sans">Consignment Requisition</div>
                 <div className="font-normal text-black dark:text-white mt-1 text-sm">
                   {csg.total_cases?.toLocaleString()} Cases Indent
@@ -377,7 +377,7 @@ export function ConsignmentWorkstation({
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-sans">
-              <div className="p-3 rounded-md border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#101014]">
+              <div className="p-3 rounded-md border border-zinc-400 dark:border-white/25 bg-zinc-50 dark:bg-[#101014]">
                 <div className="text-black dark:text-white text-xs font-normal font-sans">Chemical Purity Analysis</div>
                 <div className="flex items-baseline justify-between mt-1">
                   <span className="text-black dark:text-white text-[10px] font-normal">Ethyl Purity:</span>
@@ -393,7 +393,7 @@ export function ConsignmentWorkstation({
                 </div>
               </div>
 
-              <div className="p-3 rounded-md border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#101014]">
+              <div className="p-3 rounded-md border border-zinc-400 dark:border-white/25 bg-zinc-50 dark:bg-[#101014]">
                 <div className="text-black dark:text-white text-xs font-normal font-sans">Batch & Hologram Calculation</div>
                 <div className="flex items-baseline justify-between mt-1">
                   <span className="text-black dark:text-white text-[10px] font-normal">Batch Number:</span>
@@ -409,7 +409,7 @@ export function ConsignmentWorkstation({
                 </div>
               </div>
 
-              <div className="p-3 rounded-md border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#101014] flex flex-col justify-between">
+              <div className="p-3 rounded-md border border-zinc-400 dark:border-white/25 bg-zinc-50 dark:bg-[#101014] flex flex-col justify-between">
                 <div>
                   <div className="text-black dark:text-white text-xs font-normal font-sans">Government Lab Stamp</div>
                   <div className="text-black dark:text-white font-normal mt-1 flex items-center gap-1.5 text-xs">
@@ -457,7 +457,7 @@ export function ConsignmentWorkstation({
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-sans">
-              <div className="p-3 rounded-md border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#101014]">
+              <div className="p-3 rounded-md border border-zinc-400 dark:border-white/25 bg-zinc-50 dark:bg-[#101014]">
                 <div className="text-black dark:text-white text-xs font-normal font-sans">Origin & Destination Depot</div>
                 <div className="flex items-center gap-1.5 font-normal text-black dark:text-white mt-1">
                   <Building2 className="w-3.5 h-3.5 text-black dark:text-white" />
@@ -470,7 +470,7 @@ export function ConsignmentWorkstation({
                 </div>
               </div>
 
-              <div className="p-3 rounded-md border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#101014]">
+              <div className="p-3 rounded-md border border-zinc-400 dark:border-white/25 bg-zinc-50 dark:bg-[#101014]">
                 <div className="text-black dark:text-white text-xs font-normal font-sans">Assigned Transport Fleet</div>
                 <div className="flex items-center gap-1.5 font-normal text-black dark:text-white mt-1">
                   <Truck className="w-3.5 h-3.5 text-black dark:text-white" />
@@ -484,7 +484,7 @@ export function ConsignmentWorkstation({
                 </div>
               </div>
 
-              <div className="p-3 rounded-md border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#101014]">
+              <div className="p-3 rounded-md border border-zinc-400 dark:border-white/25 bg-zinc-50 dark:bg-[#101014]">
                 <div className="text-black dark:text-white text-xs font-normal font-sans">Authorized Digital EGP Code</div>
                 <div className="font-normal text-black dark:text-white mt-1 text-sm">{egpPermitNo}</div>
                 <div className="text-black dark:text-white text-[10px] font-normal mt-1">
@@ -527,7 +527,7 @@ export function ConsignmentWorkstation({
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-sans">
-              <div className="p-3 rounded-md border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#101014]">
+              <div className="p-3 rounded-md border border-zinc-400 dark:border-white/25 bg-zinc-50 dark:bg-[#101014]">
                 <div className="text-black dark:text-white text-xs font-normal font-sans">Highway Corridor Transit</div>
                 <div className="flex items-center gap-1.5 font-normal text-black dark:text-white mt-1">
                   <MapPin className="w-3.5 h-3.5 text-black dark:text-white" />
@@ -543,7 +543,7 @@ export function ConsignmentWorkstation({
                 </div>
               </div>
 
-              <div className="p-3 rounded-md border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#101014]">
+              <div className="p-3 rounded-md border border-zinc-400 dark:border-white/25 bg-zinc-50 dark:bg-[#101014]">
                 <div className="text-black dark:text-white text-xs font-normal font-sans">Electronic Tamper Seals</div>
                 <div className="flex items-center gap-1.5 font-normal text-black dark:text-white mt-1">
                   <ShieldCheck className="w-4 h-4 text-black dark:text-white" />
@@ -557,7 +557,7 @@ export function ConsignmentWorkstation({
                 </div>
               </div>
 
-              <div className="p-3 rounded-md border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#101014]">
+              <div className="p-3 rounded-md border border-zinc-400 dark:border-white/25 bg-zinc-50 dark:bg-[#101014]">
                 <div className="text-black dark:text-white text-xs font-normal font-sans">Depot Weighbridge Arrival</div>
                 <div className="font-normal text-black dark:text-white mt-1 flex items-center gap-1.5">
                   <Scale className="w-3.5 h-3.5 text-black dark:text-white" />
@@ -603,7 +603,7 @@ export function ConsignmentWorkstation({
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-sans">
-              <div className="p-3 rounded-md border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#101014]">
+              <div className="p-3 rounded-md border border-zinc-400 dark:border-white/25 bg-zinc-50 dark:bg-[#101014]">
                 <div className="text-black dark:text-white text-xs font-normal font-sans">Physical Inspection Results</div>
                 <div className="flex items-baseline justify-between mt-1">
                   <span className="text-black dark:text-white text-[10px] font-normal">Dispatched Cases:</span>
@@ -619,7 +619,7 @@ export function ConsignmentWorkstation({
                 </div>
               </div>
 
-              <div className="p-3 rounded-md border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#101014]">
+              <div className="p-3 rounded-md border border-zinc-400 dark:border-white/25 bg-zinc-50 dark:bg-[#101014]">
                 <div className="text-black dark:text-white text-xs font-normal font-sans">Official Goods Receipt Note</div>
                 <div className="font-normal text-black dark:text-white mt-1 text-sm">{grnNo}</div>
                 <div className="text-black dark:text-white text-[10px] font-normal mt-1">
@@ -630,7 +630,7 @@ export function ConsignmentWorkstation({
                 </div>
               </div>
 
-              <div className="p-3 rounded-md border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#101014]">
+              <div className="p-3 rounded-md border border-zinc-400 dark:border-white/25 bg-zinc-50 dark:bg-[#101014]">
                 <div className="text-black dark:text-white text-xs font-normal font-sans">Fortnightly Treasury Payout</div>
                 <div className="font-normal text-black dark:text-white mt-1 text-sm">
                   ₹{csg.total_value?.toLocaleString()}
