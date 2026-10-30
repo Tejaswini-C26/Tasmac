@@ -251,9 +251,6 @@ export function OrderDeliveryTracker({ order }) {
                   }`}>
                     {stage.date}
                   </p>
-                  <p className="text-[10px] text-zinc-400 dark:text-zinc-500 font-mono hidden sm:block truncate">
-                    {stage.subLabel}
-                  </p>
                 </div>
               </div>
             );
