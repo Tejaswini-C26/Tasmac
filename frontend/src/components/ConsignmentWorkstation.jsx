@@ -224,7 +224,7 @@ export function ConsignmentWorkstation({
       {/* 2. Step-by-Step Statutory Pipeline (Exact Match to Screenshot) */}
       <div className="pt-4 pb-2">
         {/* Pipeline Subheader */}
-        <div className="flex items-center justify-end text-[11px] font-mono tracking-wider mb-3">
+        <div className="flex items-center justify-end text-xs font-sans mb-3">
           <div className="text-orange-500 font-bold">
             Viewing Stage {viewingStage} of 5
           </div>
@@ -263,7 +263,7 @@ export function ConsignmentWorkstation({
                     s.id === 4 ? (
                       <Truck className="w-4 h-4" />
                     ) : (
-                      <span className="font-mono text-xs font-bold">{s.id}</span>
+                      <span className="font-sans text-xs font-semibold">{s.id}</span>
                     )
                   ) : (
                     <Check className="w-3.5 h-3.5 text-zinc-300 dark:text-zinc-600" />
@@ -307,16 +307,16 @@ export function ConsignmentWorkstation({
               </h3>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-mono">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-sans">
               <div className="p-3 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#101014]">
-                <div className="text-black dark:text-white text-[10px] uppercase font-normal">Manufacturer & License</div>
+                <div className="text-black dark:text-white text-xs font-normal font-sans">Manufacturer & License</div>
                 <div className="font-normal text-black dark:text-white mt-1 text-sm truncate">{csg.supplier_name}</div>
                 <div className="text-black dark:text-white font-normal mt-0.5">{exciseLicNo}</div>
                 <div className="text-black dark:text-white text-[10px] font-normal mt-1">Status: Primary Grain Distillery (State Corridor)</div>
               </div>
 
               <div className="p-3 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#101014]">
-                <div className="text-black dark:text-white text-[10px] uppercase font-normal">Monthly Quota Ceiling & Balance</div>
+                <div className="text-black dark:text-white text-xs font-normal font-sans">Monthly Quota Ceiling & Balance</div>
                 <div className="flex items-baseline justify-between mt-1">
                   <span className="text-black dark:text-white text-[10px] font-normal">Monthly Ceiling:</span>
                   <span className="font-normal text-black dark:text-white">50,000 cs</span>
@@ -335,7 +335,7 @@ export function ConsignmentWorkstation({
               </div>
 
               <div className="p-3 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#101014]">
-                <div className="text-black dark:text-white text-[10px] uppercase font-normal">Consignment Requisition</div>
+                <div className="text-black dark:text-white text-xs font-normal font-sans">Consignment Requisition</div>
                 <div className="font-normal text-black dark:text-white mt-1 text-sm">
                   {csg.total_cases?.toLocaleString()} Cases Indent
                 </div>
@@ -348,13 +348,13 @@ export function ConsignmentWorkstation({
 
             {/* Click Action Button */}
             <div className="flex items-center justify-between pt-2">
-              <span className="text-[11px] text-black dark:text-white font-normal font-mono">
+              <span className="text-xs text-black dark:text-white font-normal font-sans">
                 {activeStage > 1 ? '✓ Government quota audit recorded and verified.' : 'Action Required: Authorize state quota to unlock laboratory chemical certification.'}
               </span>
               <button
                 onClick={handleStage1AuthorizeQuota}
                 disabled={actionLoading || activeStage > 1}
-                className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-mono text-xs font-bold transition-all shadow-md active:scale-95 cursor-pointer ${
+                className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-sans text-xs font-semibold transition-all shadow-md active:scale-95 cursor-pointer ${
                   activeStage > 1 
                     ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 cursor-default'
                     : 'bg-orange-600 hover:bg-orange-500 text-white shadow-orange-950/20'
@@ -376,9 +376,9 @@ export function ConsignmentWorkstation({
               </h3>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-mono">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-sans">
               <div className="p-3 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#101014]">
-                <div className="text-black dark:text-white text-[10px] uppercase font-normal">Chemical Purity Analysis</div>
+                <div className="text-black dark:text-white text-xs font-normal font-sans">Chemical Purity Analysis</div>
                 <div className="flex items-baseline justify-between mt-1">
                   <span className="text-black dark:text-white text-[10px] font-normal">Ethyl Purity:</span>
                   <span className="font-normal text-black dark:text-white">99.98% Vol</span>
@@ -394,7 +394,7 @@ export function ConsignmentWorkstation({
               </div>
 
               <div className="p-3 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#101014]">
-                <div className="text-black dark:text-white text-[10px] uppercase font-normal">Batch & Hologram Calculation</div>
+                <div className="text-black dark:text-white text-xs font-normal font-sans">Batch & Hologram Calculation</div>
                 <div className="flex items-baseline justify-between mt-1">
                   <span className="text-black dark:text-white text-[10px] font-normal">Batch Number:</span>
                   <span className="font-normal text-black dark:text-white">{csg.batch_no}</span>
@@ -411,7 +411,7 @@ export function ConsignmentWorkstation({
 
               <div className="p-3 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#101014] flex flex-col justify-between">
                 <div>
-                  <div className="text-black dark:text-white text-[10px] uppercase font-normal">Government Lab Stamp</div>
+                  <div className="text-black dark:text-white text-xs font-normal font-sans">Government Lab Stamp</div>
                   <div className="text-black dark:text-white font-normal mt-1 flex items-center gap-1.5 text-xs">
                     <BadgeCheck className="w-4 h-4 shrink-0 text-black dark:text-white" />
                     CERTIFIED STATUTORY COMPLIANT
@@ -420,7 +420,7 @@ export function ConsignmentWorkstation({
                     State Chemical Testing Laboratory, Chennai Division
                   </div>
                 </div>
-                <div className="text-[10px] text-black dark:text-white font-normal font-mono mt-2">
+                <div className="text-[10px] text-black dark:text-white font-normal font-sans mt-2">
                   Tamper-Evident Hologram Roll Hash: #TAS-QR-88192
                 </div>
               </div>
@@ -428,13 +428,13 @@ export function ConsignmentWorkstation({
 
             {/* Click Action Button */}
             <div className="flex items-center justify-between pt-2">
-              <span className="text-[11px] text-black dark:text-white font-normal font-mono">
+              <span className="text-xs text-black dark:text-white font-normal font-sans">
                 {activeStage > 2 ? '✓ 2D QR Holograms digitally stamped to batch.' : 'Action Required: Affix government holograms to generate statutory transport gate pass.'}
               </span>
               <button
                 onClick={handleStage2AffixHolograms}
                 disabled={actionLoading || activeStage > 2}
-                className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-mono text-xs font-bold transition-all shadow-md active:scale-95 cursor-pointer ${
+                className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-sans text-xs font-semibold transition-all shadow-md active:scale-95 cursor-pointer ${
                   activeStage > 2 
                     ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 cursor-default'
                     : 'bg-orange-600 hover:bg-orange-500 text-white shadow-orange-950/20'
@@ -456,9 +456,9 @@ export function ConsignmentWorkstation({
               </h3>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-mono">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-sans">
               <div className="p-3 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#101014]">
-                <div className="text-black dark:text-white text-[10px] uppercase font-normal">Origin & Destination Depot</div>
+                <div className="text-black dark:text-white text-xs font-normal font-sans">Origin & Destination Depot</div>
                 <div className="flex items-center gap-1.5 font-normal text-black dark:text-white mt-1">
                   <Building2 className="w-3.5 h-3.5 text-black dark:text-white" />
                   <span className="truncate">{csg.supplier_name}</span>
@@ -471,7 +471,7 @@ export function ConsignmentWorkstation({
               </div>
 
               <div className="p-3 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#101014]">
-                <div className="text-black dark:text-white text-[10px] uppercase font-normal">Assigned Transport Fleet</div>
+                <div className="text-black dark:text-white text-xs font-normal font-sans">Assigned Transport Fleet</div>
                 <div className="flex items-center gap-1.5 font-normal text-black dark:text-white mt-1">
                   <Truck className="w-3.5 h-3.5 text-black dark:text-white" />
                   <span>{csg.vehicle_no || 'TN-01-AN-4421'}</span>
@@ -485,7 +485,7 @@ export function ConsignmentWorkstation({
               </div>
 
               <div className="p-3 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#101014]">
-                <div className="text-black dark:text-white text-[10px] uppercase font-normal">Authorized Digital EGP Code</div>
+                <div className="text-black dark:text-white text-xs font-normal font-sans">Authorized Digital EGP Code</div>
                 <div className="font-normal text-black dark:text-white mt-1 text-sm">{egpPermitNo}</div>
                 <div className="text-black dark:text-white text-[10px] font-normal mt-1">
                   Validity Window: Departure: 10:30 AM ➔ Expiry: 04:30 PM
@@ -498,13 +498,13 @@ export function ConsignmentWorkstation({
 
             {/* Click Action Button */}
             <div className="flex items-center justify-between pt-2">
-              <span className="text-[11px] text-black dark:text-white font-normal font-mono">
+              <span className="text-xs text-black dark:text-white font-normal font-sans">
                 {activeStage > 3 ? '✓ Digital EGP Permit authorized and assigned to vehicle.' : 'Action Required: Issue authorized digital transit pass to start highway transit.'}
               </span>
               <button
                 onClick={handleStage3IssueEGP}
                 disabled={actionLoading || activeStage > 3}
-                className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-mono text-xs font-bold transition-all shadow-md active:scale-95 cursor-pointer ${
+                className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-sans text-xs font-semibold transition-all shadow-md active:scale-95 cursor-pointer ${
                   activeStage > 3 
                     ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 cursor-default'
                     : 'bg-orange-600 hover:bg-orange-500 text-white shadow-orange-950/20'
@@ -526,9 +526,9 @@ export function ConsignmentWorkstation({
               </h3>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-mono">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-sans">
               <div className="p-3 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#101014]">
-                <div className="text-black dark:text-white text-[10px] uppercase font-normal">Highway Corridor Transit</div>
+                <div className="text-black dark:text-white text-xs font-normal font-sans">Highway Corridor Transit</div>
                 <div className="flex items-center gap-1.5 font-normal text-black dark:text-white mt-1">
                   <MapPin className="w-3.5 h-3.5 text-black dark:text-white" />
                   <span>NH-44 State Logistics Highway</span>
@@ -544,7 +544,7 @@ export function ConsignmentWorkstation({
               </div>
 
               <div className="p-3 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#101014]">
-                <div className="text-black dark:text-white text-[10px] uppercase font-normal">Electronic Tamper Seals</div>
+                <div className="text-black dark:text-white text-xs font-normal font-sans">Electronic Tamper Seals</div>
                 <div className="flex items-center gap-1.5 font-normal text-black dark:text-white mt-1">
                   <ShieldCheck className="w-4 h-4 text-black dark:text-white" />
                   <span>SEALS INTACT (0 Breaches)</span>
@@ -558,7 +558,7 @@ export function ConsignmentWorkstation({
               </div>
 
               <div className="p-3 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#101014]">
-                <div className="text-black dark:text-white text-[10px] uppercase font-normal">Depot Weighbridge Arrival</div>
+                <div className="text-black dark:text-white text-xs font-normal font-sans">Depot Weighbridge Arrival</div>
                 <div className="font-normal text-black dark:text-white mt-1 flex items-center gap-1.5">
                   <Scale className="w-3.5 h-3.5 text-black dark:text-white" />
                   <span>Gross Weight: 24,850 kg</span>
@@ -574,13 +574,13 @@ export function ConsignmentWorkstation({
 
             {/* Click Action Button */}
             <div className="flex items-center justify-between pt-2">
-              <span className="text-[11px] text-black dark:text-white font-normal font-mono">
+              <span className="text-xs text-black dark:text-white font-normal font-sans">
                 {activeStage > 4 ? '✓ Weighbridge verified & vehicle checked in at depot RFID gates.' : 'Action Required: Confirm arrival and register truck at depot weighbridge.'}
               </span>
               <button
                 onClick={handleStage4CheckInWeighbridge}
                 disabled={actionLoading || activeStage > 4}
-                className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-mono text-xs font-bold transition-all shadow-md active:scale-95 cursor-pointer ${
+                className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-sans text-xs font-semibold transition-all shadow-md active:scale-95 cursor-pointer ${
                   activeStage > 4 
                     ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 cursor-default'
                     : 'bg-orange-600 hover:bg-orange-500 text-white shadow-orange-950/20'
@@ -602,9 +602,9 @@ export function ConsignmentWorkstation({
               </h3>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-mono">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-sans">
               <div className="p-3 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#101014]">
-                <div className="text-black dark:text-white text-[10px] uppercase font-normal">Physical Inspection Results</div>
+                <div className="text-black dark:text-white text-xs font-normal font-sans">Physical Inspection Results</div>
                 <div className="flex items-baseline justify-between mt-1">
                   <span className="text-black dark:text-white text-[10px] font-normal">Dispatched Cases:</span>
                   <span className="font-normal text-black dark:text-white">{csg.total_cases?.toLocaleString()} cs</span>
@@ -620,7 +620,7 @@ export function ConsignmentWorkstation({
               </div>
 
               <div className="p-3 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#101014]">
-                <div className="text-black dark:text-white text-[10px] uppercase font-normal">Official Goods Receipt Note</div>
+                <div className="text-black dark:text-white text-xs font-normal font-sans">Official Goods Receipt Note</div>
                 <div className="font-normal text-black dark:text-white mt-1 text-sm">{grnNo}</div>
                 <div className="text-black dark:text-white text-[10px] font-normal mt-1">
                   Receiving Depot: {csg.depot_name}{csg.wholesale_unit && !csg.depot_name?.toLowerCase().includes(csg.wholesale_unit.toLowerCase()) ? ` (${csg.wholesale_unit})` : ''}
@@ -631,7 +631,7 @@ export function ConsignmentWorkstation({
               </div>
 
               <div className="p-3 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-[#101014]">
-                <div className="text-black dark:text-white text-[10px] uppercase font-normal">Fortnightly Treasury Payout</div>
+                <div className="text-black dark:text-white text-xs font-normal font-sans">Fortnightly Treasury Payout</div>
                 <div className="font-normal text-black dark:text-white mt-1 text-sm">
                   ₹{csg.total_value?.toLocaleString()}
                 </div>
@@ -647,13 +647,13 @@ export function ConsignmentWorkstation({
 
             {/* Click Action Button */}
             <div className="flex items-center justify-between pt-2">
-              <span className="text-[11px] text-black dark:text-white font-normal font-mono">
+              <span className="text-xs text-black dark:text-white font-normal font-sans">
                 {isReceived ? '✓ Consignment 100% completed, GRN registered, and fortnight payout disbursed.' : 'Action Required: Sign GRN, credit live depot buffer stock, and release fortnight payment.'}
               </span>
               <button
                 onClick={handleStage5SignGRN}
                 disabled={actionLoading || isReceived}
-                className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-mono text-xs font-bold transition-all shadow-md active:scale-95 cursor-pointer ${
+                className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-sans text-xs font-semibold transition-all shadow-md active:scale-95 cursor-pointer ${
                   isReceived 
                     ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 cursor-default'
                     : 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-emerald-950/20'
