@@ -986,13 +986,13 @@ export function SupplierManagement({ externalSearchQuery = '', activeTab: propAc
 
           <div>
 
-            <span className="text-xs font-semibold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
+            <span className="text-xs font-normal tracking-wider text-black dark:text-white uppercase block">
 
               Licensed Suppliers
 
             </span>
 
-            <div className="text-2xl sm:text-3xl font-mono font-semibold text-zinc-900 dark:text-white mt-1">
+            <div className="text-2xl sm:text-3xl font-mono font-normal text-black dark:text-white mt-1">
 
               {suppliers.length}
 
@@ -1002,7 +1002,7 @@ export function SupplierManagement({ externalSearchQuery = '', activeTab: propAc
 
           <div className="text-right pb-1 shrink-0">
 
-            <span className="text-xs text-zinc-500 dark:text-zinc-400 block font-normal">
+            <span className="text-xs text-black dark:text-white block font-normal">
 
               Authorized distilleries
 
@@ -1020,13 +1020,13 @@ export function SupplierManagement({ externalSearchQuery = '', activeTab: propAc
 
           <div>
 
-            <span className="text-xs font-semibold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
+            <span className="text-xs font-normal tracking-wider text-black dark:text-white uppercase block">
 
               Total Inward Cases
 
             </span>
 
-            <div className="text-2xl sm:text-3xl font-mono font-semibold text-zinc-900 dark:text-white mt-1">
+            <div className="text-2xl sm:text-3xl font-mono font-normal text-black dark:text-white mt-1">
 
               {analytics?.total_inward_cases?.toLocaleString() || consignments.reduce((sum, c) => sum + (Number(c.received_cases || c.total_cases) || 0), 0).toLocaleString()}
 
@@ -1036,7 +1036,7 @@ export function SupplierManagement({ externalSearchQuery = '', activeTab: propAc
 
           <div className="text-right pb-1 shrink-0">
 
-            <span className="text-xs text-zinc-500 dark:text-zinc-400 block font-normal">
+            <span className="text-xs text-black dark:text-white block font-normal">
 
               Depot routed shipments
 
@@ -1054,13 +1054,13 @@ export function SupplierManagement({ externalSearchQuery = '', activeTab: propAc
 
           <div>
 
-            <span className="text-xs font-semibold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
+            <span className="text-xs font-normal tracking-wider text-black dark:text-white uppercase block">
 
               Fulfillment (OTIF)
 
             </span>
 
-            <div className="text-2xl sm:text-3xl font-mono font-semibold text-emerald-600 dark:text-emerald-400 mt-1">
+            <div className="text-2xl sm:text-3xl font-mono font-normal text-black dark:text-white mt-1">
 
               {analytics?.otif_percentage || 97.2}%
 
@@ -1070,7 +1070,7 @@ export function SupplierManagement({ externalSearchQuery = '', activeTab: propAc
 
           <div className="text-right pb-1 shrink-0">
 
-            <span className="text-xs text-zinc-500 dark:text-zinc-400 block font-normal">
+            <span className="text-xs text-black dark:text-white block font-normal">
 
               Target &gt; 95%
 
@@ -1088,13 +1088,13 @@ export function SupplierManagement({ externalSearchQuery = '', activeTab: propAc
 
           <div>
 
-            <span className="text-xs font-semibold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase block">
+            <span className="text-xs font-normal tracking-wider text-black dark:text-white uppercase block">
 
               Active Supply Trucks
 
             </span>
 
-            <div className="text-2xl sm:text-3xl font-mono font-semibold text-zinc-900 dark:text-white mt-1">
+            <div className="text-2xl sm:text-3xl font-mono font-normal text-black dark:text-white mt-1">
 
               {activeTrucksCount}
 
@@ -1104,7 +1104,7 @@ export function SupplierManagement({ externalSearchQuery = '', activeTab: propAc
 
           <div className="text-right pb-1 shrink-0">
 
-            <span className="text-xs text-zinc-500 dark:text-zinc-400 block font-normal">
+            <span className="text-xs text-black dark:text-white block font-normal">
 
               GPS tracked
 
