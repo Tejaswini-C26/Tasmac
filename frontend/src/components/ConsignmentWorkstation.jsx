@@ -309,25 +309,25 @@ export function ConsignmentWorkstation({
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-sans">
               <div className="p-3 rounded-md border border-zinc-400 dark:border-white/25 bg-zinc-50 dark:bg-[#101014]">
-                <div className="text-black dark:text-white text-xs font-normal font-sans">Manufacturer & License</div>
-                <div className="font-normal text-black dark:text-white mt-1 text-sm truncate">{csg.supplier_name}</div>
-                <div className="text-black dark:text-white font-normal mt-0.5">{exciseLicNo}</div>
-                <div className="text-black dark:text-white text-[10px] font-normal mt-1">Status: Primary Grain Distillery (State Corridor)</div>
+                <div className="text-[#2e59a8] dark:text-blue-400 text-xs font-normal font-sans">Manufacturer & License</div>
+                <div className="font-normal text-[#2e59a8] dark:text-blue-400 mt-1 text-sm truncate">{csg.supplier_name}</div>
+                <div className="text-[#2e59a8] dark:text-blue-400 font-normal mt-0.5">{exciseLicNo}</div>
+                <div className="text-[#2e59a8] dark:text-blue-400 text-[10px] font-normal mt-1">Status: Primary Grain Distillery (State Corridor)</div>
               </div>
 
               <div className="p-3 rounded-md border border-zinc-400 dark:border-white/25 bg-zinc-50 dark:bg-[#101014]">
-                <div className="text-black dark:text-white text-xs font-normal font-sans">Monthly Quota Ceiling & Balance</div>
+                <div className="text-[#2e59a8] dark:text-blue-400 text-xs font-normal font-sans">Monthly Quota Ceiling & Balance</div>
                 <div className="flex items-baseline justify-between mt-1">
-                  <span className="text-black dark:text-white text-[10px] font-normal">Monthly Ceiling:</span>
-                  <span className="font-normal text-black dark:text-white">50,000 cs</span>
+                  <span className="text-[#2e59a8] dark:text-blue-400 text-[10px] font-normal">Monthly Ceiling:</span>
+                  <span className="font-normal text-[#2e59a8] dark:text-blue-400">50,000 cs</span>
                 </div>
                 <div className="flex items-baseline justify-between mt-0.5">
-                  <span className="text-black dark:text-white text-[10px] font-normal">Already Drawn:</span>
-                  <span className="font-normal text-black dark:text-white">32,500 cs (65%)</span>
+                  <span className="text-[#2e59a8] dark:text-blue-400 text-[10px] font-normal">Already Drawn:</span>
+                  <span className="font-normal text-[#2e59a8] dark:text-blue-400">32,500 cs (65%)</span>
                 </div>
                 <div className="flex items-baseline justify-between mt-0.5">
-                  <span className="text-black dark:text-white text-[10px] font-normal">Quota Balance:</span>
-                  <span className="font-normal text-black dark:text-white">17,500 cs</span>
+                  <span className="text-[#2e59a8] dark:text-blue-400 text-[10px] font-normal">Quota Balance:</span>
+                  <span className="font-normal text-[#2e59a8] dark:text-blue-400">17,500 cs</span>
                 </div>
                 <div className="w-full bg-zinc-200 dark:bg-white/10 h-1.5 rounded-full mt-2 overflow-hidden">
                   <div className="bg-amber-500 h-full rounded-full" style={{ width: '65%' }}></div>
@@ -335,13 +335,13 @@ export function ConsignmentWorkstation({
               </div>
 
               <div className="p-3 rounded-md border border-zinc-400 dark:border-white/25 bg-zinc-50 dark:bg-[#101014]">
-                <div className="text-black dark:text-white text-xs font-normal font-sans">Consignment Requisition</div>
-                <div className="font-normal text-black dark:text-white mt-1 text-sm">
+                <div className="text-[#2e59a8] dark:text-blue-400 text-xs font-normal font-sans">Consignment Requisition</div>
+                <div className="font-normal text-[#2e59a8] dark:text-blue-400 mt-1 text-sm">
                   {csg.total_cases?.toLocaleString()} Cases Indent
                 </div>
-                <div className="text-black dark:text-white font-normal mt-0.5">₹{csg.total_value?.toLocaleString()}</div>
-                <div className="text-black dark:text-white text-[10px] mt-1 flex items-center gap-1 font-normal">
-                  <CheckCircle2 className="w-3 h-3 text-black dark:text-white" /> Within Monthly Permissible Quota
+                <div className="text-[#2e59a8] dark:text-blue-400 font-normal mt-0.5">₹{csg.total_value?.toLocaleString()}</div>
+                <div className="text-[#2e59a8] dark:text-blue-400 text-[10px] mt-1 flex items-center gap-1 font-normal">
+                  <CheckCircle2 className="w-3 h-3 text-[#2e59a8] dark:text-blue-400" /> Within Monthly Permissible Quota
                 </div>
               </div>
             </div>
@@ -378,49 +378,49 @@ export function ConsignmentWorkstation({
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-sans">
               <div className="p-3 rounded-md border border-zinc-400 dark:border-white/25 bg-zinc-50 dark:bg-[#101014]">
-                <div className="text-black dark:text-white text-xs font-normal font-sans">Chemical Purity Analysis</div>
+                <div className="text-[#2e59a8] dark:text-blue-400 text-xs font-normal font-sans">Chemical Purity Analysis</div>
                 <div className="flex items-baseline justify-between mt-1">
-                  <span className="text-black dark:text-white text-[10px] font-normal">Ethyl Purity:</span>
-                  <span className="font-normal text-black dark:text-white">99.98% Vol</span>
+                  <span className="text-[#2e59a8] dark:text-blue-400 text-[10px] font-normal">Ethyl Purity:</span>
+                  <span className="font-normal text-[#2e59a8] dark:text-blue-400">99.98% Vol</span>
                 </div>
                 <div className="flex items-baseline justify-between mt-0.5">
-                  <span className="text-black dark:text-white text-[10px] font-normal">Alcohol By Vol:</span>
-                  <span className="font-normal text-black dark:text-white">42.8% ABV (Statutory Pass)</span>
+                  <span className="text-[#2e59a8] dark:text-blue-400 text-[10px] font-normal">Alcohol By Vol:</span>
+                  <span className="font-normal text-[#2e59a8] dark:text-blue-400">42.8% ABV (Statutory Pass)</span>
                 </div>
                 <div className="flex items-baseline justify-between mt-0.5">
-                  <span className="text-black dark:text-white text-[10px] font-normal">Methanol/Toxins:</span>
-                  <span className="font-normal text-black dark:text-white">0.00% (Not Detected)</span>
+                  <span className="text-[#2e59a8] dark:text-blue-400 text-[10px] font-normal">Methanol/Toxins:</span>
+                  <span className="font-normal text-[#2e59a8] dark:text-blue-400">0.00% (Not Detected)</span>
                 </div>
               </div>
 
               <div className="p-3 rounded-md border border-zinc-400 dark:border-white/25 bg-zinc-50 dark:bg-[#101014]">
-                <div className="text-black dark:text-white text-xs font-normal font-sans">Batch & Hologram Calculation</div>
+                <div className="text-[#2e59a8] dark:text-blue-400 text-xs font-normal font-sans">Batch & Hologram Calculation</div>
                 <div className="flex items-baseline justify-between mt-1">
-                  <span className="text-black dark:text-white text-[10px] font-normal">Batch Number:</span>
-                  <span className="font-normal text-black dark:text-white">{csg.batch_no}</span>
+                  <span className="text-[#2e59a8] dark:text-blue-400 text-[10px] font-normal">Batch Number:</span>
+                  <span className="font-normal text-[#2e59a8] dark:text-blue-400">{csg.batch_no}</span>
                 </div>
                 <div className="flex items-baseline justify-between mt-0.5">
-                  <span className="text-black dark:text-white text-[10px] font-normal">Required 2D QR:</span>
-                  <span className="font-normal text-black dark:text-white">{bottlesCount.toLocaleString()} Holograms</span>
+                  <span className="text-[#2e59a8] dark:text-blue-400 text-[10px] font-normal">Required 2D QR:</span>
+                  <span className="font-normal text-[#2e59a8] dark:text-blue-400">{bottlesCount.toLocaleString()} Holograms</span>
                 </div>
                 <div className="flex items-baseline justify-between mt-0.5">
-                  <span className="text-black dark:text-white text-[10px] font-normal">Series Range:</span>
-                  <span className="font-normal text-black dark:text-white text-[10px]">TN-HOLO-26-90401..</span>
+                  <span className="text-[#2e59a8] dark:text-blue-400 text-[10px] font-normal">Series Range:</span>
+                  <span className="font-normal text-[#2e59a8] dark:text-blue-400 text-[10px]">TN-HOLO-26-90401..</span>
                 </div>
               </div>
 
               <div className="p-3 rounded-md border border-zinc-400 dark:border-white/25 bg-zinc-50 dark:bg-[#101014] flex flex-col justify-between">
                 <div>
-                  <div className="text-black dark:text-white text-xs font-normal font-sans">Government Lab Stamp</div>
-                  <div className="text-black dark:text-white font-normal mt-1 flex items-center gap-1.5 text-xs">
-                    <BadgeCheck className="w-4 h-4 shrink-0 text-black dark:text-white" />
+                  <div className="text-[#2e59a8] dark:text-blue-400 text-xs font-normal font-sans">Government Lab Stamp</div>
+                  <div className="text-[#2e59a8] dark:text-blue-400 font-normal mt-1 flex items-center gap-1.5 text-xs">
+                    <BadgeCheck className="w-4 h-4 shrink-0 text-[#2e59a8] dark:text-blue-400" />
                     CERTIFIED STATUTORY COMPLIANT
                   </div>
-                  <div className="text-black dark:text-white text-[10px] font-normal mt-1">
+                  <div className="text-[#2e59a8] dark:text-blue-400 text-[10px] font-normal mt-1">
                     State Chemical Testing Laboratory, Chennai Division
                   </div>
                 </div>
-                <div className="text-[10px] text-black dark:text-white font-normal font-sans mt-2">
+                <div className="text-[10px] text-[#2e59a8] dark:text-blue-400 font-normal font-sans mt-2">
                   Tamper-Evident Hologram Roll Hash: #TAS-QR-88192
                 </div>
               </div>
@@ -458,39 +458,39 @@ export function ConsignmentWorkstation({
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-sans">
               <div className="p-3 rounded-md border border-zinc-400 dark:border-white/25 bg-zinc-50 dark:bg-[#101014]">
-                <div className="text-black dark:text-white text-xs font-normal font-sans">Origin & Destination Depot</div>
-                <div className="flex items-center gap-1.5 font-normal text-black dark:text-white mt-1">
-                  <Building2 className="w-3.5 h-3.5 text-black dark:text-white" />
+                <div className="text-[#2e59a8] dark:text-blue-400 text-xs font-normal font-sans">Origin & Destination Depot</div>
+                <div className="flex items-center gap-1.5 font-normal text-[#2e59a8] dark:text-blue-400 mt-1">
+                  <Building2 className="w-3.5 h-3.5 text-[#2e59a8] dark:text-blue-400" />
                   <span className="truncate">{csg.supplier_name}</span>
                 </div>
-                <div className="text-center my-1 text-black dark:text-white text-xs">➔</div>
-                <div className="flex items-center gap-1.5 font-normal text-black dark:text-white">
-                  <Warehouse className="w-3.5 h-3.5 text-black dark:text-white" />
+                <div className="text-center my-1 text-[#2e59a8] dark:text-blue-400 text-xs">➔</div>
+                <div className="flex items-center gap-1.5 font-normal text-[#2e59a8] dark:text-blue-400">
+                  <Warehouse className="w-3.5 h-3.5 text-[#2e59a8] dark:text-blue-400" />
                   <span className="truncate">{csg.depot_name}</span>
                 </div>
               </div>
 
               <div className="p-3 rounded-md border border-zinc-400 dark:border-white/25 bg-zinc-50 dark:bg-[#101014]">
-                <div className="text-black dark:text-white text-xs font-normal font-sans">Assigned Transport Fleet</div>
-                <div className="flex items-center gap-1.5 font-normal text-black dark:text-white mt-1">
-                  <Truck className="w-3.5 h-3.5 text-black dark:text-white" />
+                <div className="text-[#2e59a8] dark:text-blue-400 text-xs font-normal font-sans">Assigned Transport Fleet</div>
+                <div className="flex items-center gap-1.5 font-normal text-[#2e59a8] dark:text-blue-400 mt-1">
+                  <Truck className="w-3.5 h-3.5 text-[#2e59a8] dark:text-blue-400" />
                   <span>{csg.vehicle_no || 'TN-01-AN-4421'}</span>
                 </div>
-                <div className="text-black dark:text-white text-[10px] font-normal mt-1">
+                <div className="text-[#2e59a8] dark:text-blue-400 text-[10px] font-normal mt-1">
                   Driver: {csg.driver_name || 'M. Murugan'} ({csg.driver_phone || '+91 94440 12345'})
                 </div>
-                <div className="text-black dark:text-white text-[10px] font-normal mt-1">
+                <div className="text-[#2e59a8] dark:text-blue-400 text-[10px] font-normal mt-1">
                   Fleet GPS Sensor Active (AIS-140)
                 </div>
               </div>
 
               <div className="p-3 rounded-md border border-zinc-400 dark:border-white/25 bg-zinc-50 dark:bg-[#101014]">
-                <div className="text-black dark:text-white text-xs font-normal font-sans">Authorized Digital EGP Code</div>
-                <div className="font-normal text-black dark:text-white mt-1 text-sm">{egpPermitNo}</div>
-                <div className="text-black dark:text-white text-[10px] font-normal mt-1">
+                <div className="text-[#2e59a8] dark:text-blue-400 text-xs font-normal font-sans">Authorized Digital EGP Code</div>
+                <div className="font-normal text-[#2e59a8] dark:text-blue-400 mt-1 text-sm">{egpPermitNo}</div>
+                <div className="text-[#2e59a8] dark:text-blue-400 text-[10px] font-normal mt-1">
                   Validity Window: Departure: 10:30 AM ➔ Expiry: 04:30 PM
                 </div>
-                <div className="text-black dark:text-white text-[10px] font-normal mt-0.5">
+                <div className="text-[#2e59a8] dark:text-blue-400 text-[10px] font-normal mt-0.5">
                   Electronic Seal: Dual RFID Tamper Proof
                 </div>
               </div>
@@ -528,45 +528,45 @@ export function ConsignmentWorkstation({
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-sans">
               <div className="p-3 rounded-md border border-zinc-400 dark:border-white/25 bg-zinc-50 dark:bg-[#101014]">
-                <div className="text-black dark:text-white text-xs font-normal font-sans">Highway Corridor Transit</div>
-                <div className="flex items-center gap-1.5 font-normal text-black dark:text-white mt-1">
-                  <MapPin className="w-3.5 h-3.5 text-black dark:text-white" />
+                <div className="text-[#2e59a8] dark:text-blue-400 text-xs font-normal font-sans">Highway Corridor Transit</div>
+                <div className="flex items-center gap-1.5 font-normal text-[#2e59a8] dark:text-blue-400 mt-1">
+                  <MapPin className="w-3.5 h-3.5 text-[#2e59a8] dark:text-blue-400" />
                   <span>NH-44 State Logistics Highway</span>
                 </div>
                 <div className="flex items-baseline justify-between mt-1 text-[11px]">
-                  <span className="text-black dark:text-white font-normal">Live Speed:</span>
-                  <span className="font-normal text-black dark:text-white">54 km/h (Normal Cruise)</span>
+                  <span className="text-[#2e59a8] dark:text-blue-400 font-normal">Live Speed:</span>
+                  <span className="font-normal text-[#2e59a8] dark:text-blue-400">54 km/h (Normal Cruise)</span>
                 </div>
                 <div className="flex items-baseline justify-between mt-0.5 text-[11px]">
-                  <span className="text-black dark:text-white font-normal">GPS Fix:</span>
-                  <span className="text-black dark:text-white font-normal">11.6643° N, 78.1460° E</span>
+                  <span className="text-[#2e59a8] dark:text-blue-400 font-normal">GPS Fix:</span>
+                  <span className="text-[#2e59a8] dark:text-blue-400 font-normal">11.6643° N, 78.1460° E</span>
                 </div>
               </div>
 
               <div className="p-3 rounded-md border border-zinc-400 dark:border-white/25 bg-zinc-50 dark:bg-[#101014]">
-                <div className="text-black dark:text-white text-xs font-normal font-sans">Electronic Tamper Seals</div>
-                <div className="flex items-center gap-1.5 font-normal text-black dark:text-white mt-1">
-                  <ShieldCheck className="w-4 h-4 text-black dark:text-white" />
+                <div className="text-[#2e59a8] dark:text-blue-400 text-xs font-normal font-sans">Electronic Tamper Seals</div>
+                <div className="flex items-center gap-1.5 font-normal text-[#2e59a8] dark:text-blue-400 mt-1">
+                  <ShieldCheck className="w-4 h-4 text-[#2e59a8] dark:text-blue-400" />
                   <span>SEALS INTACT (0 Breaches)</span>
                 </div>
-                <div className="text-black dark:text-white text-[10px] font-normal mt-1">
+                <div className="text-[#2e59a8] dark:text-blue-400 text-[10px] font-normal mt-1">
                   Primary Seal: RFID-TN-E90281 | Active
                 </div>
-                <div className="text-black dark:text-white text-[10px] font-normal mt-0.5">
+                <div className="text-[#2e59a8] dark:text-blue-400 text-[10px] font-normal mt-0.5">
                   Secondary Seal: Barcode-TN-B88204 | Verified
                 </div>
               </div>
 
               <div className="p-3 rounded-md border border-zinc-400 dark:border-white/25 bg-zinc-50 dark:bg-[#101014]">
-                <div className="text-black dark:text-white text-xs font-normal font-sans">Depot Weighbridge Arrival</div>
-                <div className="font-normal text-black dark:text-white mt-1 flex items-center gap-1.5">
-                  <Scale className="w-3.5 h-3.5 text-black dark:text-white" />
+                <div className="text-[#2e59a8] dark:text-blue-400 text-xs font-normal font-sans">Depot Weighbridge Arrival</div>
+                <div className="font-normal text-[#2e59a8] dark:text-blue-400 mt-1 flex items-center gap-1.5">
+                  <Scale className="w-3.5 h-3.5 text-[#2e59a8] dark:text-blue-400" />
                   <span>Gross Weight: 24,850 kg</span>
                 </div>
-                <div className="text-black dark:text-white text-[10px] font-normal mt-1">
+                <div className="text-[#2e59a8] dark:text-blue-400 text-[10px] font-normal mt-1">
                   Tare: 11,200 kg | Net Payload: 13,650 kg (Exact Match)
                 </div>
-                <div className="text-black dark:text-white text-[10px] font-normal mt-1">
+                <div className="text-[#2e59a8] dark:text-blue-400 text-[10px] font-normal mt-1">
                   RFID Gate Inward Queue: Ready for Weigh Check
                 </div>
               </div>
@@ -604,42 +604,42 @@ export function ConsignmentWorkstation({
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-sans">
               <div className="p-3 rounded-md border border-zinc-400 dark:border-white/25 bg-zinc-50 dark:bg-[#101014]">
-                <div className="text-black dark:text-white text-xs font-normal font-sans">Physical Inspection Results</div>
+                <div className="text-[#2e59a8] dark:text-blue-400 text-xs font-normal font-sans">Physical Inspection Results</div>
                 <div className="flex items-baseline justify-between mt-1">
-                  <span className="text-black dark:text-white text-[10px] font-normal">Dispatched Cases:</span>
-                  <span className="font-normal text-black dark:text-white">{csg.total_cases?.toLocaleString()} cs</span>
+                  <span className="text-[#2e59a8] dark:text-blue-400 text-[10px] font-normal">Dispatched Cases:</span>
+                  <span className="font-normal text-[#2e59a8] dark:text-blue-400">{csg.total_cases?.toLocaleString()} cs</span>
                 </div>
                 <div className="flex items-baseline justify-between mt-0.5">
-                  <span className="text-black dark:text-white text-[10px] font-normal">Transit Breakage:</span>
-                  <span className="font-normal text-black dark:text-white">0 Bottles (0.00% Zero-Loss)</span>
+                  <span className="text-[#2e59a8] dark:text-blue-400 text-[10px] font-normal">Transit Breakage:</span>
+                  <span className="font-normal text-[#2e59a8] dark:text-blue-400">0 Bottles (0.00% Zero-Loss)</span>
                 </div>
                 <div className="flex items-baseline justify-between mt-0.5">
-                  <span className="text-black dark:text-white text-[10px] font-normal">Net Restocked:</span>
-                  <span className="font-normal text-black dark:text-white">{csg.total_cases?.toLocaleString()} cs to {csg.depot_name}</span>
+                  <span className="text-[#2e59a8] dark:text-blue-400 text-[10px] font-normal">Net Restocked:</span>
+                  <span className="font-normal text-[#2e59a8] dark:text-blue-400">{csg.total_cases?.toLocaleString()} cs to {csg.depot_name}</span>
                 </div>
               </div>
 
               <div className="p-3 rounded-md border border-zinc-400 dark:border-white/25 bg-zinc-50 dark:bg-[#101014]">
-                <div className="text-black dark:text-white text-xs font-normal font-sans">Official Goods Receipt Note</div>
-                <div className="font-normal text-black dark:text-white mt-1 text-sm">{grnNo}</div>
-                <div className="text-black dark:text-white text-[10px] font-normal mt-1">
+                <div className="text-[#2e59a8] dark:text-blue-400 text-xs font-normal font-sans">Official Goods Receipt Note</div>
+                <div className="font-normal text-[#2e59a8] dark:text-blue-400 mt-1 text-sm">{grnNo}</div>
+                <div className="text-[#2e59a8] dark:text-blue-400 text-[10px] font-normal mt-1">
                   Receiving Depot: {csg.depot_name}{csg.wholesale_unit && !csg.depot_name?.toLowerCase().includes(csg.wholesale_unit.toLowerCase()) ? ` (${csg.wholesale_unit})` : ''}
                 </div>
-                <div className="text-black dark:text-white text-[10px] font-normal mt-0.5">
+                <div className="text-[#2e59a8] dark:text-blue-400 text-[10px] font-normal mt-0.5">
                   Depot Buffer Stock Credited in Database
                 </div>
               </div>
 
               <div className="p-3 rounded-md border border-zinc-400 dark:border-white/25 bg-zinc-50 dark:bg-[#101014]">
-                <div className="text-black dark:text-white text-xs font-normal font-sans">Fortnightly Treasury Payout</div>
-                <div className="font-normal text-black dark:text-white mt-1 text-sm">
+                <div className="text-[#2e59a8] dark:text-blue-400 text-xs font-normal font-sans">Fortnightly Treasury Payout</div>
+                <div className="font-normal text-[#2e59a8] dark:text-blue-400 mt-1 text-sm">
                   ₹{csg.total_value?.toLocaleString()}
                 </div>
-                <div className="text-black dark:text-white text-[10px] font-normal mt-1">
+                <div className="text-[#2e59a8] dark:text-blue-400 text-[10px] font-normal mt-1">
                   Treasury Voucher: {settlementRef}
                 </div>
-                <div className="text-black dark:text-white text-[10px] font-normal mt-0.5 flex items-center gap-1">
-                  <BadgeCheck className="w-3.5 h-3.5 text-black dark:text-white" />
+                <div className="text-[#2e59a8] dark:text-blue-400 text-[10px] font-normal mt-0.5 flex items-center gap-1">
+                  <BadgeCheck className="w-3.5 h-3.5 text-[#2e59a8] dark:text-blue-400" />
                   {isReceived ? 'Disbursed via Escrow Treasury Account' : 'Pre-approved by State Treasury'}
                 </div>
               </div>
