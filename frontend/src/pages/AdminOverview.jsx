@@ -222,20 +222,20 @@ export function AdminOverview({ onNavigateToPage, externalSearchQuery = '' }) {
 
             <div className="mt-3.5 space-y-2 text-xs">
               <div className="flex justify-between py-1 border-b border-zinc-100 dark:border-white/5">
-                <span className="text-[#2e59a8] dark:text-blue-400">Registered Distilleries:</span>
-                <span className="font-semibold text-[#2e59a8] dark:text-blue-400">{totalSuppliersCount} Consortia</span>
+                <span className="text-black dark:text-white">Registered Distilleries:</span>
+                <span className="font-semibold text-black dark:text-white">{totalSuppliersCount} Consortia</span>
               </div>
               <div className="flex justify-between py-1 border-b border-zinc-100 dark:border-white/5">
-                <span className="text-[#2e59a8] dark:text-blue-400">Inward Consignments:</span>
-                <span className="font-mono font-semibold text-[#2e59a8] dark:text-blue-400">{totalConsignmentsCount} Dispatches</span>
+                <span className="text-black dark:text-white">Inward Consignments:</span>
+                <span className="font-mono font-semibold text-black dark:text-white">{totalConsignmentsCount} Dispatches</span>
               </div>
               <div className="flex justify-between py-1 border-b border-zinc-100 dark:border-white/5">
-                <span className="text-[#2e59a8] dark:text-blue-400">Bulk Inward Cases:</span>
-                <span className="font-mono font-semibold text-[#2e59a8] dark:text-blue-400">{totalInwardCases.toLocaleString()} cs</span>
+                <span className="text-black dark:text-white">Bulk Inward Cases:</span>
+                <span className="font-mono font-semibold text-black dark:text-white">{totalInwardCases.toLocaleString()} cs</span>
               </div>
               <div className="flex justify-between py-1">
-                <span className="text-[#2e59a8] dark:text-blue-400">Excise Gate Passes:</span>
-                <span className="font-mono font-semibold text-[#2e59a8] dark:text-blue-400">{supplierAnalytics?.otif_percentage || 100}% Verified GRN</span>
+                <span className="text-black dark:text-white">Excise Gate Passes:</span>
+                <span className="font-mono font-semibold text-black dark:text-white">{supplierAnalytics?.otif_percentage || 100}% Verified GRN</span>
               </div>
             </div>
           </div>
@@ -285,20 +285,20 @@ export function AdminOverview({ onNavigateToPage, externalSearchQuery = '' }) {
 
             <div className="mt-3.5 space-y-2 text-xs">
               <div className="flex justify-between py-1 border-b border-zinc-100 dark:border-white/5">
-                <span className="text-[#2e59a8] dark:text-blue-400">Live Buffer Inventory:</span>
-                <span className="font-mono font-semibold text-[#2e59a8] dark:text-blue-400">{totalWholesaleCases.toLocaleString()} cs</span>
+                <span className="text-black dark:text-white">Live Buffer Inventory:</span>
+                <span className="font-mono font-semibold text-black dark:text-white">{totalWholesaleCases.toLocaleString()} cs</span>
               </div>
               <div className="flex justify-between py-1 border-b border-zinc-100 dark:border-white/5">
-                <span className="text-[#2e59a8] dark:text-blue-400">Total Buffer Capacity:</span>
-                <span className="font-mono font-semibold text-[#2e59a8] dark:text-blue-400">{totalDepotCapacity.toLocaleString()} cs</span>
+                <span className="text-black dark:text-white">Total Buffer Capacity:</span>
+                <span className="font-mono font-semibold text-black dark:text-white">{totalDepotCapacity.toLocaleString()} cs</span>
               </div>
               <div className="flex justify-between py-1 border-b border-zinc-100 dark:border-white/5">
-                <span className="text-[#2e59a8] dark:text-blue-400">Regional Depots:</span>
-                <span className="font-semibold text-[#2e59a8] dark:text-blue-400 truncate ml-2 text-right">{depotCodesList}</span>
+                <span className="text-black dark:text-white">Regional Depots:</span>
+                <span className="font-semibold text-black dark:text-white truncate ml-2 text-right">{depotCodesList}</span>
               </div>
               <div className="flex justify-between py-1">
-                <span className="text-[#2e59a8] dark:text-blue-400">Depot Health:</span>
-                <span className="font-mono font-semibold text-[#2e59a8] dark:text-blue-400">Optimal Buffer Spread</span>
+                <span className="text-black dark:text-white">Depot Health:</span>
+                <span className="font-mono font-semibold text-black dark:text-white">Optimal Buffer Spread</span>
               </div>
             </div>
           </div>
@@ -334,20 +334,20 @@ export function AdminOverview({ onNavigateToPage, externalSearchQuery = '' }) {
 
             <div className="mt-3.5 space-y-2 text-xs">
               <div className="flex justify-between py-1 border-b border-zinc-100 dark:border-white/5">
-                <span className="text-[#2e59a8] dark:text-blue-400">Retail Outlets:</span>
-                <span className="font-semibold text-[#2e59a8] dark:text-blue-400">{totalShopsCount} Standard & Elite</span>
+                <span className="text-black dark:text-white">Retail Outlets:</span>
+                <span className="font-semibold text-black dark:text-white">{totalShopsCount} Standard & Elite</span>
               </div>
               <div className="flex justify-between py-1 border-b border-zinc-100 dark:border-white/5">
-                <span className="text-[#2e59a8] dark:text-blue-400">Replenishment Indents:</span>
-                <span className="font-mono font-semibold text-[#2e59a8] dark:text-blue-400">{totalOrdersCount} Orders</span>
+                <span className="text-black dark:text-white">Replenishment Indents:</span>
+                <span className="font-mono font-semibold text-black dark:text-white">{totalOrdersCount} Orders</span>
               </div>
               <div className="flex justify-between py-1 border-b border-zinc-100 dark:border-white/5">
-                <span className="text-[#2e59a8] dark:text-blue-400">Approved Brand SKUs:</span>
-                <span className="font-mono font-semibold text-[#2e59a8] dark:text-blue-400">{metrics?.total_brands || 25} Brands</span>
+                <span className="text-black dark:text-white">Approved Brand SKUs:</span>
+                <span className="font-mono font-semibold text-black dark:text-white">{metrics?.total_brands || 25} Brands</span>
               </div>
               <div className="flex justify-between py-1">
-                <span className="text-[#2e59a8] dark:text-blue-400">Logistics Transit:</span>
-                <span className="font-mono font-semibold text-[#2e59a8] dark:text-blue-400">
+                <span className="text-black dark:text-white">Logistics Transit:</span>
+                <span className="font-mono font-semibold text-black dark:text-white">
                   {inTransitCount > 0 ? `${inTransitCount} Dispatches In Transit` : 'Live GPS & QR Seals'}
                 </span>
               </div>
@@ -409,15 +409,15 @@ export function AdminOverview({ onNavigateToPage, externalSearchQuery = '' }) {
                 onClick={() => onNavigateToPage('depots')}
                 className="p-3 rounded-lg border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-white/[0.02] hover:border-orange-500/40 transition cursor-pointer group"
               >
-                <h4 className="text-xs font-bold text-[#2e59a8] dark:text-blue-400 truncate group-hover:text-orange-500 transition-colors">
+                <h4 className="text-xs font-bold text-black dark:text-white truncate group-hover:text-orange-500 transition-colors">
                   {cleanName}
                 </h4>
-                <p className="text-[11px] text-[#2e59a8] dark:text-blue-400 mt-0.5">Region: {depot.region}</p>
+                <p className="text-[11px] text-black dark:text-white mt-0.5">Region: {depot.region}</p>
 
                 <div className="mt-2.5 pt-2 border-t border-zinc-200 dark:border-white/10 space-y-1">
                   <div className="flex justify-between text-[11px]">
-                    <span className="text-[#2e59a8] dark:text-blue-400">Live Stock:</span>
-                    <span className="font-mono font-bold text-[#2e59a8] dark:text-blue-400">{(depot.total_stock_cases || 0).toLocaleString()} cs</span>
+                    <span className="text-black dark:text-white">Live Stock:</span>
+                    <span className="font-mono font-bold text-black dark:text-white">{(depot.total_stock_cases || 0).toLocaleString()} cs</span>
                   </div>
                   <div className="w-full bg-zinc-200 dark:bg-black h-1.5 rounded-full overflow-hidden">
                     <div 
@@ -425,7 +425,7 @@ export function AdminOverview({ onNavigateToPage, externalSearchQuery = '' }) {
                       style={{ width: `${Math.min(100, usagePct)}%` }}
                     />
                   </div>
-                  <div className="flex justify-between text-[10px] text-[#2e59a8] dark:text-blue-400">
+                  <div className="flex justify-between text-[10px] text-black dark:text-white">
                     <span>Cap: {(depot.capacity_cases || 0).toLocaleString()}</span>
                     <span>Buffer Safe</span>
                   </div>
