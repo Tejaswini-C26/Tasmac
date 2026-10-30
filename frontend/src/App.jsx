@@ -860,17 +860,17 @@ useEffect(() => {
                             ? 'bg-orange-500/15 text-orange-600 dark:text-orange-400 border border-orange-500/40 shadow-xs'
                             : isDepotActive
                             ? 'bg-orange-500/5 text-orange-600 dark:text-orange-400 border border-orange-500/20'
-                            : 'text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/5 border border-transparent'
+                            : 'text-black dark:text-white hover:bg-black/[0.04] dark:hover:bg-white/5 border border-transparent'
                         }`}
                       >
                         <div className="w-10 h-10 flex items-center justify-center shrink-0">
-                          <DepotIcon size={18} strokeWidth={1.75} className={`w-4.5 h-4.5 shrink-0 transition-colors ${isDepotActive ? 'text-orange-500' : 'text-zinc-500 dark:text-zinc-400 group-hover:text-black dark:group-hover:text-white'}`} />
+                          <DepotIcon size={18} strokeWidth={1.75} className={`w-4.5 h-4.5 shrink-0 transition-colors ${isDepotActive ? 'text-orange-500' : 'text-black dark:text-white'}`} />
                         </div>
 
                         <span
                           className={`whitespace-nowrap overflow-hidden transition-opacity duration-200 truncate flex-1 text-left ${
                             isSidebarExpanded ? 'opacity-100 pr-1' : 'opacity-0 max-w-0 pointer-events-none'
-                          } ${isDepotActive ? 'text-orange-600 dark:text-orange-400 font-bold' : ''}`}
+                          } ${isDepotActive ? 'text-orange-600 dark:text-orange-400 font-bold' : 'text-black dark:text-white font-bold'}`}
                         >
                           {depot.shortName}
                         </span>
@@ -910,7 +910,7 @@ useEffect(() => {
                                 className={`w-full py-1.5 px-2 rounded-md flex items-center gap-2 text-left transition-colors cursor-pointer text-[10px] font-mono ${
                                   isWhActive
                                     ? 'bg-orange-500 text-white font-bold shadow-xs'
-                                    : 'text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/5'
+                                    : 'text-black dark:text-white hover:bg-black/[0.04] dark:hover:bg-white/5 font-semibold'
                                 }`}
                               >
                                 <WhIcon size={12} className={`shrink-0 ${isWhActive ? 'text-white' : 'text-orange-400'}`} />
@@ -942,19 +942,19 @@ useEffect(() => {
                   className={`w-full h-10 rounded-lg flex items-center transition-colors duration-150 cursor-pointer font-mono text-xs uppercase font-bold tracking-wider relative group ${
                     isActive
                       ? 'bg-orange-500/15 text-orange-600 dark:text-orange-400 border border-orange-500/40 shadow-sm'
-                      : 'text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/5 border border-transparent'
+                      : 'text-black dark:text-white hover:bg-black/[0.04] dark:hover:bg-white/5 border border-transparent'
                   }`}
                 >
                   {/* Fixed-width icon anchor: constant position, never shifts */}
                   <div className="w-10 h-10 flex items-center justify-center shrink-0">
-                    <Icon size={16} strokeWidth={1.75} className={`w-4 h-4 shrink-0 transition-colors ${isActive ? 'text-orange-600 dark:text-orange-400' : 'text-zinc-500 dark:text-zinc-400 group-hover:text-black dark:group-hover:text-white'}`} />
+                    <Icon size={16} strokeWidth={1.75} className={`w-4 h-4 shrink-0 transition-colors ${isActive ? 'text-orange-600 dark:text-orange-400' : 'text-black dark:text-white'}`} />
                   </div>
 
                   {/* Label smoothly fades in without ever displacing the icon */}
                   <span
                     className={`whitespace-nowrap overflow-hidden transition-opacity duration-200 ${
                       isSidebarExpanded ? 'opacity-100 pr-2.5' : 'opacity-0 max-w-0 pointer-events-none'
-                    } ${isActive ? 'text-orange-600 dark:text-orange-400 font-bold' : ''}`}
+                    } ${isActive ? 'text-orange-600 dark:text-orange-400 font-bold' : 'text-black dark:text-white font-bold'}`}
                   >
                     {item.label}
                   </span>
