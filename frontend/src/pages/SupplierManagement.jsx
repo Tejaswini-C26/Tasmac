@@ -1159,7 +1159,7 @@ export function SupplierManagement({ externalSearchQuery = '', activeTab: propAc
           />
 
           {/* SELECT CONSIGNMENT TO TRACK TABLE (Matching media_1793171744257_73ca696e.png) */}
-          <div className="rounded-2xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#0c0d12] shadow-sm p-4 sm:p-5 transition-all">
+          <div className="forge-card rounded-md border border-zinc-200 dark:border-white/10 bg-white dark:bg-[#0c0d12] shadow-sm p-4 sm:p-5 transition-all">
             <div className="mb-3">
               <span className="text-xs font-sans font-bold uppercase tracking-wider text-black dark:text-white">
                 SELECT CONSIGNMENT TO TRACK
@@ -1177,7 +1177,7 @@ export function SupplierManagement({ externalSearchQuery = '', activeTab: propAc
                       setSelectedConsignmentForWorkstation(item);
                       setSelectedConsignmentForInspect(item);
                     }}
-                    className={`w-full p-3 sm:px-4 sm:py-3 rounded-xl border transition-all cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 ${
+                    className={`w-full p-3 sm:px-4 sm:py-3 rounded-md border transition-all cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 ${
                       isSelected
                         ? 'bg-[#fff7ed] dark:bg-orange-950/20 border-orange-300 dark:border-orange-500/40 shadow-xs'
                         : 'bg-white dark:bg-[#12131a] border-zinc-200 dark:border-white/10 hover:border-orange-300 dark:hover:border-white/20 hover:bg-orange-50/40 dark:hover:bg-white/[0.02]'
